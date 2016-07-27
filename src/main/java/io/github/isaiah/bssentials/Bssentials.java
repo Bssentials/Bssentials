@@ -68,17 +68,17 @@ public class Bssentials extends JavaPlugin implements Listener {
  	public static final Permission WIKI_PERM = new Permission("bssentials.command.mcwiki");
  	public static final Permission YOUTUBE_PERM = new Permission("bssentials.command.mcwiki");
   	public static final Permission BUKKIT_PERM = new Permission("bssentials.command.bukkitdev");
-    	public static final Permission PLUGINS_PERM = new Permission("bssentials.command.plugins");
-    	public static final Permission PM_PERM = new Permission("bssentials.command.pm");
+    public static final Permission PLUGINS_PERM = new Permission("bssentials.command.plugins");
+    public static final Permission PM_PERM = new Permission("bssentials.command.pm");
 	public static final Permission GOD_PERM = new Permission("bssentials.command.god");
-    	public static final Permission PLUGIN_INFO_PERM = new Permission("bssentials.command.bssentials");
+    public static final Permission PLUGIN_INFO_PERM = new Permission("bssentials.command.bssentials");
     
 	private static final String prefix = ChatColor.GREEN + "[Bssentials]" + ChatColor.YELLOW + " ";
-    	public static final String PREFIX = prefix;
-    private File configf, warpf;
-    private FileConfiguration config, warp;
+    public static final String PREFIX = prefix;
+    private File configf, warpf, playerdataf;
+    private FileConfiguration config, warp, playerdata;
     
-    public static String version = "2.0";
+    public static String version = "2.1";
     
     private Bssentials main = this;
 	
@@ -101,11 +101,16 @@ public class Bssentials extends JavaPlugin implements Listener {
     public FileConfiguration getWarpConfig() {
         return this.warp;
     }
+    
+    public FileConfiguration getPlayerDataConfig() {
+        return this.playerdata;
+    }
 
     private void createFiles() {
 
         configf = new File(getDataFolder(), "config.yml");
         warpf = new File(getDataFolder(), "warps.yml");
+        playerdataf = new File(getDataFolder(), "playerdata.yml");
 
         if (!configf.exists()) {
             configf.getParentFile().mkdirs();
@@ -114,13 +119,19 @@ public class Bssentials extends JavaPlugin implements Listener {
         if (!warpf.exists()) {
             warpf.getParentFile().mkdirs();
             saveResource("warps.yml", false);
-         }
+        }
+        if (!playerdataf.exists()) {
+            warpf.getParentFile().mkdirs();
+            saveResource("warps.yml", false);
+        }
 
         config = new YamlConfiguration();
         warp = new YamlConfiguration();
+        playerdata = new YamlConfiguration();
         try {
             config.load(configf);
             warp.load(warpf);
+            playerdata.load(playerdataf);
         } catch (InvalidConfigurationException | IOException e) {
             e.printStackTrace();
         }
@@ -147,6 +158,14 @@ public class Bssentials extends JavaPlugin implements Listener {
         */
 	}
     
+    public int getPing(Player p) {
+        //CraftPlayer cp = (CraftPlayer) p; 
+        //EntityPlayer ep = cp.getHandle();
+        //return ep.ping; 
+        //I think this will make Bssentials only work on one version, ex: import org.bukkit.craftbukkit.1_10_2_R1.CraftPlayer;
+        return 0;
+    }
+    
     private void registerPermissions(PluginManager pm) {
         pm.addPermission(GAMEMODE_PERM);
 		pm.addPermission(STAFFLIST_PERM);
@@ -169,13 +188,18 @@ public class Bssentials extends JavaPlugin implements Listener {
         pm.addPermission(PLUGIN_INFO_PERM);
     }
     
+    public void nickName(Player player, String name) {
+        getPlayerDataConfig().set(player + ".nick", name);
+        player.setDisplayName(getPlayerDataConfig().getString(player + ".nick"));
+    } 
+    
     public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args) {
     	if(!(sender instanceof Player)){
     		sender.sendMessage("You are not a player");
     		return false;
     	}
     	
-        String authors = "Isaiah Patto, PolarCraft, & ramidzkh";
+        String authors = "Isaiah Patton, PolarCraft, & ramidzkh";
         String website = "games.nedhome.ml";
         
         Player player = (Player) sender;
@@ -195,6 +219,18 @@ public class Bssentials extends JavaPlugin implements Listener {
                     pre + "That is the plugin's description!"};
 		
             player.sendMessage(info);
+        }
+        
+        
+        
+        if (cmd.getName().equalsIgnoreCase("ping")) {
+            //sender.sendMessage(prefix + " Your ping: " + getPing(player));
+            sender.sendMessage(prefix + "Still working on showing your ping in numbers");
+            sender.sendMessage("Pong! (lol, ping pong)");
+        }
+        
+        if (cmd.getName().equalsIgnoreCase("nick")) {
+            nickName(player, StringUtils.join(args, ""));
         }
         
         if (cmd.getName().equalsIgnoreCase("pm")) {
