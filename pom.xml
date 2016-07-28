@@ -1,33 +1,26 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>io.github.bssentials</groupId>
-  <artifactId>Bssentials-2</artifactId>
-  <version>1.0.0</version>
   
+  <groupId>io.github.isaiah.bssentials</groupId>
+  <artifactId>Bssentials</artifactId>
+  <version>2.0</version>
+  <packaging>jar</packaging>
+
   <name>Bssentials-2</name>
-  <url>https://github.com/Bssentials/Bssentials-2</url>
+  <url>http://github.com/bssentials</url>
   
   <build>
     <defaultGoal>package</defaultGoal>
     <directory>${basedir}</directory>
-    <finalName>Bssentials-2</finalName>
-      <plugins>
-          <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-compiler-plugin</artifactId>
-              <configuration>
-                  <source>1.8</source>
-                  <target>1.8</target>
-              </configuration>
-          </plugin>
-      </plugins>
+    <finalName>Bssentials</finalName>
   </build>
-  
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
   </properties>
-  
   <repositories>
     <repository>
       <id>spigot-repo</id>
@@ -49,5 +42,4 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
-  
 </project>
