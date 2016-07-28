@@ -1,7 +1,5 @@
 package io.github.isaiah.bssentials;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
@@ -14,7 +12,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
@@ -43,7 +40,7 @@ import ml.bssentials.commands.spawnmob;
     @author PolarCraft
     @author ramidzkh
     
-    @version 1.7
+    @version 2.x
     
     @see {@link JavaPlugin}
     @see {@link PluginDescriptionFile}
@@ -82,7 +79,7 @@ public class Bssentials extends JavaPlugin implements Listener {
     public static final String PREFIX = prefix;
     private FileConfiguration warp, playerdata;
     
-    public static String version = "2.1";
+    public static String version = "2.1.2";
     
     public void onEnable() {
         PluginManager pm = getServer().getPluginManager();
@@ -102,7 +99,7 @@ public class Bssentials extends JavaPlugin implements Listener {
         
         
 		pm.registerEvents(new Plugins(), this);
-		pm.registerEvents(new onJoinNick(), this);
+		pm.registerEvents(new onJoinNick(this), this);
 		pm.registerEvents(this, this);
 	}
 
