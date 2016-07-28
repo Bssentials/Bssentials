@@ -39,7 +39,7 @@ public class Plugins implements Listener {
         Plugin[] plugins;
         StringBuilder pluginList = new StringBuilder();
         Plugin[] arrplugin = plugins = Bukkit.getPluginManager().getPlugins();
-        int n = arrplugin.length;
+        int n = arrplugin.length - 1;
         int n2 = 0;
         while (n2 < n) {
             Plugin plugin = arrplugin[n2];
@@ -51,6 +51,10 @@ public class Plugins implements Listener {
             pluginList.append(plugin.getDescription().getName());
             ++n2;
         }
+        
+        pluginList.append((Object)(plugin.isEnabled() ? ChatColor.GREEN : ChatColor.RED));
+        pluginList.append(plugin.getDescription().getName());
+        
         return "(" + plugins.length + "): " + pluginList.toString();
     }
     
