@@ -1,5 +1,7 @@
 package io.github.isaiah.bssentials;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
@@ -10,7 +12,8 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.EntityType;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
@@ -18,17 +21,13 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import java.io.File;
-import java.io.IOException;
-import org.bukkit.configuration.InvalidConfigurationException;
-import java.io.FileNotFoundException;
-
-import io.github.isaiah.listeners.*;
+import io.github.isaiah.listeners.Plugins;
 import io.github.isaiah.updater.Updater;
-import io.github.ramidzkh.utils.PlayerCheck; 
+import io.github.ramidzkh.utils.PlayerCheck;
 
+import ml.bssentials.commands.Ping;
+import ml.bssentials.commands.ViewNick;
+import ml.bssentials.commands.spawnmob;
 
 /**
     <b>Bssentials</b><br>
@@ -72,26 +71,28 @@ public class Bssentials extends JavaPlugin implements Listener {
     public static final Permission PM_PERM = new Permission("bssentials.command.pm");
 	public static final Permission GOD_PERM = new Permission("bssentials.command.god");
     public static final Permission PLUGIN_INFO_PERM = new Permission("bssentials.command.bssentials");
+    public static final Permission SETSPAWN_PERM = new Permission("bssentials.command.spawn");
     
 	private static final String prefix = ChatColor.GREEN + "[Bssentials]" + ChatColor.YELLOW + " ";
     public static final String PREFIX = prefix;
-    private File configf, warpf, playerdataf;
-    private FileConfiguration config, warp, playerdata;
+    private File warpf, playerdataf;
+    private FileConfiguration warp, playerdata;
     
     public static String version = "2.1";
     
-    private Bssentials main = this;
-	
-		 
-	public void onEnable() {
+    public void onEnable() {
         PluginManager pm = getServer().getPluginManager();
 		Updater updater = new Updater(this);
 		updater.checkForUpdate();
 		
 		saveDefaultConfig();
-		registerCommands();
 		registerPermissions(pm);
         createFiles();
+        saveDefaultConfig();
+        
+        getCommand("spawnmob").setExecutor(new spawnmob());
+        getCommand("viewnick").setExecutor(new ViewNick());
+        getCommand("ping").setExecutor(new Ping());
         
         
 		pm.registerEvents(new Plugins(), this);
@@ -106,10 +107,10 @@ public class Bssentials extends JavaPlugin implements Listener {
         return this.playerdata;
     }
 
-    private void createFiles() {
+    private void createFiles() {}
 
-        configf = new File(getDataFolder(), "config.yml");
-        warpf = new File(getDataFolder(), "warps.yml");
+        //configf = new File(getDataFolder(), "config.yml");
+        /*warpf = new File(getDataFolder(), "warps.yml");
         playerdataf = new File(getDataFolder(), "playerdata.yml");
 
         if (!configf.exists()) {
@@ -122,7 +123,7 @@ public class Bssentials extends JavaPlugin implements Listener {
         }
         if (!playerdataf.exists()) {
             warpf.getParentFile().mkdirs();
-            saveResource("warps.yml", false);
+            saveResource("playerdata.yml", false);
         }
 
         config = new YamlConfiguration();
@@ -132,9 +133,15 @@ public class Bssentials extends JavaPlugin implements Listener {
             config.load(configf);
             warp.load(warpf);
             playerdata.load(playerdataf);
+            playerdata.save("playerdata.yml");
         } catch (InvalidConfigurationException | IOException e) {
             e.printStackTrace();
         }
+    }*/
+    
+    public void FileSave() {
+    	//save("playerdata.yml");
+    	saveConfig();
     }
     
 	public void onDisable() {}
@@ -146,17 +153,6 @@ public class Bssentials extends JavaPlugin implements Listener {
 	 * 
 	 * @see CommandExecutor
 	 */
-     private void registerCommands() {
-		/*getCommand("gm").setExecutor(new Gamemode());
-		getCommand("bssentials").setExecutor(new PluginInfo(this));
-		getCommand("setrules").setExecutor(new SetRules(this));
-		getCommand("rules").setExecutor(new Rules(this));
-		getCommand("setwarp").setExecutor(new SetWarp(this));
-		getCommand("warp").setExecutor(new Warp(this));
-		getCommand("god").setExecutor(new God());
-		getCommand("pm").setExecutor(new Pm(this));
-        */
-	}
     
     public int getPing(Player p) {
         //CraftPlayer cp = (CraftPlayer) p; 
@@ -186,12 +182,39 @@ public class Bssentials extends JavaPlugin implements Listener {
         pm.addPermission(PM_PERM);
         pm.addPermission(GOD_PERM);
         pm.addPermission(PLUGIN_INFO_PERM);
+        pm.addPermission(SETSPAWN_PERM);
     }
     
     public void nickName(Player player, String name) {
-        getPlayerDataConfig().set(player + ".nick", name);
-        player.setDisplayName(getPlayerDataConfig().getString(player + ".nick"));
-    } 
+        getConfig().set("playerdata." + player.getName() + ".nick", name);
+        player.setDisplayName(getConfig().getString("playerdata." + player.getName() + ".nick"));
+        saveConfig();
+    }
+    
+    public void savePlayerDataConfig() {
+            saveAllConfigs();
+    }
+    
+    public void saveWarpConfig() {
+            //warpf.save("warps.yml");
+            saveAllConfigs();
+    }
+    
+    public void saveAllConfigs() {
+		saveAConfig(playerdataf);
+		saveAConfig(warpf);
+	}
+    
+    public void saveAConfig(File file) {
+    	 try {
+             //warpf.save();
+             //playerdataf.save;
+             YamlConfiguration fileT = YamlConfiguration.loadConfiguration(file);
+             fileT.save(file);
+         } catch (IOException e) {
+             e.printStackTrace();
+         }
+    }
     
     public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args) {
     	if(!(sender instanceof Player)){
@@ -200,7 +223,8 @@ public class Bssentials extends JavaPlugin implements Listener {
     	}
     	
         String authors = "Isaiah Patton, PolarCraft, & ramidzkh";
-        String website = "games.nedhome.ml";
+        @SuppressWarnings("unused")
+		String website = "bssentials.github.io";
         
         Player player = (Player) sender;
         Player p = player;
@@ -211,26 +235,15 @@ public class Bssentials extends JavaPlugin implements Listener {
                 return false;
             }
             String pre = PREFIX;
-            String[] info = {pre + "Name: " + ChatColor.GREEN + "Bssentials ", pre + "Version: " + ChatColor.GREEN + version,
-                    pre + "Authors: " + authors, 
-                    pre + "Description: Essentials for 1.10", 
-                    pre + "Website: " + website,
-                    "", 
-                    pre + "That is the plugin's description!"};
 		
-            player.sendMessage(info);
+            player.sendMessage(pre + "Name: " + ChatColor.GREEN + "Bssentials");
+            player.sendMessage(pre + "Version: " + ChatColor.GREEN + version);
+            player.sendMessage(pre + "Authors: " + ChatColor.GREEN + authors);
+            player.sendMessage(pre + "Description: " + ChatColor.GREEN + "Essentials for 1.10");
         }
-        
-        
-        
-        if (cmd.getName().equalsIgnoreCase("ping")) {
-            //sender.sendMessage(prefix + " Your ping: " + getPing(player));
-            sender.sendMessage(prefix + "Still working on showing your ping in numbers");
-            sender.sendMessage("Pong! (lol, ping pong)");
-        }
-        
+     
         if (cmd.getName().equalsIgnoreCase("nick")) {
-            nickName(player, StringUtils.join(args, ""));
+            nickName(player, StringUtils.join(args, " "));
         }
         
         if (cmd.getName().equalsIgnoreCase("pm")) {
@@ -239,7 +252,8 @@ public class Bssentials extends JavaPlugin implements Listener {
                 return false;
             }
             if (sender.hasPermission(PM_PERM) || sender.isOp()) {
-                Player target = Bukkit.getPlayer(args[0]);
+                @SuppressWarnings("deprecation")
+				Player target = Bukkit.getPlayer(args[0]);
                 if(target != null) {
                     String message = "";
                     for(int i = 1; i != args.length; i++)
@@ -313,8 +327,8 @@ public class Bssentials extends JavaPlugin implements Listener {
         }
         
        if (cmd.getName().equalsIgnoreCase("setspawn")) {
-		if (sender.hasPermission(SETWARP_PERM)) {
-			Bukkit.dispatchCommand(sender, "setwarp spawn");
+		if (sender.hasPermission(SETSPAWN_PERM)) {
+			createWarp(p, "spawn");
 		} else {
                 sender.sendMessage("No Permission");
             }
@@ -342,7 +356,8 @@ public class Bssentials extends JavaPlugin implements Listener {
                 sender.sendMessage("Wrong args!");
             } else if (args.length == 1) {
                 if (sender.hasPermission("bssentials.command.welcome")) {
-                    Player theNewPlayer = player.getServer().getPlayer(args[0]);
+                    @SuppressWarnings("deprecation")
+					Player theNewPlayer = player.getServer().getPlayer(args[0]);
                     theNewPlayer.sendMessage(ChatColor.YELLOW + sender.getName() + " " + ChatColor.AQUA + "Says Welcome to The Server!");
                     sender.sendMessage("You welcomed " + args[0] + " to the server");
                 } else {
@@ -351,87 +366,11 @@ public class Bssentials extends JavaPlugin implements Listener {
 			}
         }
         
-         if(cmd.getName().equalsIgnoreCase("spawnmob")) {
-            if (sender.hasPermission(SPAWNMOB_PERM)) {
-                if(args.length == 0) {
-                    player.sendMessage(ChatColor.GOLD + "Wolf, Pig, PigZombie, Cow, Blaze, CaveSpider, Chicken, Creeper,");
-                    player.sendMessage(ChatColor.GOLD + "EnderDragon, Enderman, Ghast, Giant, IronGolem, MagmaCube, Ocelot,");
-                    player.sendMessage(ChatColor.GOLD + "Sheep, SilverFish, Skeleton, Slime, Spider, Squid, Villager, Zombie");
-                } else {
-                    World world = player.getWorld();
-                    Location TargetLocation = player.getLocation();
-                    if(args[0].equalsIgnoreCase("Wolf")){
-                        world.spawnEntity(TargetLocation, EntityType.WOLF);
-                    }else if(args[0].equalsIgnoreCase("Pig")){
-                        world.spawnEntity(TargetLocation, EntityType.PIG);
-                    }else if(args[0].equalsIgnoreCase("PigZombie")){
-                        world.spawnEntity(TargetLocation, EntityType.PIG_ZOMBIE);
-                    }else if(args[0].equalsIgnoreCase("Cow")){
-                        world.spawnEntity(TargetLocation, EntityType.COW);
-                    }else if(args[0].equalsIgnoreCase("Blaze")){
-                        world.spawnEntity(TargetLocation, EntityType.BLAZE);
-                    }else if(args[0].equalsIgnoreCase("CaveSpider")){
-                        world.spawnEntity(TargetLocation, EntityType.CAVE_SPIDER);
-                    }else if(args[0].equalsIgnoreCase("Chicken")){
-                        world.spawnEntity(TargetLocation, EntityType.CHICKEN);
-                    }else if(args[0].equalsIgnoreCase("Creeper")){
-                        world.spawnEntity(TargetLocation, EntityType.CREEPER);
-                    }else if(args[0].equalsIgnoreCase("EnderDragon")){
-                        world.spawnEntity(TargetLocation, EntityType.ENDER_DRAGON);
-                    }else if(args[0].equalsIgnoreCase("Enderman")){
-                        world.spawnEntity(TargetLocation, EntityType.ENDERMAN);
-                    }else if(args[0].equalsIgnoreCase("Ghast")){
-                        world.spawnEntity(TargetLocation, EntityType.GHAST);
-                    }else if(args[0].equalsIgnoreCase("Giant")){
-                        world.spawnEntity(TargetLocation, EntityType.GIANT);
-                    }else if(args[0].equalsIgnoreCase("IronGolem")){
-                        world.spawnEntity(TargetLocation, EntityType.IRON_GOLEM);
-                    }else if(args[0].equalsIgnoreCase("MagmaCube")){
-                        world.spawnEntity(TargetLocation, EntityType.MAGMA_CUBE);
-                    }else if(args[0].equalsIgnoreCase("Ocelot")){
-                        world.spawnEntity(TargetLocation, EntityType.OCELOT);
-                    }else if(args[0].equalsIgnoreCase("Sheep")){
-                        world.spawnEntity(TargetLocation, EntityType.SHEEP);
-                    }else if(args[0].equalsIgnoreCase("SilverFish")){
-                        world.spawnEntity(TargetLocation, EntityType.SILVERFISH);
-                    }else if(args[0].equalsIgnoreCase("Skeleton")){
-                        world.spawnEntity(TargetLocation, EntityType.SKELETON);
-                    }else if(args[0].equalsIgnoreCase("Slime")){
-                        world.spawnEntity(TargetLocation, EntityType.SLIME);
-                    }else if(args[0].equalsIgnoreCase("Spider")){
-                        world.spawnEntity(TargetLocation, EntityType.SPIDER);
-                    }else if(args[0].equalsIgnoreCase("Squid")){
-                        world.spawnEntity(TargetLocation, EntityType.SQUID);
-                    }else if(args[0].equalsIgnoreCase("Villager")){
-                        world.spawnEntity(TargetLocation, EntityType.VILLAGER);
-                    }else if(args[0].equalsIgnoreCase("Zombie")){
-                        world.spawnEntity(TargetLocation, EntityType.ZOMBIE);
-                    } else {
-                        sender.sendMessage("Mob not programed! use /summon!");
-                    }
-                }
-            } else {
-                sender.sendMessage("No Permission!");
-            }
-        }
-        
         if (cmd.getName().equalsIgnoreCase("broadcast")) {
             if (args.length == 0) {
                 sender.sendMessage("/broadcast <message>");
             } else {
-                Bukkit.broadcastMessage(StringUtils.join(args, " "));
-            }
-        }
-        
-        if (cmd.getName().equalsIgnoreCase("ViewNick")) {
-            if (args.length == 0) {
-                sender.sendMessage("/viewnick <player>");
-            } else {
-                Player target = player.getServer().getPlayer(args[0]);
-                String targetsnick = target.getDisplayName();
-                String line = "------------";
-                sender.sendMessage(ChatColor.GOLD + line);
-                sender.sendMessage(ChatColor.GOLD + args[0] + "'s nickname: " + targetsnick);
+                Bukkit.broadcastMessage("[BroadCast]" + " " + StringUtils.join(args, " "));
             }
         }
         
@@ -446,7 +385,8 @@ public class Bssentials extends JavaPlugin implements Listener {
                 }
             } else {
                 if (sender.hasPermission(HEAL_OUTHER_PERM)) {
-                    Player target = Bukkit.getServer().getPlayer(args[0]);
+                    @SuppressWarnings("deprecation")
+					Player target = Bukkit.getServer().getPlayer(args[0]);
                     if (target == null) {
                         player.sendMessage(ChatColor.RED + "Could not find player!");
                     } else {
@@ -461,6 +401,11 @@ public class Bssentials extends JavaPlugin implements Listener {
             }
         }
         
+        if (cmd.getName().equalsIgnoreCase("underheal")) {
+            player.setHealth(1);
+            player.setFoodLevel(1); 
+        }
+        
         if (cmd.getName().equalsIgnoreCase("feed")) {
             if (args.length == 0) {
                 if (sender.hasPermission(FEED_PERM)) {
@@ -471,7 +416,8 @@ public class Bssentials extends JavaPlugin implements Listener {
                 }
             } else {
                 if (sender.hasPermission(FEED_OUTHER_PERM)) {
-                    Player target = Bukkit.getServer().getPlayer(args[0]);
+                    @SuppressWarnings("deprecation")
+					Player target = Bukkit.getServer().getPlayer(args[0]);
                     if (target == null) {
                         player.sendMessage(ChatColor.RED + "Could not find player!");
                     } else {
@@ -501,30 +447,15 @@ public class Bssentials extends JavaPlugin implements Listener {
         			player.setFlying(true);
         		}
         	} else {
-        		Player fly = getServer().getPlayer(args[1]);
+        		@SuppressWarnings("deprecation")
+				Player fly = getServer().getPlayer(args[1]);
         		if(args[0].equalsIgnoreCase("off")) {
         			fly.setFlying(false);
         		} else if(args[0].equalsIgnoreCase("on")){
         			fly.setFlying(true);
         		}
         	}
-//            if (sender.hasPermission(FLY_PERM)) {
-//                if (args.length == 0) {
-//                    sender.sendMessage("Usage: /fly on OR /fly off");
-//                } else if (args[0] == "on") {
-//                    player.setAllowFlight(true);
-//                    sender.sendMessage("Fight Enabled!");
-//                } else if (args[0] == "off") {
-//                    player.setAllowFlight(false);
-//                    sender.sendMessage("Fight Disabled!");
-//                } else {
-//                    sender.sendMessage("Usage: /fly on OR /fly off");
-//                }
-//            } else {
-//                sender.sendMessage("No Permission");
-//            }
-        }        
-        
+        }
         //Strings needed for GoogleChat
         String TooManyArgs = "Too many args! Max 15!";
         String NoArgs = "No args!";
@@ -587,7 +518,8 @@ public class Bssentials extends JavaPlugin implements Listener {
                 sender.sendMessage("Wrong args!");
             } else if (args.length == 1) {
                 if (sender.hasPermission("bssentials.command.invsee")) {
-                    Player targetPlayer = player.getServer().getPlayer(args[0]);
+                    @SuppressWarnings("deprecation")
+					Player targetPlayer = player.getServer().getPlayer(args[0]);
                     ((Player) sender).openInventory(targetPlayer.getInventory());
                 } else {
                     sender.sendMessage("No Permission");
@@ -599,22 +531,14 @@ public class Bssentials extends JavaPlugin implements Listener {
                 String warpname = args[0];
                 if (getConfig().getConfigurationSection("warps." + warpname) != null) {
                     if (sender.hasPermission(SETWARP_OR_PERM)) {
-                        getConfig().set("warps." + args[0] + ".world", p.getLocation().getWorld().getName());
-                        getConfig().set("warps." + args[0] + ".x", p.getLocation().getX());
-                        getConfig().set("warps." + args[0] + ".y", p.getLocation().getY());
-                        getConfig().set("warps." + args[0] + ".z", p.getLocation().getZ());
-                        main.saveConfig();
-                        sender.sendMessage(ChatColor.GREEN + args[0] + " warp set!");
+                        createWarp(player, args[0]);
                     } else {
-                        sender.sendMessage(ChatColor.GREEN + "[Bssentials]" + ChatColor.RED + " You can over right that");
+                        sender.sendMessage(ChatColor.GREEN + "[Bssentials]" + ChatColor.RED + " You can't over right that");
                     }
                 } else {
                     if (sender.hasPermission(SETWARP_PERM) || sender.isOp()) {
-                        getConfig().set("warps." + args[0] + ".world", p.getLocation().getWorld().getName());
-                        getConfig().set("warps." + args[0] + ".x", p.getLocation().getX());
-                        getConfig().set("warps." + args[0] + ".y", p.getLocation().getY());
-                        getConfig().set("warps." + args[0] + ".z", p.getLocation().getZ());
-                        main.saveConfig();
+                    	createWarp(player, args[0]);
+
                         sender.sendMessage(ChatColor.GREEN + args[0] + " warp set!");
                     }
                 }
@@ -638,7 +562,15 @@ public class Bssentials extends JavaPlugin implements Listener {
                 }
             }
         }
-        
         return true;
+    }
+    public void createWarp(Player p, String warpname) {
+        getConfig().set("warps." + warpname + ".world", p.getLocation().getWorld().getName());
+        getConfig().set("warps." + warpname + ".x", p.getLocation().getX());
+        getConfig().set("warps." + warpname + ".y", p.getLocation().getY());
+        getConfig().set("warps." + warpname + ".z", p.getLocation().getZ());
+        saveConfig();
+        
+        p.sendMessage(ChatColor.GREEN + warpname + " warp set!");
     }
 }
