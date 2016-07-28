@@ -12,6 +12,10 @@ public class onJoinNick implements Listener {
 
 	private Bssentials main;
 	
+	public onJoinNick(Bssentials bs) {
+		main = bs;
+	}
+	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		Player player = e.getPlayer();
