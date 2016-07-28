@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -25,6 +26,8 @@ import io.github.isaiah.listeners.Plugins;
 import io.github.isaiah.updater.Updater;
 import io.github.ramidzkh.utils.PlayerCheck;
 
+
+import ml.bssentials.commands.Broadcast;
 import ml.bssentials.commands.Ping;
 import ml.bssentials.commands.ViewNick;
 import ml.bssentials.commands.spawnmob;
@@ -39,7 +42,7 @@ import ml.bssentials.commands.spawnmob;
     @author PolarCraft
     @author ramidzkh
     
-    @version 1.7
+    @version 2.x
     
     @see {@link JavaPlugin}
     @see {@link PluginDescriptionFile}
@@ -72,6 +75,7 @@ public class Bssentials extends JavaPlugin implements Listener {
 	public static final Permission GOD_PERM = new Permission("bssentials.command.god");
     public static final Permission PLUGIN_INFO_PERM = new Permission("bssentials.command.bssentials");
     public static final Permission SETSPAWN_PERM = new Permission("bssentials.command.spawn");
+    public static final Permission BROADCAST_PERM = new Permission("bssentials.command.broadcast");
     
 	private static final String prefix = ChatColor.GREEN + "[Bssentials]" + ChatColor.YELLOW + " ";
     public static final String PREFIX = prefix;
@@ -93,6 +97,8 @@ public class Bssentials extends JavaPlugin implements Listener {
         getCommand("spawnmob").setExecutor(new spawnmob());
         getCommand("viewnick").setExecutor(new ViewNick());
         getCommand("ping").setExecutor(new Ping());
+        getCommand("broadcast").setExecutor(new Broadcast());
+        
         
         
 		pm.registerEvents(new Plugins(), this);
@@ -183,37 +189,13 @@ public class Bssentials extends JavaPlugin implements Listener {
         pm.addPermission(GOD_PERM);
         pm.addPermission(PLUGIN_INFO_PERM);
         pm.addPermission(SETSPAWN_PERM);
+        pm.addPermission(BROADCAST_PERM);
     }
     
     public void nickName(Player player, String name) {
         getConfig().set("playerdata." + player.getName() + ".nick", name);
         player.setDisplayName(getConfig().getString("playerdata." + player.getName() + ".nick"));
         saveConfig();
-    }
-    
-    public void savePlayerDataConfig() {
-            saveAllConfigs();
-    }
-    
-    public void saveWarpConfig() {
-            //warpf.save("warps.yml");
-            saveAllConfigs();
-    }
-    
-    public void saveAllConfigs() {
-		saveAConfig(playerdataf);
-		saveAConfig(warpf);
-	}
-    
-    public void saveAConfig(File file) {
-    	 try {
-             //warpf.save();
-             //playerdataf.save;
-             YamlConfiguration fileT = YamlConfiguration.loadConfiguration(file);
-             fileT.save(file);
-         } catch (IOException e) {
-             e.printStackTrace();
-         }
     }
     
     public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args) {
@@ -226,12 +208,14 @@ public class Bssentials extends JavaPlugin implements Listener {
         @SuppressWarnings("unused")
 		String website = "bssentials.github.io";
         
+        String NoPerm = prefix + "You don't have permission: bssentials.command." + cmd.getName().toLowerCase();
+        
         Player player = (Player) sender;
         Player p = player;
 
         if (cmd.getName().equalsIgnoreCase("bssentials")) {
             if(!PlayerCheck.hasPerm(player, PLUGIN_INFO_PERM)){
-                player.sendMessage(PREFIX + "You don't have permission: bssentials.command.bssentials");
+                player.sendMessage(NoPerm);
                 return false;
             }
             String pre = PREFIX;
@@ -297,6 +281,16 @@ public class Bssentials extends JavaPlugin implements Listener {
 
         if (cmd.getName().equalsIgnoreCase("ci")) {
             player.getInventory().clear();
+            sender.sendMessage(prefix + "Inventory cleared!");
+        }
+        
+        if (cmd.getName().equalsIgnoreCase("disnick")) {
+        	if (player.getName() == player.getDisplayName()) {
+        		sender.sendMessage("Your nickname and real name are the same!");
+        	} else {
+        		player.setDisplayName(player.getName());
+        		sender.sendMessage("Reset your name!");
+        	}
         }
         
         if (cmd.getName().equalsIgnoreCase("gamemode")) {
@@ -304,13 +298,13 @@ public class Bssentials extends JavaPlugin implements Listener {
                 sender.sendMessage(ChatColor.GREEN + "[Bssentials]" + ChatColor.GRAY + " Usage /gm <0|1>");
             } else if (sender.hasPermission(GAMEMODE_PERM) || sender.isOp()) {
                 if (args.length == 1 && args[0].equalsIgnoreCase("0")) {
-                    Bukkit.dispatchCommand(sender, "gamemode 0");
+                	player.setGameMode(GameMode.SURVIVAL);
                 } else if (args.length == 1 && args[0].equalsIgnoreCase("1")) {
-                    Bukkit.dispatchCommand(sender, "gamemode 1");
+                    player.setGameMode(GameMode.CREATIVE);
                 } else if (args.length == 1 && args[0].equalsIgnoreCase("survival")) {
-                    Bukkit.dispatchCommand(sender, "gamemode 0");
+                	player.setGameMode(GameMode.SURVIVAL);
                 } else if (args.length == 1 && args[0].equalsIgnoreCase("creative")) {
-                    Bukkit.dispatchCommand(sender, "gamemode 1");
+                	player.setGameMode(GameMode.CREATIVE);
                 }
 			} else {
 		        sender.sendMessage(ChatColor.GREEN + "[Bssentials] " + ChatColor.RED + "You don't have permission: bssentials.command.gm");  
@@ -364,14 +358,6 @@ public class Bssentials extends JavaPlugin implements Listener {
                     sender.sendMessage("No Permission");
                 }
 			}
-        }
-        
-        if (cmd.getName().equalsIgnoreCase("broadcast")) {
-            if (args.length == 0) {
-                sender.sendMessage("/broadcast <message>");
-            } else {
-                Bukkit.broadcastMessage("[BroadCast]" + " " + StringUtils.join(args, " "));
-            }
         }
         
         if (cmd.getName().equalsIgnoreCase("heal")) {
