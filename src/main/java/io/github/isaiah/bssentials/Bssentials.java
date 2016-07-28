@@ -23,6 +23,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.isaiah.listeners.Plugins;
+import io.github.isaiah.listeners.onJoinNick;
 import io.github.isaiah.updater.Updater;
 import io.github.ramidzkh.utils.PlayerCheck;
 
@@ -42,7 +43,7 @@ import ml.bssentials.commands.spawnmob;
     @author PolarCraft
     @author ramidzkh
     
-    @version 2.x
+    @version 1.7
     
     @see {@link JavaPlugin}
     @see {@link PluginDescriptionFile}
@@ -79,7 +80,6 @@ public class Bssentials extends JavaPlugin implements Listener {
     
 	private static final String prefix = ChatColor.GREEN + "[Bssentials]" + ChatColor.YELLOW + " ";
     public static final String PREFIX = prefix;
-    private File warpf, playerdataf;
     private FileConfiguration warp, playerdata;
     
     public static String version = "2.1";
@@ -102,6 +102,7 @@ public class Bssentials extends JavaPlugin implements Listener {
         
         
 		pm.registerEvents(new Plugins(), this);
+		pm.registerEvents(new onJoinNick(), this);
 		pm.registerEvents(this, this);
 	}
 
@@ -205,9 +206,6 @@ public class Bssentials extends JavaPlugin implements Listener {
     	}
     	
         String authors = "Isaiah Patton, PolarCraft, & ramidzkh";
-        @SuppressWarnings("unused")
-		String website = "bssentials.github.io";
-        
         String NoPerm = prefix + "You don't have permission: bssentials.command." + cmd.getName().toLowerCase();
         
         Player player = (Player) sender;
