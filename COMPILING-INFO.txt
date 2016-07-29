@@ -1,0 +1,12 @@
+1. Open Eclipse,
+2. Edit the files you what,
+3. then Click on the Project tab, (if Build Automatly is on skip to step 5)
+4. Click Build Project
+5. Cick on the File tab
+6. Click on Export
+7. Select Bssentials from the export tab
+8. Then you got your jar file
+
+==================
+==  Use Java 7  ==
+==================
