@@ -33,6 +33,12 @@ public class PlayerCheck {
 	 * @return <b>{@link Boolean}</b> If the player is an operator or has the permission; either <code>true</code> or <code>false</code>.
 	 */
 	public static boolean hasPerm(Player player, String perm) {
-		return (player.isOp() | player.hasPermission(perm) | player.hasPermission("bssentials.command.*"));
+		String command = perm.replace("bssentials.command.", "");
+		//return (player.isOp() | player.hasPermission(perm));
+		return (hasPermForCommand(player, command));
+	}
+	public static boolean hasPermForCommand(Player player, String command) {
+		// If the server owner is switching from Essentials, EssentialsX, Accentials, Dssentials, they woun't have to change there permissions!
+		return (player.isOp() | player.hasPermission("bssentials.command"+command) | player.hasPermission("essentials."+command) | player.hasPermission("accentials.command"+command) | player.hasPermission("dssentials.command"+command) | player.hasPermission("bssentials.command.*""));
 	}
 }
