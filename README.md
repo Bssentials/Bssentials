@@ -7,6 +7,8 @@ Bssentials v2.x,
 
 # Server Mods to use.
 Heres a list of server mods Bssentials was tested on:
-[![Spigot](https://static.spigotmc.org/img/spigot.png)]
-[![Rainbow](http://i.imgur.com/e2n055H.gif)]
+
+![Spigot](https://static.spigotmc.org/img/spigot.png)
+
+![Rainbow](http://i.imgur.com/e2n055H.gif)
 
