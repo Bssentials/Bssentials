@@ -512,7 +512,7 @@ public class Bssentials extends JavaPlugin implements Listener {
         if (cmd.getName().equalsIgnoreCase("setwarp")) {
             if (args.length == 1) {
                 String warpname = args[0];
-                if (getConfig().getConfigurationSection("warps." + warpname) != null) {
+                if (getWarpConfig().getConfigurationSection("warps." + warpname) != null) {
                     if (sender.hasPermission(SETWARP_OR_PERM)) {
                         createWarp(player, args[0]);
                     } else {
