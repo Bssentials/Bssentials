@@ -1,5 +1,7 @@
 package io.github.isaiah.bssentials;
 
+import java.io.IOException;
+import java.io.File;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
@@ -11,7 +13,9 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
@@ -22,6 +26,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import io.github.isaiah.listeners.Plugins;
 import io.github.isaiah.listeners.onJoinNick;
 import io.github.isaiah.updater.Updater;
+import io.github.ramidzkh.KodeAPI.api.YamlConf;
 import io.github.ramidzkh.utils.PlayerCheck;
 
 
@@ -77,9 +82,11 @@ public class Bssentials extends JavaPlugin implements Listener {
     
 	private static final String prefix = ChatColor.GREEN + "[Bssentials]" + ChatColor.YELLOW + " ";
     public static final String PREFIX = prefix;
-    private FileConfiguration warp, playerdata;
+    //private FileConfiguration warp, playerdata;
     
     public static String version = "2.1.2";
+    public FileConfiguration config = new YamlConfiguration();
+    public FileConfiguration warps = new YamlConfiguration();
     
     public void onEnable() {
         PluginManager pm = getServer().getPluginManager();
@@ -103,45 +110,40 @@ public class Bssentials extends JavaPlugin implements Listener {
 		pm.registerEvents(this, this);
 	}
 
+    private File configf, warpsf;
+    //private FileConfiguration config, warps;
+
     public FileConfiguration getWarpConfig() {
-        return this.warp;
+        return this.warps;
     }
     
-    public FileConfiguration getPlayerDataConfig() {
-        return this.playerdata;
+    public void saveWarpConfig() {
+    	YamlConf.saveConf(warps, warpsf);
     }
 
-    private void createFiles() {}
+    private void createFiles() {
 
-        //configf = new File(getDataFolder(), "config.yml");
-        /*warpf = new File(getDataFolder(), "warps.yml");
-        playerdataf = new File(getDataFolder(), "playerdata.yml");
+        configf = new File(getDataFolder(), "config.yml");
+        warpsf = new File(getDataFolder(), "warps.yml");
 
         if (!configf.exists()) {
             configf.getParentFile().mkdirs();
             saveResource("config.yml", false);
         }
-        if (!warpf.exists()) {
-            warpf.getParentFile().mkdirs();
+        if (!warpsf.exists()) {
+            warpsf.getParentFile().mkdirs();
             saveResource("warps.yml", false);
-        }
-        if (!playerdataf.exists()) {
-            warpf.getParentFile().mkdirs();
-            saveResource("playerdata.yml", false);
-        }
+         }
 
         config = new YamlConfiguration();
-        warp = new YamlConfiguration();
-        playerdata = new YamlConfiguration();
+        warps = new YamlConfiguration();
         try {
             config.load(configf);
-            warp.load(warpf);
-            playerdata.load(playerdataf);
-            playerdata.save("playerdata.yml");
-        } catch (InvalidConfigurationException | IOException e) {
+            warps.load(warpsf);
+        } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
-    }*/
+    }
     
     public void FileSave() {
     	//save("playerdata.yml");
@@ -284,7 +286,7 @@ public class Bssentials extends JavaPlugin implements Listener {
         		sender.sendMessage("Your nickname and real name are the same!");
         	} else {
         		player.setDisplayName(player.getName());
-        		sender.sendMessage("Reset your name!");
+        		sender.sendMessage("Reseted your name!");
         	}
         }
         
@@ -519,8 +521,6 @@ public class Bssentials extends JavaPlugin implements Listener {
                 } else {
                     if (sender.hasPermission(SETWARP_PERM) || sender.isOp()) {
                     	createWarp(player, args[0]);
-
-                        sender.sendMessage(ChatColor.GREEN + args[0] + " warp set!");
                     }
                 }
             } else {
@@ -528,14 +528,14 @@ public class Bssentials extends JavaPlugin implements Listener {
             }
         }
         if (cmd.getName().equalsIgnoreCase("warp")) {
-            if (getConfig().getConfigurationSection("warps") == null) {
+            if (getWarpConfig().getConfigurationSection("warps") == null) {
                 sender.sendMessage(ChatColor.RED + "Any warps have not yet been set!");
             } else {
                 if (args.length == 1) {
-                    World w = Bukkit.getServer().getWorld(getConfig().getString("warps." + args[0] + ".world"));
-                    double x = getConfig().getDouble("warps." + args[0] + ".x");
-                    double y = getConfig().getDouble("warps." + args[0] + ".y");
-                    double z = getConfig().getDouble("warps." + args[0] + ".z");
+                    World w = Bukkit.getServer().getWorld(getWarpConfig().getString("warps." + args[0] + ".world"));
+                    double x = getWarpConfig().getDouble("warps." + args[0] + ".x");
+                    double y = getWarpConfig().getDouble("warps." + args[0] + ".y");
+                    double z = getWarpConfig().getDouble("warps." + args[0] + ".z");
                     player.teleport(new Location(w, x, y, z));
                     sender.sendMessage(ChatColor.GREEN + "Warping to " + args[0]);
                 } else {
@@ -546,11 +546,11 @@ public class Bssentials extends JavaPlugin implements Listener {
         return true;
     }
     public void createWarp(Player p, String warpname) {
-        getConfig().set("warps." + warpname + ".world", p.getLocation().getWorld().getName());
-        getConfig().set("warps." + warpname + ".x", p.getLocation().getX());
-        getConfig().set("warps." + warpname + ".y", p.getLocation().getY());
-        getConfig().set("warps." + warpname + ".z", p.getLocation().getZ());
-        saveConfig();
+        getWarpConfig().set("warps." + warpname + ".world", p.getLocation().getWorld().getName());
+        getWarpConfig().set("warps." + warpname + ".x", p.getLocation().getX());
+        getWarpConfig().set("warps." + warpname + ".y", p.getLocation().getY());
+        getWarpConfig().set("warps." + warpname + ".z", p.getLocation().getZ());
+        saveWarpConfig();
         
         p.sendMessage(ChatColor.GREEN + warpname + " warp set!");
     }
