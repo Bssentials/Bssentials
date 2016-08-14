@@ -13,7 +13,18 @@
   <build>
     <defaultGoal>package</defaultGoal>
     <directory>${basedir}</directory>
-    <finalName>Bssentials</finalName>
+    <finalName>${project.groupId}-${project.artifactId}</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configurations>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configurations>
+      </plugin>
+    </plugins>
   </build>
 
   <properties>
