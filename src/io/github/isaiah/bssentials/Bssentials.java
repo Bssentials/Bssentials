@@ -69,7 +69,8 @@ public class Bssentials extends JavaPlugin implements Listener {
 	public static final Permission FEED_OUTHER_PERM = new Permission ("bssentials.command.feed.outher");
 	public static final Permission FLY_PERM = new Permission ("bssentials.command.fly");
 	public static final Permission WELCOME_PERM = new Permission ("bssentials.command.welcome");
-	
+	public static final Permission WARP_PERM = new Permission ("bssentials.command.warp");
+	public static final Permission WARP_OTHERS_PERM = new Permission ("bssentials.command.warp.others");
 	public static final Permission GOOGLE_PERM = new Permission("bssentials.command.google");
  	public static final Permission WIKI_PERM = new Permission("bssentials.command.mcwiki");
  	public static final Permission YOUTUBE_PERM = new Permission("bssentials.command.mcwiki");
@@ -529,30 +530,54 @@ public class Bssentials extends JavaPlugin implements Listener {
             }
         }
         if (cmd.getName().equalsIgnoreCase("warp")) {
-            if (getWarpConfig().getConfigurationSection("warps") == null) {
-                sender.sendMessage(ChatColor.RED + "No warps set!");
-            } else {
-                if (args.length == 1) {
-                	if(getWarpConfig().getConfigurationSection("warps." + args[0]) != null) {
-                		World w = Bukkit.getServer().getWorld(getWarpConfig().getString("warps." + args[0] + ".world"));
-	                    double x = getWarpConfig().getDouble("warps." + args[0] + ".x");
-	                    double y = getWarpConfig().getDouble("warps." + args[0] + ".y");
-	                    double z = getWarpConfig().getDouble("warps." + args[0] + ".z");
-	                    player.teleport(new Location(w, x, y, z));
-	                    sender.sendMessage(ChatColor.GREEN + "Warping to " + args[0]);
-                	} else {
-                		sender.sendMessage(ChatColor.RED + "No warp by that name exists.");
-                	}
-                } else if (args.length == 0 ) {
-                	Set<String> keys = getWarpConfig().getConfigurationSection("warps").getKeys(false);
-                	sender.sendMessage(ChatColor.BLUE + "List of warps:");
-                	for (String s:keys) {
-                		sender.sendMessage(ChatColor.BLUE + "  " + s);
-                	}
-            	} else {
-                    sender.sendMessage(ChatColor.RED + "Invalid args");
-                }
-            }
+        	if(p.hasPermission(WARP_PERM)) {
+	            if (getWarpConfig().getConfigurationSection("warps") == null) {
+	                sender.sendMessage(ChatColor.RED + "No warps set!");
+	            } else {
+	                if (args.length == 1) {
+	                	if(getWarpConfig().getConfigurationSection("warps." + args[0]) != null) {
+	                		World w = Bukkit.getServer().getWorld(getWarpConfig().getString("warps." + args[0] + ".world"));
+		                    double x = getWarpConfig().getDouble("warps." + args[0] + ".x");
+		                    double y = getWarpConfig().getDouble("warps." + args[0] + ".y");
+		                    double z = getWarpConfig().getDouble("warps." + args[0] + ".z");
+		                    player.teleport(new Location(w, x, y, z));
+		                    sender.sendMessage(ChatColor.GREEN + "Warping to " + args[0]);
+	                	} else {
+	                		sender.sendMessage(ChatColor.RED + "No warp by that name exists.");
+	                	}
+	                } else if (args.length == 2 ) {
+	                	// /warp location playername
+	                	if(p.hasPermission(WARP_OTHERS_PERM)) {
+	                		Player targetPlayer = player.getServer().getPlayer(args[1]);
+	                		if(targetPlayer != null) {
+	    	                	if(getWarpConfig().getConfigurationSection("warps." + args[0]) != null) {
+	    	                		World w = Bukkit.getServer().getWorld(getWarpConfig().getString("warps." + args[0] + ".world"));
+	    		                    double x = getWarpConfig().getDouble("warps." + args[0] + ".x");
+	    		                    double y = getWarpConfig().getDouble("warps." + args[0] + ".y");
+	    		                    double z = getWarpConfig().getDouble("warps." + args[0] + ".z");
+	    		                    targetPlayer.teleport(new Location(w, x, y, z));
+	    		                    sender.sendMessage(ChatColor.GREEN + "Warping " + args[1] + " to " + args[0]);
+	    		                    targetPlayer.sendMessage(ChatColor.GREEN + p.getName() + " warped you to " + args[0]);
+	    	                	} else {
+	    	                		sender.sendMessage(ChatColor.RED + "No warp by that name exists.");
+	    	                	}	                			
+	                		}
+	                	} else {
+	                		sender.sendMessage(ChatColor.RED + "You do not have permission to warp other players.");
+	                	}
+	                } else if (args.length == 0 ) {
+	                	Set<String> keys = getWarpConfig().getConfigurationSection("warps").getKeys(false);
+	                	sender.sendMessage(ChatColor.BLUE + "List of warps:");
+	                	for (String s:keys) {
+	                		sender.sendMessage(ChatColor.BLUE + "  " + s);
+	                	}
+	            	} else {
+	                    sender.sendMessage(ChatColor.RED + "Invalid args");
+	                }
+	            }
+        	} else {
+        		sender.sendMessage(ChatColor.RED + "You don't have permission to warp.");
+        	}
         }
         if (cmd.getName().equalsIgnoreCase("delwarp")) {
         	if (p.hasPermission(SETWARP_OR_PERM)) {
