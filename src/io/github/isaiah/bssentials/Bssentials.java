@@ -192,6 +192,8 @@ public class Bssentials extends JavaPlugin implements Listener {
         pm.addPermission(PLUGIN_INFO_PERM);
         pm.addPermission(SETSPAWN_PERM);
         pm.addPermission(BROADCAST_PERM);
+        pm.addPermission(WARP_PERM);
+        pm.addPermission(WARP_OTHERS_PERM);
     }
     
     public void nickName(Player player, String name) {
@@ -552,12 +554,12 @@ public class Bssentials extends JavaPlugin implements Listener {
 	                		if(targetPlayer != null) {
 	    	                	if(getWarpConfig().getConfigurationSection("warps." + args[0]) != null) {
 	    	                		World w = Bukkit.getServer().getWorld(getWarpConfig().getString("warps." + args[0] + ".world"));
-	    		                    double x = getWarpConfig().getDouble("warps." + args[0] + ".x");
-	    		                    double y = getWarpConfig().getDouble("warps." + args[0] + ".y");
-	    		                    double z = getWarpConfig().getDouble("warps." + args[0] + ".z");
-	    		                    targetPlayer.teleport(new Location(w, x, y, z));
-	    		                    sender.sendMessage(ChatColor.GREEN + "Warping " + args[1] + " to " + args[0]);
-	    		                    targetPlayer.sendMessage(ChatColor.GREEN + p.getName() + " warped you to " + args[0]);
+	    	                		double x = getWarpConfig().getDouble("warps." + args[0] + ".x");
+	    		                	double y = getWarpConfig().getDouble("warps." + args[0] + ".y");
+	    		                	double z = getWarpConfig().getDouble("warps." + args[0] + ".z");
+	    		                	targetPlayer.teleport(new Location(w, x, y, z));
+	    		                	sender.sendMessage(ChatColor.GREEN + "Warping " + args[1] + " to " + args[0]);
+	    		                	targetPlayer.sendMessage(ChatColor.GREEN + p.getName() + " warped you to " + args[0]);
 	    	                	} else {
 	    	                		sender.sendMessage(ChatColor.RED + "No warp by that name exists.");
 	    	                	}	                			
