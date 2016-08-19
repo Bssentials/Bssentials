@@ -524,8 +524,6 @@ public class Bssentials extends JavaPlugin implements Listener {
                     	createWarp(player, args[0]);
                     }
                 }
-            } else if (args.length == 0) {
-            	
             } else  {
                 sender.sendMessage(ChatColor.RED + "Invalid args");
             }
@@ -534,26 +532,26 @@ public class Bssentials extends JavaPlugin implements Listener {
             if (getWarpConfig().getConfigurationSection("warps") == null) {
                 sender.sendMessage(ChatColor.RED + "No warps set!");
             } else {
-            	if(getWarpConfig().getConfigurationSection("warps." + args[0]) != null) {
-	                if (args.length == 1) {
-	                    World w = Bukkit.getServer().getWorld(getWarpConfig().getString("warps." + args[0] + ".world"));
+                if (args.length == 1) {
+                	if(getWarpConfig().getConfigurationSection("warps." + args[0]) != null) {
+                		World w = Bukkit.getServer().getWorld(getWarpConfig().getString("warps." + args[0] + ".world"));
 	                    double x = getWarpConfig().getDouble("warps." + args[0] + ".x");
 	                    double y = getWarpConfig().getDouble("warps." + args[0] + ".y");
 	                    double z = getWarpConfig().getDouble("warps." + args[0] + ".z");
 	                    player.teleport(new Location(w, x, y, z));
 	                    sender.sendMessage(ChatColor.GREEN + "Warping to " + args[0]);
-	                } else if (args.length == 0 ) {
-	                	Set<String> keys = getWarpConfig().getConfigurationSection("warps").getKeys(false);
-	                	sender.sendMessage(ChatColor.BLUE + "List of warps:");
-	                	for (String s:keys) {
-	                		sender.sendMessage(ChatColor.BLUE + "  " + s);
-	                	}
-	            	} else {
-	                    sender.sendMessage(ChatColor.RED + "Invalid args");
-	                }
+                	} else {
+                		sender.sendMessage(ChatColor.RED + "No warp by that name exists.");
+                	}
+                } else if (args.length == 0 ) {
+                	Set<String> keys = getWarpConfig().getConfigurationSection("warps").getKeys(false);
+                	sender.sendMessage(ChatColor.BLUE + "List of warps:");
+                	for (String s:keys) {
+                		sender.sendMessage(ChatColor.BLUE + "  " + s);
+                	}
             	} else {
-            		sender.sendMessage(ChatColor.RED + "No warp by that name exists.");
-            	}
+                    sender.sendMessage(ChatColor.RED + "Invalid args");
+                }
             }
         }
         if (cmd.getName().equalsIgnoreCase("delwarp")) {
