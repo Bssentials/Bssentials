@@ -2,6 +2,7 @@ package io.github.isaiah.bssentials;
 
 import java.io.IOException;
 import java.io.File;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
@@ -516,35 +517,65 @@ public class Bssentials extends JavaPlugin implements Listener {
                     if (sender.hasPermission(SETWARP_OR_PERM)) {
                         createWarp(player, args[0]);
                     } else {
-                        sender.sendMessage(ChatColor.GREEN + "[Bssentials]" + ChatColor.RED + " You can't over right that");
+                        sender.sendMessage(ChatColor.GREEN + "[Bssentials]" + ChatColor.RED + " You can't overwrite that");
                     }
                 } else {
                     if (sender.hasPermission(SETWARP_PERM) || sender.isOp()) {
                     	createWarp(player, args[0]);
                     }
                 }
-            } else {
+            } else if (args.length == 0) {
+            	
+            } else  {
                 sender.sendMessage(ChatColor.RED + "Invalid args");
             }
         }
         if (cmd.getName().equalsIgnoreCase("warp")) {
             if (getWarpConfig().getConfigurationSection("warps") == null) {
-                sender.sendMessage(ChatColor.RED + "Any warps have not yet been set!");
+                sender.sendMessage(ChatColor.RED + "No warps set!");
             } else {
-                if (args.length == 1) {
-                    World w = Bukkit.getServer().getWorld(getWarpConfig().getString("warps." + args[0] + ".world"));
-                    double x = getWarpConfig().getDouble("warps." + args[0] + ".x");
-                    double y = getWarpConfig().getDouble("warps." + args[0] + ".y");
-                    double z = getWarpConfig().getDouble("warps." + args[0] + ".z");
-                    player.teleport(new Location(w, x, y, z));
-                    sender.sendMessage(ChatColor.GREEN + "Warping to " + args[0]);
-                } else {
-                    sender.sendMessage(ChatColor.RED + "Invalid args");
-                }
+            	if(getWarpConfig().getConfigurationSection("warps." + args[0]) != null) {
+	                if (args.length == 1) {
+	                    World w = Bukkit.getServer().getWorld(getWarpConfig().getString("warps." + args[0] + ".world"));
+	                    double x = getWarpConfig().getDouble("warps." + args[0] + ".x");
+	                    double y = getWarpConfig().getDouble("warps." + args[0] + ".y");
+	                    double z = getWarpConfig().getDouble("warps." + args[0] + ".z");
+	                    player.teleport(new Location(w, x, y, z));
+	                    sender.sendMessage(ChatColor.GREEN + "Warping to " + args[0]);
+	                } else if (args.length == 0 ) {
+	                	Set<String> keys = getWarpConfig().getConfigurationSection("warps").getKeys(false);
+	                	sender.sendMessage(ChatColor.BLUE + "List of warps:");
+	                	for (String s:keys) {
+	                		sender.sendMessage(ChatColor.BLUE + "  " + s);
+	                	}
+	            	} else {
+	                    sender.sendMessage(ChatColor.RED + "Invalid args");
+	                }
+            	} else {
+            		sender.sendMessage(ChatColor.RED + "No warp by that name exists.");
+            	}
             }
         }
+        if (cmd.getName().equalsIgnoreCase("delwarp")) {
+        	if (p.hasPermission(SETWARP_OR_PERM)) {
+        		try {
+	        		if(getWarpConfig().getConfigurationSection("warps." + args[0]) != null) {
+	        			getWarpConfig().set("warps." + args[0], null);
+	        			saveWarpConfig();
+	        			sender.sendMessage(ChatColor.GREEN + "Deleted warp " + args[0]);
+	        		} else {
+	        			sender.sendMessage(ChatColor.RED + "Unable to find warp to delete.");
+	        		}
+        		} catch(Exception e) {
+        			sender.sendMessage(ChatColor.RED + "Unable to delete warp.");
+        		}
+        	} else {
+        		sender.sendMessage(ChatColor.RED + "You do not have permission to delete warps.");
+        	}
+        }
         return true;
-    }
+    }      
+    
     public void createWarp(Player p, String warpname) {
         getWarpConfig().set("warps." + warpname + ".world", p.getLocation().getWorld().getName());
         getWarpConfig().set("warps." + warpname + ".x", p.getLocation().getX());
@@ -554,4 +585,5 @@ public class Bssentials extends JavaPlugin implements Listener {
         
         p.sendMessage(ChatColor.GREEN + warpname + " warp set!");
     }
+    
 }
