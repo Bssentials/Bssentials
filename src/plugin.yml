@@ -1,0 +1,97 @@
+name: Bssentials
+version: 2.1
+authors: [view on bukkit dev]
+main: io.github.isaiah.bssentials.Bssentials
+prefix: Bssentials
+description: Essentials like plugin for 1.9.4 and 1.10
+website: http://dev.bukkit.org/bukkit-plugins/bssentials/
+commands:
+    info:
+        description: /warp info
+#Registered
+    bssentials:
+        description: Main Command
+#Registered
+    gm:
+        description: Change gamemode
+#Registered
+    rules:
+        description: /warp rules
+#Registered
+    setrules:
+        description: set /rules
+#Registered
+    removelag:
+        description: /lagg gc
+#Registered
+    ci:
+        description: ClearInv. /ci
+        alias: [clearinv, invc]
+#Registered
+    day:
+        description: /time set day
+#Registered
+    night:
+        description: /time set night
+#Registered
+    rain:
+        description: /weather rain
+#Registered
+    staff:
+        description: see staff
+#Registered
+    invsee:
+        description: Spy on a player
+#Registered
+    setspawn:
+      description: Sets spawn to your current location
+#Registered
+    spawn:
+      description: Takes you to spawn
+#Registered
+    welcome:
+      description: Welcomes a player
+#Registered
+    spawnmob:
+      description: Spawns a mob (entity).
+      usuage: /spawnmob [Entity]
+#Registered
+    broadcast:
+      description: Broadcast a message to the server
+#Registered
+    heal:
+      description: Heals yourself, otherwise an other player
+#Registered
+    feed:
+      description: Feeds yourself, otherwise an other player
+#Registered
+    fly:
+      description: Makes yourself fly, otherwise an other player
+#Registered
+    bukkitdev:
+      description: Search website http://dev.bukkit.org/
+#Registered
+    youtube:
+      description: Search website https://youtube.com/
+#Registered
+    google:
+      description: Search website https://google.com/
+#Registered
+    mcwiki:
+      description: Search the Minecraft wiki.
+    god:
+      description: Makes you immortal!
+    pm:
+      description: Message a user
+    ViewNick:
+      description: see a players nickname
+    setwarp:
+    warp:
+    nick:
+    ping:
+    underheal:
+    disnick:
+    alias:
+    rank:
+    test:
+      

@@ -233,7 +233,7 @@ public class Bssentials extends JavaPlugin implements Listener {
                 return false;
             }
             if (sender.hasPermission(PM_PERM) || sender.isOp()) {
-                @SuppressWarnings("deprecation")
+//                @SuppressWarnings("deprecation")
 				Player target = Bukkit.getPlayer(args[0]);
                 if(target != null) {
                     String message = "";
@@ -347,7 +347,7 @@ public class Bssentials extends JavaPlugin implements Listener {
                 sender.sendMessage("Wrong args!");
             } else if (args.length == 1) {
                 if (sender.hasPermission("bssentials.command.welcome")) {
-                    @SuppressWarnings("deprecation")
+//                    @SuppressWarnings("deprecation")
 					Player theNewPlayer = player.getServer().getPlayer(args[0]);
                     theNewPlayer.sendMessage(ChatColor.YELLOW + sender.getName() + " " + ChatColor.AQUA + "Says Welcome to The Server!");
                     sender.sendMessage("You welcomed " + args[0] + " to the server");
@@ -368,7 +368,7 @@ public class Bssentials extends JavaPlugin implements Listener {
                 }
             } else {
                 if (sender.hasPermission(HEAL_OUTHER_PERM)) {
-                    @SuppressWarnings("deprecation")
+//                    @SuppressWarnings("deprecation")
 					Player target = Bukkit.getServer().getPlayer(args[0]);
                     if (target == null) {
                         player.sendMessage(ChatColor.RED + "Could not find player!");
@@ -399,7 +399,7 @@ public class Bssentials extends JavaPlugin implements Listener {
                 }
             } else {
                 if (sender.hasPermission(FEED_OUTHER_PERM)) {
-                    @SuppressWarnings("deprecation")
+//                    @SuppressWarnings("deprecation")
 					Player target = Bukkit.getServer().getPlayer(args[0]);
                     if (target == null) {
                         player.sendMessage(ChatColor.RED + "Could not find player!");
@@ -430,7 +430,7 @@ public class Bssentials extends JavaPlugin implements Listener {
         			player.setFlying(true);
         		}
         	} else {
-        		@SuppressWarnings("deprecation")
+        		//@SuppressWarnings("deprecation")
 				Player fly = getServer().getPlayer(args[1]);
         		if(args[0].equalsIgnoreCase("off")) {
         			fly.setFlying(false);
@@ -501,7 +501,7 @@ public class Bssentials extends JavaPlugin implements Listener {
                 sender.sendMessage("Wrong args!");
             } else if (args.length == 1) {
                 if (sender.hasPermission("bssentials.command.invsee")) {
-                    @SuppressWarnings("deprecation")
+                    //@SuppressWarnings("deprecation")
 					Player targetPlayer = player.getServer().getPlayer(args[0]);
                     ((Player) sender).openInventory(targetPlayer.getInventory());
                 } else {

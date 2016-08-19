@@ -39,6 +39,6 @@ public class PlayerCheck {
 	}
 	public static boolean hasPermForCommand(Player player, String command) {
 		// If the server owner is switching from Essentials, EssentialsX, Accentials, Dssentials, they woun't have to change there permissions!
-		return (player.isOp() | player.hasPermission("bssentials.command"+command) | player.hasPermission("essentials."+command) | player.hasPermission("accentials.command"+command) | player.hasPermission("dssentials.command"+command) | player.hasPermission("bssentials.command.*""));
+		return (player.isOp() | player.hasPermission("bssentials.command"+command) | player.hasPermission("essentials."+command) | player.hasPermission("accentials.command"+command) | player.hasPermission("dssentials.command"+command) | player.hasPermission("bssentials.command.*"));
 	}
 }
