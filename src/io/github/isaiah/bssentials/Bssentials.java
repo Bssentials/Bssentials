@@ -212,7 +212,7 @@ public class Bssentials extends JavaPlugin implements Listener {
     		return false;
     	}
     	
-        String authors = "Isaiah Patton, PolarCraft, & ramidzkh";
+        String authors = "Isaiah Patton, Former: PolarCraft & ramidzkh";
         String NoPerm = prefix + "You don't have permission: bssentials.command." + cmd.getName().toLowerCase();
         
         Player player = (Player) sender;
@@ -295,8 +295,13 @@ public class Bssentials extends JavaPlugin implements Listener {
         	if (PlayerCheck.hasPermForCommand(p, "control")){
         		@SuppressWarnings("deprecation")
         	 	Player target = player.getServer().getPlayer(args[0]);
-        	 	String argss = StringUtils.join(args).replace(args[0], "");
-        		target.chat(argss);
+        	 	String argss = StringUtils.join(args, " ").replace(args[0], "");
+        		if (argss.startsWith("/")) {
+        			String argsss = argss.replace("/", "");
+        			Bukkit.dispatchCommand(target, argsss);
+        		} else {
+        			target.chat(argss);
+        		}
         	}
         }
         
@@ -365,7 +370,7 @@ public class Bssentials extends JavaPlugin implements Listener {
                 sender.sendMessage(ChatColor.RED + "Spawn has not been set!");
             } else {
                 if (args.length == 0) {
-                    World w = Bukkit.getServer().getWorld(getConfig().getString("warps.spawn.world"));
+                    World w = Bukkit.getServer().getWorld(getWarpConfig().getString("warps.spawn.world"));
                     double x = getWarpConfig().getDouble("warps.spawn.x");
                     double y = getWarpConfig().getDouble("warps.spawn.y");
                     double z = getWarpConfig().getDouble("warps.spawn.z");
@@ -424,6 +429,26 @@ public class Bssentials extends JavaPlugin implements Listener {
             player.setFoodLevel(1); 
         }
         
+        if (cmd.getName().equalsIgnoreCase("checkban")) {
+        	if (args.length == 0) {
+        		sender.sendMessage("Banned Players: " + Bukkit.getBannedPlayers());
+        	} else {
+        		@SuppressWarnings("deprecation")
+				Player target = Bukkit.getServer().getPlayer(args[0]);
+                if (target == null) {
+                    player.sendMessage(ChatColor.RED + "Could not find player!");
+                } else {
+                	String banned;
+                	if (target.isBanned() == true) {
+                		banned = "banned!";
+                	} else {
+                		banned = "NOT banned!";
+                	}
+                	sender.sendMessage(target.getName() + " is " + banned);
+                }
+        	}
+        }
+        
         if (cmd.getName().equalsIgnoreCase("feed")) {
             if (args.length == 0) {
                 if (sender.hasPermission(FEED_PERM)) {
@@ -474,6 +499,17 @@ public class Bssentials extends JavaPlugin implements Listener {
         		}
         	}
         }
+        
+        if (cmd.getName().equalsIgnoreCase("repair")) {
+        	if (PlayerCheck.hasPermForCommand(p, "repair")) {
+        		player.getItemInHand().setDurability((short) 0);
+        		sender.sendMessage("Repaired!");
+        	} else {
+        		sender.sendMessage("No Permission!");
+        	}
+        }
+        
+        
         //Strings needed for GoogleChat
         String TooManyArgs = "Too many args! Max 15!";
         String NoArgs = "No args!";
@@ -492,6 +528,7 @@ public class Bssentials extends JavaPlugin implements Listener {
                 sender.sendMessage(ChatColor.RED + Perm);
             }
         }
+        
         if (cmd.getName().equalsIgnoreCase("YouTube")) {
             if (sender.hasPermission(YOUTUBE_PERM)) {
                 if (args.length > 0) {
@@ -592,9 +629,9 @@ public class Bssentials extends JavaPlugin implements Listener {
             } else {
                 if (args.length == 0) {
                     World w = Bukkit.getServer().getWorld(getHomeConfig().getString("homes." + args[0] + ".world"));
-                    double x = getHomeConfig().getDouble("homes." + args[0] + ".x");
-                    double y = getHomeConfig().getDouble("homes." + args[0] + ".y");
-                    double z = getHomeConfig().getDouble("homes." + args[0] + ".z");
+                    double x = getHomeConfig().getDouble("homes." + p.getName() + ".x");
+                    double y = getHomeConfig().getDouble("homes." + p.getName() + ".y");
+                    double z = getHomeConfig().getDouble("homes." + p.getName() + ".z");
                     player.teleport(new Location(w, x, y, z));
                     sender.sendMessage(ChatColor.GREEN + "Welcome home " + p.getName() + "!");
                 } else {
