@@ -41,7 +41,7 @@ import ml.bssentials.ranks.ChatFormat;
 /**
     <b>Bssentials</b><br>
     <br>
-    Created by: Isaiah Patton, PolarCraft, & ramidzkh<br>
+    Created by: Isaiah Patton & ramidzkh<br>
     About: Better Essentials for 1.10
     
     @author Isaiah Patton
