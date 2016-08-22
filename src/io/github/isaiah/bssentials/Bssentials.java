@@ -3,6 +3,8 @@ package io.github.isaiah.bssentials;
 import java.io.IOException;
 import java.io.File;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
@@ -12,7 +14,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -25,6 +26,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.isaiah.listeners.Plugins;
+import io.github.isaiah.listeners.SpawnJoin;
 import io.github.isaiah.listeners.onJoinNick;
 import io.github.isaiah.updater.Updater;
 import io.github.ramidzkh.KodeAPI.api.YamlConf;
@@ -35,11 +37,12 @@ import ml.bssentials.commands.Broadcast;
 import ml.bssentials.commands.Ping;
 import ml.bssentials.commands.ViewNick;
 import ml.bssentials.commands.spawnmob;
+import ml.bssentials.ranks.ChatFormat;
 
 /**
     <b>Bssentials</b><br>
     <br>
-    Created by: Isaiah Patton, PolarCraft, & ramidzkh<br>
+    Created by: Isaiah Patton & ramidzkh<br>
     About: Better Essentials for 1.10
     
     @author Isaiah Patton
@@ -89,6 +92,7 @@ public class Bssentials extends JavaPlugin implements Listener {
     public static String version = "2.1.2";
     public FileConfiguration config = new YamlConfiguration();
     public FileConfiguration warps = new YamlConfiguration();
+    public FileConfiguration homes = new YamlConfiguration();
     
     public void onEnable() {
         PluginManager pm = getServer().getPluginManager();
@@ -105,28 +109,37 @@ public class Bssentials extends JavaPlugin implements Listener {
         getCommand("ping").setExecutor(new Ping());
         getCommand("broadcast").setExecutor(new Broadcast());
         
-        
-        
+        pm.registerEvents(new ChatFormat(this), this);
 		pm.registerEvents(new Plugins(), this);
 		pm.registerEvents(new onJoinNick(this), this);
+		pm.registerEvents(new SpawnJoin(this), this);
 		pm.registerEvents(this, this);
 	}
 
-    private File configf, warpsf;
+    private File configf, warpsf, homesf;
     //private FileConfiguration config, warps;
 
     public FileConfiguration getWarpConfig() {
         return this.warps;
     }
     
+    public FileConfiguration getHomeConfig() {
+    	return this.homes;
+    }
+    
     public void saveWarpConfig() {
     	YamlConf.saveConf(warps, warpsf);
+    }
+    
+    public void saveHomeConfig() {
+    	YamlConf.saveConf(homes, homesf);
     }
 
     private void createFiles() {
 
         configf = new File(getDataFolder(), "config.yml");
         warpsf = new File(getDataFolder(), "warps.yml");
+        homesf = new File(getDataFolder(), "homes.yml");
 
         if (!configf.exists()) {
             configf.getParentFile().mkdirs();
@@ -136,12 +149,18 @@ public class Bssentials extends JavaPlugin implements Listener {
             warpsf.getParentFile().mkdirs();
             saveResource("warps.yml", false);
          }
+        if (!homesf.exists()) {
+            homesf.getParentFile().mkdirs();
+            saveResource("homes.yml", false);
+         }
 
         config = new YamlConfiguration();
         warps = new YamlConfiguration();
+        homes = new YamlConfiguration();
         try {
             config.load(configf);
             warps.load(warpsf);
+            homes.load(homesf);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -153,22 +172,6 @@ public class Bssentials extends JavaPlugin implements Listener {
     }
     
 	public void onDisable() {}
-	
-	/**
-	 * Registers <code>commands</code>
-	 * 
-	 * @author <b>ramidzkh</b>
-	 * 
-	 * @see CommandExecutor
-	 */
-    
-    public int getPing(Player p) {
-        //CraftPlayer cp = (CraftPlayer) p; 
-        //EntityPlayer ep = cp.getHandle();
-        //return ep.ping; 
-        //I think this will make Bssentials only work on one version, ex: import org.bukkit.craftbukkit.1_10_2_R1.CraftPlayer;
-        return 0;
-    }
     
     private void registerPermissions(PluginManager pm) {
         pm.addPermission(GAMEMODE_PERM);
@@ -198,7 +201,9 @@ public class Bssentials extends JavaPlugin implements Listener {
     
     public void nickName(Player player, String name) {
         getConfig().set("playerdata." + player.getName() + ".nick", name);
-        player.setDisplayName(getConfig().getString("playerdata." + player.getName() + ".nick"));
+        String thenickname = getConfig().getString("playerdata." + player.getName() + ".nick");
+        thenickname = ChatColor.translateAlternateColorCodes('&', thenickname);
+        player.setDisplayName(thenickname);
         saveConfig();
     }
     
@@ -213,7 +218,8 @@ public class Bssentials extends JavaPlugin implements Listener {
         
         Player player = (Player) sender;
         Player p = player;
-
+        //String APIs = "KodeAPI & BssentialsAPI";
+        
         if (cmd.getName().equalsIgnoreCase("bssentials")) {
             if(!PlayerCheck.hasPerm(player, PLUGIN_INFO_PERM)){
                 player.sendMessage(NoPerm);
@@ -225,6 +231,7 @@ public class Bssentials extends JavaPlugin implements Listener {
             player.sendMessage(pre + "Version: " + ChatColor.GREEN + version);
             player.sendMessage(pre + "Authors: " + ChatColor.GREEN + authors);
             player.sendMessage(pre + "Description: " + ChatColor.GREEN + "Essentials for 1.10");
+            player.sendMessage(pre + "Addons: " + ChatColor.GREEN + "Coming soon!");
         }
      
         if (cmd.getName().equalsIgnoreCase("nick")) {
@@ -285,6 +292,30 @@ public class Bssentials extends JavaPlugin implements Listener {
             sender.sendMessage(prefix + "Inventory cleared!");
         }
         
+        if (cmd.getName().equalsIgnoreCase("control")) {
+        	if (PlayerCheck.hasPermForCommand(p, "control")){
+        		@SuppressWarnings("deprecation")
+        	 	Player target = player.getServer().getPlayer(args[0]);
+        	 	String argss = StringUtils.join(args).replace(args[0], "");
+        		target.chat(argss);
+        	}
+        }
+        
+        if (cmd.getName().equalsIgnoreCase("rank")) {
+        	if (args.length == 0) {
+        		sender.sendMessage("Use /rank create <rankname> <display>");
+        		sender.sendMessage("Or: /rank setplayer <player> <rank>");
+        	} else if (args[0].equalsIgnoreCase("create")) {
+        		getConfig().set("ranks."+args[1]+".prefix", args[2]);
+        		saveConfig();
+        		sender.sendMessage("Created rank: "+args[1]+" With the display of: " +args[2]);
+        	} else if (args[0].equalsIgnoreCase("setplayer")) {
+        		getConfig().set("playerdata." + args[1] + ".rank", args[2]);
+        		sender.sendMessage("Added "+args[1]+" to the rank" + args[2]);
+        	}
+        }
+        
+        
         if (cmd.getName().equalsIgnoreCase("disnick")) {
         	if (player.getName() == player.getDisplayName()) {
         		sender.sendMessage("Your nickname and real name are the same!");
@@ -335,9 +366,9 @@ public class Bssentials extends JavaPlugin implements Listener {
             } else {
                 if (args.length == 0) {
                     World w = Bukkit.getServer().getWorld(getConfig().getString("warps.spawn.world"));
-                    double x = getConfig().getDouble("warps.spawn.x");
-                    double y = getConfig().getDouble("warps.spawn.y");
-                    double z = getConfig().getDouble("warps.spawn.z");
+                    double x = getWarpConfig().getDouble("warps.spawn.x");
+                    double y = getWarpConfig().getDouble("warps.spawn.y");
+                    double z = getWarpConfig().getDouble("warps.spawn.z");
                     player.teleport(new Location(w, x, y, z));
                     sender.sendMessage(ChatColor.GREEN + "Warping to spawn");
                 } else {
@@ -393,6 +424,26 @@ public class Bssentials extends JavaPlugin implements Listener {
             player.setFoodLevel(1); 
         }
         
+        if (cmd.getName().equalsIgnoreCase("checkban")) {
+        	if (args.length == 0) {
+        		sender.sendMessage("Banned Players: " + Bukkit.getBannedPlayers());
+        	} else {
+        		@SuppressWarnings("deprecation")
+				Player target = Bukkit.getServer().getPlayer(args[0]);
+                if (target == null) {
+                    player.sendMessage(ChatColor.RED + "Could not find player!");
+                } else {
+                	String banned;
+                	if (target.isBanned() == true) {
+                		banned = "banned!";
+                	} else {
+                		banned = "NOT banned!";
+                	}
+                	sender.sendMessage(target.getName() + " is " + banned);
+                }
+        	}
+        }
+        
         if (cmd.getName().equalsIgnoreCase("feed")) {
             if (args.length == 0) {
                 if (sender.hasPermission(FEED_PERM)) {
@@ -443,6 +494,17 @@ public class Bssentials extends JavaPlugin implements Listener {
         		}
         	}
         }
+        
+        if (cmd.getName().equalsIgnoreCase("repair")) {
+        	if (PlayerCheck.hasPermForCommand(p, "repair")) {
+        		player.getItemInHand().setDurability((short) 0);
+        		sender.sendMessage("Repaired!");
+        	} else {
+        		sender.sendMessage("No Permission!");
+        	}
+        }
+        
+        
         //Strings needed for GoogleChat
         String TooManyArgs = "Too many args! Max 15!";
         String NoArgs = "No args!";
@@ -461,6 +523,7 @@ public class Bssentials extends JavaPlugin implements Listener {
                 sender.sendMessage(ChatColor.RED + Perm);
             }
         }
+        
         if (cmd.getName().equalsIgnoreCase("YouTube")) {
             if (sender.hasPermission(YOUTUBE_PERM)) {
                 if (args.length > 0) {
@@ -531,6 +594,46 @@ public class Bssentials extends JavaPlugin implements Listener {
                 sender.sendMessage(ChatColor.RED + "Invalid args");
             }
         }
+        if (cmd.getName().equalsIgnoreCase("alias")) {
+        	if(args.length == 2) {
+        		if(getCommand(args[0]).getAliases() == null) {
+        			List<String> aliases = new ArrayList<String>();
+        			aliases.add(args[1]);
+        			getCommand(args[0]).setAliases(aliases);
+        		} else {
+        			List<String> aliases = getCommand(args[0]).getAliases();
+        			aliases.add(args[1]);
+        			getCommand(args[0]).setAliases(aliases);
+        		}
+        	} else {
+        		sender.sendMessage("Usage: /alias command shortcut");
+        	}
+        }
+        
+        if(cmd.getName().equalsIgnoreCase("sethome")) {
+        	createHome(p);
+        }
+        
+        if(cmd.getName().equalsIgnoreCase("delhome")) {
+        	delHome(p);
+        }
+        
+        if(cmd.getName().equalsIgnoreCase("home")) {
+        	if (getHomeConfig().getConfigurationSection("homes." + p.getName()) == null) {
+                sender.sendMessage(ChatColor.RED + "You have to set your home first /sethome");
+            } else {
+                if (args.length == 0) {
+                    World w = Bukkit.getServer().getWorld(getHomeConfig().getString("homes." + args[0] + ".world"));
+                    double x = getHomeConfig().getDouble("homes." + args[0] + ".x");
+                    double y = getHomeConfig().getDouble("homes." + args[0] + ".y");
+                    double z = getHomeConfig().getDouble("homes." + args[0] + ".z");
+                    player.teleport(new Location(w, x, y, z));
+                    sender.sendMessage(ChatColor.GREEN + "Welcome home " + p.getName() + "!");
+                } else {
+                    sender.sendMessage(ChatColor.RED + "Invalid args");
+                }
+            }
+		}
         if (cmd.getName().equalsIgnoreCase("warp")) {
         	if(p.hasPermission(WARP_PERM)) {
 	            if (getWarpConfig().getConfigurationSection("warps") == null) {
@@ -574,6 +677,9 @@ public class Bssentials extends JavaPlugin implements Listener {
 	                		sender.sendMessage(ChatColor.BLUE + "  " + s);
 	                	}
 	            	} else {
+                    double x = getHomeConfig().getDouble("homes." + args[0] + ".x");
+                    double y = getHomeConfig().getDouble("homes." + args[0] + ".y");
+                    double z = getHomeConfig().getDouble("homes." + args[0] + ".z");
 	                    sender.sendMessage(ChatColor.RED + "Invalid args");
 	                }
 	            }
@@ -609,6 +715,25 @@ public class Bssentials extends JavaPlugin implements Listener {
         saveWarpConfig();
         
         p.sendMessage(ChatColor.GREEN + warpname + " warp set!");
+    }
+    public void createHome(Player p) {
+    	String homename = p.getName();
+        getHomeConfig().set("homes." + homename + ".world", p.getLocation().getWorld().getName());
+        getHomeConfig().set("homes." + homename + ".x", p.getLocation().getX());
+        getHomeConfig().set("homes." + homename + ".y", p.getLocation().getY());
+        getHomeConfig().set("homes." + homename + ".z", p.getLocation().getZ());
+        saveHomeConfig();
+        
+        p.sendMessage(ChatColor.GREEN + "Your home has been set!");
+    }
+    public void delHome(Player p) {
+    	String homename = p.getName();
+    	getHomeConfig().set("homes." + homename +".world", null);
+    	getHomeConfig().set("homes." + homename +".x", null);
+    	getHomeConfig().set("homes." + homename +".y", null);
+    	getHomeConfig().set("homes." + homename +".z", null);
+    	getHomeConfig().set("homes." + homename, null);
+    	saveWarpConfig();
     }
     
 }
