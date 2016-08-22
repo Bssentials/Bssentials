@@ -26,7 +26,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.isaiah.listeners.Plugins;
-import io.github.isaiah.listeners.SpawnJoin;
+//import io.github.isaiah.listeners.SpawnJoin;
 import io.github.isaiah.listeners.onJoinNick;
 import io.github.isaiah.updater.Updater;
 import io.github.ramidzkh.KodeAPI.api.YamlConf;
@@ -37,7 +37,7 @@ import ml.bssentials.commands.Broadcast;
 import ml.bssentials.commands.Ping;
 import ml.bssentials.commands.ViewNick;
 import ml.bssentials.commands.spawnmob;
-import ml.bssentials.ranks.ChatFormat;
+//import ml.bssentials.ranks.ChatFormat;
 
 /**
     <b>Bssentials</b><br>
@@ -109,10 +109,10 @@ public class Bssentials extends JavaPlugin implements Listener {
         getCommand("ping").setExecutor(new Ping());
         getCommand("broadcast").setExecutor(new Broadcast());
         
-        pm.registerEvents(new ChatFormat(this), this);
+        //pm.registerEvents(new ChatFormat(this), this);
 		pm.registerEvents(new Plugins(), this);
 		pm.registerEvents(new onJoinNick(this), this);
-		pm.registerEvents(new SpawnJoin(this), this);
+		//pm.registerEvents(new SpawnJoin(this), this);
 		pm.registerEvents(this, this);
 	}
 
@@ -207,7 +207,8 @@ public class Bssentials extends JavaPlugin implements Listener {
         saveConfig();
     }
     
-    public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args) {
+    @SuppressWarnings("deprecation")
+	public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args) {
     	if(!(sender instanceof Player)){
     		sender.sendMessage("You are not a player");
     		return false;
@@ -294,7 +295,6 @@ public class Bssentials extends JavaPlugin implements Listener {
         
         if (cmd.getName().equalsIgnoreCase("control")) {
         	if (PlayerCheck.hasPermForCommand(p, "control")){
-        		@SuppressWarnings("deprecation")
         	 	Player target = player.getServer().getPlayer(args[0]);
         	 	String argss = StringUtils.join(args).replace(args[0], "");
         		target.chat(argss);
@@ -428,7 +428,6 @@ public class Bssentials extends JavaPlugin implements Listener {
         	if (args.length == 0) {
         		sender.sendMessage("Banned Players: " + Bukkit.getBannedPlayers());
         	} else {
-        		@SuppressWarnings("deprecation")
 				Player target = Bukkit.getServer().getPlayer(args[0]);
                 if (target == null) {
                     player.sendMessage(ChatColor.RED + "Could not find player!");
@@ -623,10 +622,10 @@ public class Bssentials extends JavaPlugin implements Listener {
                 sender.sendMessage(ChatColor.RED + "You have to set your home first /sethome");
             } else {
                 if (args.length == 0) {
-                    World w = Bukkit.getServer().getWorld(getHomeConfig().getString("homes." + args[0] + ".world"));
-                    double x = getHomeConfig().getDouble("homes." + args[0] + ".x");
-                    double y = getHomeConfig().getDouble("homes." + args[0] + ".y");
-                    double z = getHomeConfig().getDouble("homes." + args[0] + ".z");
+                    World w = Bukkit.getServer().getWorld(getHomeConfig().getString("homes." + p.getName() + ".world"));
+                    double x = getHomeConfig().getDouble("homes." + p.getName() + ".x");
+                    double y = getHomeConfig().getDouble("homes." + p.getName() + ".y");
+                    double z = getHomeConfig().getDouble("homes." + p.getName() + ".z");
                     player.teleport(new Location(w, x, y, z));
                     sender.sendMessage(ChatColor.GREEN + "Welcome home " + p.getName() + "!");
                 } else {
@@ -677,9 +676,6 @@ public class Bssentials extends JavaPlugin implements Listener {
 	                		sender.sendMessage(ChatColor.BLUE + "  " + s);
 	                	}
 	            	} else {
-                    double x = getHomeConfig().getDouble("homes." + args[0] + ".x");
-                    double y = getHomeConfig().getDouble("homes." + args[0] + ".y");
-                    double z = getHomeConfig().getDouble("homes." + args[0] + ".z");
 	                    sender.sendMessage(ChatColor.RED + "Invalid args");
 	                }
 	            }
