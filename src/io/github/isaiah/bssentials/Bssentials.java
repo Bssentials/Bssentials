@@ -18,8 +18,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
@@ -83,7 +85,7 @@ public class Bssentials extends JavaPlugin implements Listener {
 	public static final Permission GOD_PERM = new Permission("bssentials.command.god");
     public static final Permission PLUGIN_INFO_PERM = new Permission("bssentials.command.bssentials");
     public static final Permission SETSPAWN_PERM = new Permission("bssentials.command.spawn");
-    public static final Permission BROADCAST_PERM = new Permission("bssentials.command.broadcast");
+    public static final Permission BROADCAST_PERM = new Permission("bssentials.command.broadcast");    
     
 	private static final String prefix = ChatColor.GREEN + "[Bssentials]" + ChatColor.YELLOW + " ";
     public static final String PREFIX = prefix;
@@ -644,7 +646,8 @@ public class Bssentials extends JavaPlugin implements Listener {
 		                    double x = getWarpConfig().getDouble("warps." + args[0] + ".x");
 		                    double y = getWarpConfig().getDouble("warps." + args[0] + ".y");
 		                    double z = getWarpConfig().getDouble("warps." + args[0] + ".z");
-		                    player.teleport(new Location(w, x, y, z));
+		                    
+		                    teleport(player, new Location(w,x,y,z));
 		                    sender.sendMessage(ChatColor.GREEN + "Warping to " + args[0]);
 	                	} else {
 	                		sender.sendMessage(ChatColor.RED + "No warp by that name exists.");
@@ -659,7 +662,7 @@ public class Bssentials extends JavaPlugin implements Listener {
 	    	                		double x = getWarpConfig().getDouble("warps." + args[0] + ".x");
 	    		                	double y = getWarpConfig().getDouble("warps." + args[0] + ".y");
 	    		                	double z = getWarpConfig().getDouble("warps." + args[0] + ".z");
-	    		                	targetPlayer.teleport(new Location(w, x, y, z));
+	    		                	teleport(targetPlayer, new Location(w, x, y, z));
 	    		                	sender.sendMessage(ChatColor.GREEN + "Warping " + args[1] + " to " + args[0]);
 	    		                	targetPlayer.sendMessage(ChatColor.GREEN + p.getName() + " warped you to " + args[0]);
 	    	                	} else {
@@ -732,4 +735,21 @@ public class Bssentials extends JavaPlugin implements Listener {
     	saveWarpConfig();
     }
     
+    public void teleport(Player player, Location l)
+    {
+    	// check for mount entity in mount metadata, set by com.krisp.minecraft.util.Stable
+        List<MetadataValue> mount = player.getMetadata("mount");
+        if(!mount.isEmpty()) {
+        	try {
+	        	Entity m = (Entity)mount.get(mount.size()-1).value();        	
+	        	m.eject();
+	        	player.teleport(l);
+	        	m.teleport(l.add(1,0,0));
+        	} catch(Exception e) {
+        		player.teleport(l);
+        	}
+        } else {               
+        	player.teleport(l);
+        }
+    }
 }
