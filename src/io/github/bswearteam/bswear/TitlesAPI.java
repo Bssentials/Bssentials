@@ -13,7 +13,7 @@ import java.lang.reflect.Field;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
+//import org.bukkit.plugin.java.JavaPlugin;
 
 public class TitlesAPI implements Listener {
   public static boolean works = true;
