@@ -21,11 +21,11 @@ public class Plugins implements Listener {
                 if (event.getMessage().equalsIgnoreCase("/plugins ver") || event.getMessage().equalsIgnoreCase("/pl ver")) {
                     event.setCancelled(true);
                     player.sendMessage(ChatColor.GREEN + "[Bssentials] " + ChatColor.GOLD + "Bukkit Plugins:");
-                    player.sendMessage(getThePluginsWithVer());
+                    player.sendMessage(getPluginsWithVer());
                 } else {
                     event.setCancelled(true);
                     player.sendMessage(ChatColor.GREEN + "[Bssentials] " + ChatColor.GOLD + "Bukkit Plugins:");
-                    player.sendMessage(getThePlugins());
+                    player.sendMessage(getPlugins());
                 }
             } else {
                 event.setCancelled(true);
@@ -35,7 +35,7 @@ public class Plugins implements Listener {
     }
     
 
-    public String getThePlugins() {
+    public static String getPlugins() {
         Plugin[] plugins;
         StringBuilder pluginList = new StringBuilder();
         Plugin[] arrplugin = plugins = Bukkit.getPluginManager().getPlugins();
@@ -55,7 +55,7 @@ public class Plugins implements Listener {
         return "(" + plugins.length + "): " + pluginList.toString();
     }
     
-    public String getThePluginsWithVer() {
+    public static String getPluginsWithVer() {
         Plugin[] plugins;
         StringBuilder pluginList = new StringBuilder();
         Plugin[] arrplugin = plugins = Bukkit.getPluginManager().getPlugins();
