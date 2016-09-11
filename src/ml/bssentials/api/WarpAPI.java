@@ -1,14 +1,12 @@
 package ml.bssentials.api;
 
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
 import ml.bssentials.main.Bssentials;
 
 public class WarpAPI {
 	public static Bssentials main;
 	
-    public static void createWarp(Player p, String warpname) {
+	//FIXME Does not work :(
+    /*public static void createWarp(Player p, String warpname) {
         main.getWarpConfig().set("warps." + warpname + ".world", p.getLocation().getWorld().getName());
         main.getWarpConfig().set("warps." + warpname + ".x", p.getLocation().getX());
         main.getWarpConfig().set("warps." + warpname + ".y", p.getLocation().getY());
@@ -33,5 +31,5 @@ public class WarpAPI {
     	String homename = p.getName();
     	main.getHomeConfig().set("homes." + homename, null);
     	main.saveWarpConfig();
-    }
+    }*/
 }
