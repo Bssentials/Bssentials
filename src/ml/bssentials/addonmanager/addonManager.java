@@ -1,4 +1,4 @@
-package ml.bssentials.addons;
+package ml.bssentials.addonmanager;
 
 public class AddonManager {
 	/*
