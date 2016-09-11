@@ -48,7 +48,6 @@ import ml.bssentials.ranks.ChatFormat;
 import ml.bssentials.updater.Updater;
 import ml.bssentials.addons.GoogleChat;
 import ml.bssentials.api.ChatAPI;
-import ml.bssentials.api.WarpAPI;
 
 /**
     <b>Bssentials</b><br>
@@ -639,14 +638,30 @@ public class Bssentials extends JavaPlugin implements Listener {
         return true;
     }      
     
-    @Deprecated
-    public void createWarp(Player p, String warpname) { WarpAPI.createWarp(p, warpname); }
-    
-    @Deprecated
-    public void createHome(Player p) { WarpAPI.createHome(p); }
-    
-    @Deprecated
-    public void delHome(Player p) { WarpAPI.delHome(p); }
+    public void createWarp(Player p, String warpname) {
+        getWarpConfig().set("warps." + warpname + ".world", p.getLocation().getWorld().getName());
+        getWarpConfig().set("warps." + warpname + ".x", p.getLocation().getX());
+        getWarpConfig().set("warps." + warpname + ".y", p.getLocation().getY());
+        getWarpConfig().set("warps." + warpname + ".z", p.getLocation().getZ());
+        saveWarpConfig();
+        
+        p.sendMessage(ChatColor.GREEN + warpname + " warp set!");
+    }
+    public void createHome(Player p) {
+    	String homename = p.getName();
+        getHomeConfig().set("homes." + homename + ".world", p.getLocation().getWorld().getName());
+        getHomeConfig().set("homes." + homename + ".x", p.getLocation().getX());
+        getHomeConfig().set("homes." + homename + ".y", p.getLocation().getY());
+        getHomeConfig().set("homes." + homename + ".z", p.getLocation().getZ());
+        saveHomeConfig();
+        
+        p.sendMessage(ChatColor.GREEN + "Your home has been set!");
+    }
+    public void delHome(Player p) {
+    	String homename = p.getName();
+    	getHomeConfig().set("homes." + homename, null);
+    	saveWarpConfig();
+    }
     
     public void teleport(Player player, Location l) {
     	// check for mount entity in mount metadata, set by com.krisp.minecraft.util.Stable
