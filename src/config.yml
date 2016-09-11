@@ -16,7 +16,7 @@ ranks:
     default:
         prefix: "&7[Default]&f"
     owner:
-        prefix "&4[Owner]&c"
+        prefix: "&4[Owner]&c"
         
     
 
