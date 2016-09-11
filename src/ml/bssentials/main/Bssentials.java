@@ -1,13 +1,15 @@
 package ml.bssentials.main;
 
-import java.io.IOException;
 import java.io.File;
-import java.util.Set;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
+
+// Bukkit
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -27,19 +29,24 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+// Listeners
 import io.github.isaiah.listeners.Plugins;
 import io.github.isaiah.listeners.SpawnJoin;
 import io.github.isaiah.listeners.onJoinNick;
-import io.github.isaiah.updater.Updater;
+
+// KodeAPI
 import io.github.ramidzkh.KodeAPI.api.YamlConf;
 import io.github.ramidzkh.utils.PlayerCheck;
 
-
+// Bssentials classes
 import ml.bssentials.commands.Broadcast;
 import ml.bssentials.commands.Ping;
+import ml.bssentials.commands.Pm;
 import ml.bssentials.commands.ViewNick;
 import ml.bssentials.commands.spawnmob;
 import ml.bssentials.ranks.ChatFormat;
+import ml.bssentials.updater.Updater;
+import ml.bssentials.addons.GoogleChat;
 
 /**
     <b>Bssentials</b><br>
@@ -58,6 +65,7 @@ import ml.bssentials.ranks.ChatFormat;
 
 public class Bssentials extends JavaPlugin implements Listener {
 	
+	public static String version = "2.3";
 	public Logger logger = getLogger();
 	
 	public static final Permission GAMEMODE_PERM = new Permission ("bssentials.command.gm");
@@ -86,10 +94,9 @@ public class Bssentials extends JavaPlugin implements Listener {
     public static final Permission SETSPAWN_PERM = new Permission("bssentials.command.spawn");
     public static final Permission BROADCAST_PERM = new Permission("bssentials.command.broadcast");    
     
-	private static final String prefix = ChatColor.GREEN + "[Bssentials]" + ChatColor.YELLOW + " ";
+	public static final String prefix = ChatColor.GREEN + "[Bssentials]" + ChatColor.YELLOW + " ";
     public static final String PREFIX = prefix;
     
-    public static String version = "2.1.2";
     public FileConfiguration config = new YamlConfiguration();
     public FileConfiguration warps = new YamlConfiguration();
     public FileConfiguration homes = new YamlConfiguration();
@@ -108,6 +115,10 @@ public class Bssentials extends JavaPlugin implements Listener {
         getCommand("viewnick").setExecutor(new ViewNick());
         getCommand("ping").setExecutor(new Ping());
         getCommand("broadcast").setExecutor(new Broadcast());
+        getCommand("pm").setExecutor(new Pm());
+        
+        
+        registerGoogleChat();
         
         pm.registerEvents(new ChatFormat(this), this);
 		pm.registerEvents(new Plugins(), this);
@@ -172,6 +183,13 @@ public class Bssentials extends JavaPlugin implements Listener {
     
 	public void onDisable() {}
     
+	private void registerGoogleChat() {
+		getCommand("BukkitDev").setExecutor(new GoogleChat());
+        getCommand("youtube").setExecutor(new GoogleChat());
+        getCommand("google").setExecutor(new GoogleChat());
+        getCommand("mcwiki").setExecutor(new GoogleChat());
+	}
+	
     private void registerPermissions(PluginManager pm) {
         pm.addPermission(GAMEMODE_PERM);
 		pm.addPermission(STAFFLIST_PERM);
@@ -236,32 +254,6 @@ public class Bssentials extends JavaPlugin implements Listener {
      
         if (cmd.getName().equalsIgnoreCase("nick")) {
             nickName(player, StringUtils.join(args, " "));
-        }
-        
-        if (cmd.getName().equalsIgnoreCase("pm")) {
-            if (args.length == 0) {
-                sender.sendMessage(ChatColor.GREEN + "[Bssentials]" + ChatColor.GRAY + " Usage /pm <player> <message>");
-                return false;
-            }
-            if (sender.hasPermission(PM_PERM) || sender.isOp()) {
-//                @SuppressWarnings("deprecation")
-				Player target = Bukkit.getPlayer(args[0]);
-                if(target != null) {
-                    String message = "";
-                    for(int i = 1; i != args.length; i++)
- 
-                        message += args[i] + " ";
-
-                        target.sendMessage(sender.getName() + " -> " + target.getName() + ": " + ChatColor.translateAlternateColorCodes('&', message));
- 
-                        sender.sendMessage("me" + " -> " + target.getName() + " " + message);
- 
-                } else if(target == null) {
-                    sender.sendMessage("That player is not currently online!");
-                }
-            } else {
-                sender.sendMessage(ChatColor.GREEN + "[Bssentials] " + ChatColor.RED + "You don't have permission: bssentials.command.pm");  
-            }
         }
         
         if (cmd.getName().equalsIgnoreCase("info")) {
@@ -381,7 +373,6 @@ public class Bssentials extends JavaPlugin implements Listener {
                 sender.sendMessage("Wrong args!");
             } else if (args.length == 1) {
                 if (sender.hasPermission("bssentials.command.welcome")) {
-//                    @SuppressWarnings("deprecation")
 					Player theNewPlayer = player.getServer().getPlayer(args[0]);
                     theNewPlayer.sendMessage(ChatColor.YELLOW + sender.getName() + " " + ChatColor.AQUA + "Says Welcome to The Server!");
                     sender.sendMessage("You welcomed " + args[0] + " to the server");
@@ -503,70 +494,12 @@ public class Bssentials extends JavaPlugin implements Listener {
         }
         
         
-        //Strings needed for GoogleChat
-        String TooManyArgs = "Too many args! Max 15!";
-        String NoArgs = "No args!";
-        String Perm = "No Permisson: bssentials.command.<command>";
         
-        if (cmd.getName().equalsIgnoreCase("BukkitDev")) {
-            if (sender.hasPermission(BUKKIT_PERM)) {
-                if (args.length > 0) {
-                    sender.sendMessage("http://dev.bukkit.org/bukkit-plugins/?search=" + StringUtils.join(args, "+"));
-                } else if (args.length == 0) {
-                    sender.sendMessage(ChatColor.RED + prefix + ChatColor.GOLD + " " + NoArgs);
-                } else if (args.length < 15) {
-                    sender.sendMessage(ChatColor.RED + TooManyArgs);
-                }
-            } else {
-                sender.sendMessage(ChatColor.RED + Perm);
-            }
-        }
-        
-        if (cmd.getName().equalsIgnoreCase("YouTube")) {
-            if (sender.hasPermission(YOUTUBE_PERM)) {
-                if (args.length > 0) {
-                    sender.sendMessage("http://youtube.com/results?search_query=" + StringUtils.join(args, "+"));
-                } else if (args.length == 0) {
-                    sender.sendMessage(ChatColor.RED + prefix + ChatColor.GOLD + " " + NoArgs);
-                } else if (args.length < 15) {
-                    sender.sendMessage(ChatColor.RED + TooManyArgs);
-                }
-            } else {
-                sender.sendMessage(ChatColor.RED + Perm);
-            }
-        }
-        if (cmd.getName().equalsIgnoreCase("Google")) {
-            if (sender.hasPermission(GOOGLE_PERM)) {
-                if (args.length > 0) {
-                    sender.sendMessage("http://google.com/?gws_rd=ssl#q=" + StringUtils.join(args, "+"));
-                } else if (args.length == 0) {
-                    sender.sendMessage(ChatColor.RED + prefix + ChatColor.GOLD + " " + NoArgs);
-                } else if (args.length < 15) {
-                    sender.sendMessage(ChatColor.RED + TooManyArgs);
-                }
-            } else {
-                sender.sendMessage(ChatColor.RED + Perm);
-            }
-        }
-        if (cmd.getName().equalsIgnoreCase("MCWiki")) {
-            if (sender.hasPermission(WIKI_PERM)) {
-                if (args.length > 0) {
-                    sender.sendMessage("http://minecraftwiki.net/wiki/" + StringUtils.join(args, (String)"_"));
-                } else if (args.length == 0) {
-                    sender.sendMessage(ChatColor.RED + prefix + ChatColor.GOLD + " " + NoArgs);
-                } else if (args.length < 15) {
-                    sender.sendMessage(ChatColor.RED + TooManyArgs);
-                }
-            } else {
-                sender.sendMessage(ChatColor.RED + Perm);
-            }
-        }      
         if (cmd.getName().equalsIgnoreCase("invsee")) {
             if (args.length == 0) {
                 sender.sendMessage("Wrong args!");
             } else if (args.length == 1) {
                 if (sender.hasPermission("bssentials.command.invsee")) {
-                    //@SuppressWarnings("deprecation")
 					Player targetPlayer = player.getServer().getPlayer(args[0]);
                     ((Player) sender).openInventory(targetPlayer.getInventory());
                 } else {
@@ -724,16 +657,11 @@ public class Bssentials extends JavaPlugin implements Listener {
     }
     public void delHome(Player p) {
     	String homename = p.getName();
-    	getHomeConfig().set("homes." + homename +".world", null);
-    	getHomeConfig().set("homes." + homename +".x", null);
-    	getHomeConfig().set("homes." + homename +".y", null);
-    	getHomeConfig().set("homes." + homename +".z", null);
     	getHomeConfig().set("homes." + homename, null);
     	saveWarpConfig();
     }
     
-    public void teleport(Player player, Location l)
-    {
+    public void teleport(Player player, Location l) {
     	// check for mount entity in mount metadata, set by com.krisp.minecraft.util.Stable
         List<MetadataValue> mount = player.getMetadata("mount");
         if(!mount.isEmpty()) {
