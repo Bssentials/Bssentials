@@ -9,6 +9,8 @@ Bssentials is a TOTAL remake of Essentials from the ground up!
 ## Server Mods to use.
 Heres a list of server mods Bssentials was tested on:
 
+![Bukkit](http://vignette1.wikia.nocookie.net/minecraft/images/b/b2/Bukkitlogo.png/revision/latest?cb=20130626200328)
+
 ![Spigot](https://static.spigotmc.org/img/spigot.png)
 
 ![Rainbow](http://i.imgur.com/e2n055H.gif)
