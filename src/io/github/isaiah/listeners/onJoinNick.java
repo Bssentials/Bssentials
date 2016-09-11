@@ -6,7 +6,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import io.github.isaiah.bssentials.Bssentials;
+//import io.github.isaiah.bssentials.Bssentials;
+import ml.bssentials.main.Bssentials;
 
 public class onJoinNick implements Listener {
 

@@ -8,7 +8,8 @@ import java.util.logging.Logger;
 
 import org.bukkit.plugin.PluginDescriptionFile;
 
-import io.github.isaiah.bssentials.Bssentials;
+//import io.github.isaiah.bssentials.Bssentials;
+import ml.bssentials.main.Bssentials;
 
 /**
  * Sends a message to the console if there is an update.

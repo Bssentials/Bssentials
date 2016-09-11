@@ -8,7 +8,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.Plugin;
 
-import io.github.isaiah.bssentials.Bssentials;
+//import io.github.isaiah.bssentials.Bssentials;
+import ml.bssentials.main.Bssentials;
 
 public class Plugins implements Listener {
 
@@ -34,8 +35,15 @@ public class Plugins implements Listener {
         }
     }
     
+	public static String getPlugins() {
+		return getPlugins(false);
+	}
 
-    public static String getPlugins() {
+	public static String getPluginsWithVer() {
+        return getPlugins(true);
+    }
+	
+    public static String getPlugins(boolean showVer) {
         Plugin[] plugins;
         StringBuilder pluginList = new StringBuilder();
         Plugin[] arrplugin = plugins = Bukkit.getPluginManager().getPlugins();
@@ -48,29 +56,15 @@ public class Plugins implements Listener {
                 pluginList.append(", ");
             }
             pluginList.append((Object)(plugin.isEnabled() ? ChatColor.GREEN : ChatColor.RED));
-            pluginList.append(plugin.getDescription().getName());
+            
+            if (!showVer == true) {
+            	pluginList.append(plugin.getDescription().getName());
+            } else {
+            	pluginList.append(plugin.getDescription().getName() + ChatColor.GRAY + "(" + plugin.getDescription().getVersion() + ")" + ChatColor.RESET);
+            }
             ++n2;
         }
         
-        return "(" + plugins.length + "): " + pluginList.toString();
-    }
-    
-    public static String getPluginsWithVer() {
-        Plugin[] plugins;
-        StringBuilder pluginList = new StringBuilder();
-        Plugin[] arrplugin = plugins = Bukkit.getPluginManager().getPlugins();
-        int n = arrplugin.length;
-        int n2 = 0;
-        while (n2 < n) {
-            Plugin plugin = arrplugin[n2];
-            if (pluginList.length() > 0) {
-                pluginList.append(ChatColor.WHITE);
-                pluginList.append(", ");
-            }
-            pluginList.append((Object)(plugin.isEnabled() ? ChatColor.GREEN : ChatColor.RED));
-            pluginList.append(plugin.getDescription().getName() + ChatColor.GRAY + "(" + plugin.getDescription().getVersion() + ")" + ChatColor.RESET);
-            ++n2;
-        }
         return "(" + plugins.length + "): " + pluginList.toString();
     }
 }
