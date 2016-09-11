@@ -93,9 +93,9 @@ commands:
     disnick:
     alias:
     rank:
-    test:
+    control:
     delwarp:
     home:
-    delhome:
     sethome:
-    
+    delhome:
+    bancheck:
