@@ -47,6 +47,8 @@ import ml.bssentials.commands.spawnmob;
 import ml.bssentials.ranks.ChatFormat;
 import ml.bssentials.updater.Updater;
 import ml.bssentials.addons.GoogleChat;
+import ml.bssentials.api.ChatAPI;
+import ml.bssentials.api.WarpAPI;
 
 /**
     <b>Bssentials</b><br>
@@ -94,7 +96,7 @@ public class Bssentials extends JavaPlugin implements Listener {
     public static final Permission SETSPAWN_PERM = new Permission("bssentials.command.spawn");
     public static final Permission BROADCAST_PERM = new Permission("bssentials.command.broadcast");    
     
-	public static final String prefix = ChatColor.GREEN + "[Bssentials]" + ChatColor.YELLOW + " ";
+	public static final String prefix = ChatColor.GREEN + "[Bssentials]" + ChatColor.GOLD + " ";
     public static final String PREFIX = prefix;
     
     public FileConfiguration config = new YamlConfiguration();
@@ -216,13 +218,15 @@ public class Bssentials extends JavaPlugin implements Listener {
         pm.addPermission(WARP_OTHERS_PERM);
     }
     
-    public void nickName(Player player, String name) {
-        getConfig().set("playerdata." + player.getName() + ".nick", name);
-        String thenickname = getConfig().getString("playerdata." + player.getName() + ".nick");
-        thenickname = ChatColor.translateAlternateColorCodes('&', thenickname);
-        player.setDisplayName(thenickname);
-        saveConfig();
+    @SuppressWarnings("unused")
+	private void registerPerms(PluginManager pm, Permission... perms) {
+    	for (Permission perm : perms) {
+            pm.addPermission(perm);
+        }
     }
+    
+    @Deprecated
+    public void nickName(Player player, String name) { ChatAPI.nickName(player, name); }
     
     @SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args) {
@@ -236,7 +240,6 @@ public class Bssentials extends JavaPlugin implements Listener {
         
         Player player = (Player) sender;
         Player p = player;
-        //String APIs = "KodeAPI & BssentialsAPI";
         
         if (cmd.getName().equalsIgnoreCase("bssentials")) {
             if(!PlayerCheck.hasPerm(player, PLUGIN_INFO_PERM)){
@@ -249,7 +252,7 @@ public class Bssentials extends JavaPlugin implements Listener {
             player.sendMessage(pre + "Version: " + ChatColor.GREEN + version);
             player.sendMessage(pre + "Authors: " + ChatColor.GREEN + authors);
             player.sendMessage(pre + "Description: " + ChatColor.GREEN + "Essentials for 1.10");
-            player.sendMessage(pre + "Addons: " + ChatColor.GREEN + "Coming soon!");
+            player.sendMessage(pre + "Addons: " + ChatColor.GREEN + "GoogleChat");
         }
      
         if (cmd.getName().equalsIgnoreCase("nick")) {
@@ -636,30 +639,14 @@ public class Bssentials extends JavaPlugin implements Listener {
         return true;
     }      
     
-    public void createWarp(Player p, String warpname) {
-        getWarpConfig().set("warps." + warpname + ".world", p.getLocation().getWorld().getName());
-        getWarpConfig().set("warps." + warpname + ".x", p.getLocation().getX());
-        getWarpConfig().set("warps." + warpname + ".y", p.getLocation().getY());
-        getWarpConfig().set("warps." + warpname + ".z", p.getLocation().getZ());
-        saveWarpConfig();
-        
-        p.sendMessage(ChatColor.GREEN + warpname + " warp set!");
-    }
-    public void createHome(Player p) {
-    	String homename = p.getName();
-        getHomeConfig().set("homes." + homename + ".world", p.getLocation().getWorld().getName());
-        getHomeConfig().set("homes." + homename + ".x", p.getLocation().getX());
-        getHomeConfig().set("homes." + homename + ".y", p.getLocation().getY());
-        getHomeConfig().set("homes." + homename + ".z", p.getLocation().getZ());
-        saveHomeConfig();
-        
-        p.sendMessage(ChatColor.GREEN + "Your home has been set!");
-    }
-    public void delHome(Player p) {
-    	String homename = p.getName();
-    	getHomeConfig().set("homes." + homename, null);
-    	saveWarpConfig();
-    }
+    @Deprecated
+    public void createWarp(Player p, String warpname) { WarpAPI.createWarp(p, warpname); }
+    
+    @Deprecated
+    public void createHome(Player p) { WarpAPI.createHome(p); }
+    
+    @Deprecated
+    public void delHome(Player p) { WarpAPI.delHome(p); }
     
     public void teleport(Player player, Location l) {
     	// check for mount entity in mount metadata, set by com.krisp.minecraft.util.Stable
