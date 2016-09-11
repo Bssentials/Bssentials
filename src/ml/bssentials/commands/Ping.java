@@ -5,7 +5,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import io.github.isaiah.bssentials.Bssentials;
+//import io.github.isaiah.bssentials.Bssentials;
+import ml.bssentials.main.Bssentials;
 
 public class Ping implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args) {
