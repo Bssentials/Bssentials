@@ -1,4 +1,4 @@
-package io.github.isaiah.bssentials;
+package ml.bssentials.main;
 
 import java.io.IOException;
 import java.io.File;
