@@ -295,7 +295,7 @@ public class Bssentials extends JavaPlugin implements Listener {
         if (cmd.getName().equalsIgnoreCase("control")) {
         	if (PlayerCheck.hasPermForCommand(p, "control")){
         	 	Player target = player.getServer().getPlayer(args[0]);
-        	 	String argss = StringUtils.join(args).replace(args[0], "");
+        	 	String argss = StringUtils.join(args, " ").replace(args[0], "");
         		target.chat(argss);
         	}
         }
