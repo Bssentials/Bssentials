@@ -22,7 +22,7 @@ The Bssentials project prides itself on being community built and driven.  We lo
 ## Does the Change Fit Bssentials's Goals?
 As a rough guideline, ask yourself the following questions to determine if your proposed change fits the Bssentials project's goals. Please remember that this is only a rough guideline and may or may not reflect the definitive answer to this question.
     
-    One of the goals of the Bssentials project is to be able to operate within the limitations of the Vanilla environment. If your change results in or exposes the ability to, for example, crash the client when invalid data is set, it does not fit the Bssentials project's needs.
+    One of the goals of the Bssentials project is to be able to operate within the limitations of the Bukkit and/or Vanilla environment. If your change results in or exposes the ability to, for example, crash the client/server when invalid data is set, it does not fit the Bssentials project's needs.
     
 If you answered yes to any of these questions, chances are high your change does not fit the Bssentials project's goals and will most likely not be accepted. Regardless, there are a few other important questions you need to ask yourself before you start working on a change:
 
@@ -48,3 +48,11 @@ If you answered yes to any of these questions, chances are high your change does
 
 * Java 7
 * If your creating an new class, its best to put it at ml.bssentials
+* Explicitly state any changes to the connection (Such as server debugger and packer tampering modules)
+
+### Modules
+Modules are any kind of extension to the Bukkit environment. These include:
+* Commands
+* Listeners
+* Bukkit scheduled events
+* Modified implementations of Classes/Enumerations/Interfaces/Annotationsvfrom the orginal Bukkit API
