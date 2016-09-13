@@ -13,7 +13,7 @@
   <build>
     <defaultGoal>package</defaultGoal>
     <directory>${basedir}</directory>
-    <finalNameBssentials-2.x</finalName>
+    <finalName>Bssentials-2.x</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
