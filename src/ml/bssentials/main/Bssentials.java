@@ -8,10 +8,10 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
-
 // Bukkit
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -33,12 +33,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import io.github.isaiah.listeners.Plugins;
 import io.github.isaiah.listeners.SpawnJoin;
 import io.github.isaiah.listeners.onJoinNick;
-
 // KodeAPI
 import io.github.ramidzkh.KodeAPI.api.YamlConf;
 import io.github.ramidzkh.utils.PlayerCheck;
-
 // Bssentials classes
+import ml.bssentials.addons.GoogleChat;
+import ml.bssentials.api.BssUtils;
+import ml.bssentials.api.ChatAPI;
 import ml.bssentials.commands.Broadcast;
 import ml.bssentials.commands.Ping;
 import ml.bssentials.commands.Pm;
@@ -46,8 +47,6 @@ import ml.bssentials.commands.ViewNick;
 import ml.bssentials.commands.spawnmob;
 import ml.bssentials.ranks.ChatFormat;
 import ml.bssentials.updater.Updater;
-import ml.bssentials.addons.GoogleChat;
-import ml.bssentials.api.ChatAPI;
 
 /**
     <b>Bssentials</b><br>
@@ -227,11 +226,20 @@ public class Bssentials extends JavaPlugin implements Listener {
     @Deprecated
     public void nickName(Player player, String name) { ChatAPI.nickName(player, name); }
     
+    public boolean ifCommand(Command cmd, String cmd2) {
+    	if (cmd.getName().equalsIgnoreCase(cmd2)) {
+    		
+    	}
+		return true;
+	}
+    
     @SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args) {
-    	if(!(sender instanceof Player)){
+    	if(!(sender instanceof Player) && !cmd.getName().equalsIgnoreCase("bssentials")){
     		sender.sendMessage("You are not a player");
     		return false;
+    	} else if (!(sender instanceof Player) && cmd.getName().equalsIgnoreCase("bssentials")){
+    		sender.sendMessage("Bssentials!");
     	}
     	
         String authors = "Isaiah Patton, & ramidzkh";
@@ -251,7 +259,7 @@ public class Bssentials extends JavaPlugin implements Listener {
             player.sendMessage(pre + "Version: " + ChatColor.GREEN + version);
             player.sendMessage(pre + "Authors: " + ChatColor.GREEN + authors);
             player.sendMessage(pre + "Description: " + ChatColor.GREEN + "Essentials for 1.10");
-            player.sendMessage(pre + "Addons: " + ChatColor.GREEN + "GoogleChat");
+            //player.sendMessage(pre + "Addons: " + ChatColor.GREEN + AddonManager.getAllAddons());
         }
      
         if (cmd.getName().equalsIgnoreCase("nick")) {
@@ -263,10 +271,48 @@ public class Bssentials extends JavaPlugin implements Listener {
         }
 
         if (cmd.getName().equalsIgnoreCase("removelag")) {
-            Bukkit.dispatchCommand(sender, "lagg gc");
-			Bukkit.dispatchCommand(sender, "lagg clear");
-			Bukkit.dispatchCommand(sender, "lagg unloadchunks");
-            sender.sendMessage(prefix + "Removed Lagg!");
+        	if (args.length == 0) {
+        		Bukkit.dispatchCommand(sender, "lagg gc");
+        		Bukkit.dispatchCommand(sender, "lagg clear");
+        		Bukkit.dispatchCommand(sender, "lagg unloadchunks");
+        		sender.sendMessage(prefix + "Removed Lagg!");
+        	} else if (args.length !=0 && args[0].equalsIgnoreCase("unloadchunks")) {
+                if (BssUtils.hasPermForCommand(p, "removelag.unloadchunks")) {
+                    if (args.length == 2 || args.length == 1) {
+                        World w = null;
+                        if (args.length == 2) {
+                            try {
+                                w = Bukkit.getWorld((String)args[1]);
+                            }
+                            catch (Exception e) {
+                                sender.sendMessage("World \"" + args[1] + "\" could not be found.");
+                                return true;
+                            }
+                        } else if (p != null) {
+                            w = p.getWorld();
+                        }
+                        if (w == null) {
+                            sender.sendMessage("/removelag unloadchunks <world>");
+                        } else {
+                            int c = 0;
+                            if (w.getPlayers().size() == 0) {
+                                for (Chunk chunk : w.getLoadedChunks()) {
+                                    w.unloadChunk(chunk);
+                                    ++c;
+                                }
+                                sender.sendMessage(c + " chunks in world \"" + w.getName() + "\" have been unloaded.");
+                            } else {
+                            	sender.sendMessage("Unloading chunks in worlds that contain players has been disabled due to glitches.");
+                            }
+                        }
+                    } else {
+                        sender.sendMessage("/removelag unloadchunks <world>");
+                    }
+                } else {
+                    BssUtils.noPermMsg(p);
+                }
+                return true;
+            }
         }
 
         if (cmd.getName().equalsIgnoreCase("rain")) {
@@ -285,12 +331,17 @@ public class Bssentials extends JavaPlugin implements Listener {
             player.getInventory().clear();
             sender.sendMessage(prefix + "Inventory cleared!");
         }
+    
         
         if (cmd.getName().equalsIgnoreCase("control")) {
         	if (PlayerCheck.hasPermForCommand(p, "control")){
         	 	Player target = player.getServer().getPlayer(args[0]);
         	 	String argss = StringUtils.join(args, " ").replace(args[0], "");
-        		target.chat(argss);
+        	 	if(argss.contains("/")) {
+        	 		getServer().dispatchCommand(sender, argss.replace("/", ""));
+        	 	} else {
+        	 		target.chat(argss);
+        	 	}
         	}
         }
         
@@ -370,13 +421,14 @@ public class Bssentials extends JavaPlugin implements Listener {
             }
         }
         
+        /* WELCOME COMMAND */
         if (cmd.getName().equalsIgnoreCase("welcome")) {
             if (args.length == 0) {
                 sender.sendMessage("Wrong args!");
             } else if (args.length == 1) {
                 if (sender.hasPermission("bssentials.command.welcome")) {
 					Player theNewPlayer = player.getServer().getPlayer(args[0]);
-                    theNewPlayer.sendMessage(ChatColor.YELLOW + sender.getName() + " " + ChatColor.AQUA + "Says Welcome to The Server!");
+                    theNewPlayer.sendMessage(ChatColor.YELLOW + sender.getName() + " " + ChatColor.AQUA + "says Welcome to The Server!");
                     sender.sendMessage("You welcomed " + args[0] + " to the server");
                 } else {
                     sender.sendMessage("No Permission");
@@ -395,7 +447,6 @@ public class Bssentials extends JavaPlugin implements Listener {
                 }
             } else {
                 if (sender.hasPermission(HEAL_OUTHER_PERM)) {
-//                    @SuppressWarnings("deprecation")
 					Player target = Bukkit.getServer().getPlayer(args[0]);
                     if (target == null) {
                         player.sendMessage(ChatColor.RED + "Could not find player!");
@@ -445,7 +496,6 @@ public class Bssentials extends JavaPlugin implements Listener {
                 }
             } else {
                 if (sender.hasPermission(FEED_OUTHER_PERM)) {
-//                    @SuppressWarnings("deprecation")
 					Player target = Bukkit.getServer().getPlayer(args[0]);
                     if (target == null) {
                         player.sendMessage(ChatColor.RED + "Could not find player!");
@@ -476,7 +526,6 @@ public class Bssentials extends JavaPlugin implements Listener {
         			player.setFlying(true);
         		}
         	} else {
-        		//@SuppressWarnings("deprecation")
 				Player fly = getServer().getPlayer(args[1]);
         		if(args[0].equalsIgnoreCase("off")) {
         			fly.setFlying(false);
@@ -486,6 +535,7 @@ public class Bssentials extends JavaPlugin implements Listener {
         	}
         }
         
+        /* REPAIR COMMAND */
         if (cmd.getName().equalsIgnoreCase("repair")) {
         	if (PlayerCheck.hasPermForCommand(p, "repair")) {
         		player.getItemInHand().setDurability((short) 0);
@@ -496,7 +546,7 @@ public class Bssentials extends JavaPlugin implements Listener {
         }
         
         
-        
+        /* INVSEE COMMAND */
         if (cmd.getName().equalsIgnoreCase("invsee")) {
             if (args.length == 0) {
                 sender.sendMessage("Wrong args!");
@@ -509,6 +559,8 @@ public class Bssentials extends JavaPlugin implements Listener {
                 }
 			}
 	    }
+        
+        
         if (cmd.getName().equalsIgnoreCase("setwarp")) {
             if (args.length == 1) {
                 String warpname = args[0];
@@ -527,6 +579,8 @@ public class Bssentials extends JavaPlugin implements Listener {
                 sender.sendMessage(ChatColor.RED + "Invalid args");
             }
         }
+        
+        
         if (cmd.getName().equalsIgnoreCase("alias")) {
         	if(args.length == 2) {
         		if(getCommand(args[0]).getAliases() == null) {
@@ -543,13 +597,16 @@ public class Bssentials extends JavaPlugin implements Listener {
         	}
         }
         
+        
         if(cmd.getName().equalsIgnoreCase("sethome")) {
         	createHome(p);
         }
         
+        
         if(cmd.getName().equalsIgnoreCase("delhome")) {
         	delHome(p);
         }
+        
         
         if(cmd.getName().equalsIgnoreCase("home")) {
         	if (getHomeConfig().getConfigurationSection("homes." + p.getName()) == null) {
@@ -567,6 +624,8 @@ public class Bssentials extends JavaPlugin implements Listener {
                 }
             }
 		}
+        
+        
         if (cmd.getName().equalsIgnoreCase("warp")) {
         	if(p.hasPermission(WARP_PERM)) {
 	            if (getWarpConfig().getConfigurationSection("warps") == null) {
@@ -585,7 +644,6 @@ public class Bssentials extends JavaPlugin implements Listener {
 	                		sender.sendMessage(ChatColor.RED + "No warp by that name exists.");
 	                	}
 	                } else if (args.length == 2 ) {
-	                	// /warp location playername
 	                	if(p.hasPermission(WARP_OTHERS_PERM)) {
 	                		Player targetPlayer = player.getServer().getPlayer(args[1]);
 	                		if(targetPlayer != null) {
@@ -618,6 +676,8 @@ public class Bssentials extends JavaPlugin implements Listener {
         		sender.sendMessage(ChatColor.RED + "You don't have permission to warp.");
         	}
         }
+        
+        
         if (cmd.getName().equalsIgnoreCase("delwarp")) {
         	if (p.hasPermission(SETWARP_OR_PERM)) {
         		try {
@@ -664,7 +724,7 @@ public class Bssentials extends JavaPlugin implements Listener {
     }
     
     public void teleport(Player player, Location l) {
-    	// check for mount entity in mount metadata, set by com.krisp.minecraft.util.Stable
+    	// check for mount entity in mount metadata
         List<MetadataValue> mount = player.getMetadata("mount");
         if(!mount.isEmpty()) {
         	try {
