@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
+
 // Bukkit
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -33,9 +34,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import io.github.isaiah.listeners.Plugins;
 import io.github.isaiah.listeners.SpawnJoin;
 import io.github.isaiah.listeners.onJoinNick;
+
 // KodeAPI
 import io.github.ramidzkh.KodeAPI.api.YamlConf;
 import io.github.ramidzkh.utils.PlayerCheck;
+
 // Bssentials classes
 import ml.bssentials.addons.GoogleChat;
 import ml.bssentials.api.BssUtils;
@@ -56,6 +59,7 @@ import ml.bssentials.updater.Updater;
     
     @author Isaiah Patton
     @author ramidzkh
+    @author FunWithJava
     
     @version 2.x
     
@@ -65,7 +69,7 @@ import ml.bssentials.updater.Updater;
 
 public class Bssentials extends JavaPlugin implements Listener {
 	
-	public static String version = "2.3";
+	public static String version = "2.4-dev";
 	public Logger logger = getLogger();
 	
 	public static final Permission GAMEMODE_PERM = new Permission ("bssentials.command.gm");
@@ -87,15 +91,15 @@ public class Bssentials extends JavaPlugin implements Listener {
  	public static final Permission WIKI_PERM = new Permission("bssentials.command.mcwiki");
  	public static final Permission YOUTUBE_PERM = new Permission("bssentials.command.mcwiki");
   	public static final Permission BUKKIT_PERM = new Permission("bssentials.command.bukkitdev");
-    public static final Permission PLUGINS_PERM = new Permission("bssentials.command.plugins");
-    public static final Permission PM_PERM = new Permission("bssentials.command.pm");
+        public static final Permission PLUGINS_PERM = new Permission("bssentials.command.plugins");
+        public static final Permission PM_PERM = new Permission("bssentials.command.pm");
 	public static final Permission GOD_PERM = new Permission("bssentials.command.god");
-    public static final Permission PLUGIN_INFO_PERM = new Permission("bssentials.command.bssentials");
-    public static final Permission SETSPAWN_PERM = new Permission("bssentials.command.spawn");
-    public static final Permission BROADCAST_PERM = new Permission("bssentials.command.broadcast");    
+        public static final Permission PLUGIN_INFO_PERM = new Permission("bssentials.command.bssentials");
+        public static final Permission SETSPAWN_PERM = new Permission("bssentials.command.spawn");
+        public static final Permission BROADCAST_PERM = new Permission("bssentials.command.broadcast");    
     
 	public static final String prefix = ChatColor.GREEN + "[Bssentials]" + ChatColor.GOLD + " ";
-    public static final String PREFIX = prefix;
+        public static final String PREFIX = prefix;
     
     public FileConfiguration config = new YamlConfiguration();
     public FileConfiguration warps = new YamlConfiguration();
