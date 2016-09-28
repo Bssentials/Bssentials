@@ -1,7 +1,7 @@
 name: Bssentials
 version: 2.3
 authors: [view on bukkit dev]
-main: io.github.isaiah.bssentials.Bssentials
+main: ml.bssentials.main.Bssentials
 prefix: Bssentials
 description: Essentials like plugin for 1.9.4 and 1.10
 website: http://dev.bukkit.org/bukkit-plugins/bssentials/
