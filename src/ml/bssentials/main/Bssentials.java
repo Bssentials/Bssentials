@@ -359,6 +359,7 @@ public class Bssentials extends JavaPlugin implements Listener {
         		sender.sendMessage("Created rank: "+args[1]+" With the display of: " +args[2]);
         	} else if (args[0].equalsIgnoreCase("setplayer")) {
         		getConfig().set("playerdata." + args[1] + ".rank", args[2]);
+			saveConfig();
         		sender.sendMessage("Added "+args[1]+" to the rank" + args[2]);
         	}
         }
