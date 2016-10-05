@@ -4,7 +4,7 @@
     <property name="dir.classes" value="${dir.build}/classes"/>
     <property name="dir.jar"     value="${dir.build}/jar"/>
 
-    <property name="main-class"  value="io.github.isaiah.bssentials.Bssentials"/>
+    <property name="main-class"  value="ml.bssentials.main.Bssentials"/>
 
     <target name="clean">
         <delete dir="${dir.build}"/>
