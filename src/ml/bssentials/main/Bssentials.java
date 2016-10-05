@@ -401,7 +401,14 @@ public class Bssentials extends JavaPlugin implements Listener {
 		
                		if (sender.hasPermission(STAFFLIST_PERM)) {
 				sender.sendMessage(ChatColor.GREEN + "[Bssentials] Staff:");
-                		sender.sendMessage(" " + ChatColor.YELLOW + getConfig().getStringList("staff"));
+
+				Set<String> keys = getConfig().getConfigurationSection("staff").getKeys(false);
+				String staffList;
+	                	for (String s:keys) {
+					staffList = staffList + s + ", ";
+	                	}
+				sender.sendMessage(ChatColor.BLUE + staffList);
+				
 			} else {
                 		sender.sendMessage("No Permission");
 			} else if (args.length == 2 && args[0].equalsIgnoreCase("add")) {
@@ -708,9 +715,11 @@ public class Bssentials extends JavaPlugin implements Listener {
 	                } else if (args.length == 0 ) {
 	                	Set<String> keys = getWarpConfig().getConfigurationSection("warps").getKeys(false);
 	                	sender.sendMessage(ChatColor.BLUE + "List of warps:");
+				String warpList;
 	                	for (String s:keys) {
-	                		sender.sendMessage(ChatColor.BLUE + "  " + s);
+					warpList = warpList + s + ", ";
 	                	}
+				sender.sendMessage(ChatColor.BLUE + warpList);
 	            	} else {
 	                    sender.sendMessage(ChatColor.RED + "Invalid args");
 	                }
