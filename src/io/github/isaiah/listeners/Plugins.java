@@ -10,6 +10,10 @@ import org.bukkit.plugin.Plugin;
 
 import ml.bssentials.main.Bssentials;
 
+/**
+ * The class that controls the /plugins and /pl (also the /plugins ver and /pl ver)
+ *
+ **/
 public class Plugins implements Listener {
 
 	@EventHandler
@@ -34,36 +38,45 @@ public class Plugins implements Listener {
         	}
     	}
     
+	/**
+	 * Shows the server's plugins
+	 **/
 	public static String getPlugins() {
 		return getPlugins(false);
 	}
 
+	/**
+	 * Shows the server's plugins with the versions shown
+	 **/
 	public static String getPluginsWithVer() {
         	return getPlugins(true);
     	}
 	
-    public static String getPlugins(boolean showVer) {
-        Plugin[] plugins;
-        StringBuilder pluginList = new StringBuilder();
-        Plugin[] arrplugin = plugins = Bukkit.getPluginManager().getPlugins();
-        int n = arrplugin.length;
-        int n2 = 0;
-        while (n2 < n) {
-            Plugin plugin = arrplugin[n2];
-            if (pluginList.length() > 0) {
-                pluginList.append(ChatColor.WHITE);
-                pluginList.append(", ");
-            }
-            pluginList.append((Object)(plugin.isEnabled() ? ChatColor.GREEN : ChatColor.RED));
+	/**
+	 * Shows the server's plugins, with or with out the verions
+	 **/
+   	public static String getPlugins(boolean showVer) {
+        	Plugin[] plugins;
+       		StringBuilder pluginList = new StringBuilder();
+        	Plugin[] arrplugin = plugins = Bukkit.getPluginManager().getPlugins();
+        	int n = arrplugin.length;
+        	int n2 = 0;
+        	while (n2 < n) {
+           		Plugin plugin = arrplugin[n2];
+            		if (pluginList.length() > 0) {
+               			pluginList.append(ChatColor.WHITE);
+                		pluginList.append(", ");
+            		}
+            		pluginList.append((Object)(plugin.isEnabled() ? ChatColor.GREEN : ChatColor.RED));
             
-            if (!showVer == true) {
-            	pluginList.append(plugin.getDescription().getName());
-            } else {
-            	pluginList.append(plugin.getDescription().getName() + ChatColor.GRAY + "(" + plugin.getDescription().getVersion() + ")" + ChatColor.RESET);
-            }
-            ++n2;
-        }
+            		if (!showVer == true) {
+            			pluginList.append(plugin.getDescription().getName());
+           		} else {
+            			pluginList.append(plugin.getDescription().getName() + ChatColor.GRAY + "(" + plugin.getDescription().getVersion() + ")" + ChatColor.RESET);
+           		}
+            		++n2;
+        	}
         
-        return "(" + plugins.length + "): " + pluginList.toString();
-    }
+        	return "(" + plugins.length + "): " + pluginList.toString();
+   	 }
 }
