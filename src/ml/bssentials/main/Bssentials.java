@@ -397,24 +397,25 @@ public class Bssentials extends JavaPlugin implements Listener {
         }
 
         if (cmd.getName().equalsIgnoreCase("staff")) {
-		if (args.length == 0) {
+            if (args.length == 0) {
 		
-               		if (sender.hasPermission(STAFFLIST_PERM)) {
-				sender.sendMessage(ChatColor.GREEN + "[Bssentials] Staff:");
+               	if (sender.hasPermission(STAFFLIST_PERM)) {
+                    sender.sendMessage(ChatColor.GREEN + "[Bssentials] Staff:");
 
-				Set<String> keys = getConfig().getConfigurationSection("staff").getKeys(false);
-				String staffList;
-	                	for (String s:keys) {
-					staffList = staffList + s + ", ";
-	                	}
-				sender.sendMessage(ChatColor.BLUE + staffList);
+                    Set<String> keys = getConfig().getConfigurationSection("staff").getKeys(false);
+                    String staffList;
+                    for (String s:keys) {
+                        staffList = staffList + s + ", ";
+                    }
+                    sender.sendMessage(ChatColor.BLUE + staffList);
 				
-			} else {
-                		sender.sendMessage("No Permission");
-			} else if (args.length == 2 && args[0].equalsIgnoreCase("add")) {
-				if (sender.hasPermission(STAFFADD_PERM)) {
+                } else {
+                        sender.sendMessage("No Permission");
+                    }
+                } else if (args.length == 2 && args[0].equalsIgnoreCase("add")) {
+                    if (sender.hasPermission(STAFFADD_PERM)) {
 				
-    				List<String> staffList = getConfig().getStringList("staff");
+                        List<String> staffList = getConfig().getStringList("staff");
                  		String staff = args[1].toLowerCase();
                     
                  		if (!words.contains(word)) {
@@ -426,23 +427,25 @@ public class Bssentials extends JavaPlugin implements Listener {
                  			sender.sendMessage(prefix + ChatColor.RED + ChatColor.BOLD + "Error! The name you have typed is already not on the list");
                  		}
 					
-				}
+                    } else {
+                        sender.sendMessage("No permission");
+                    }
     			} else if (args.length == 2 && args[0].equalsIgnoreCase("remove")) {
-				if (sender.hasPermission(STAFFREMOVE_PERM)) {
+                    if (sender.hasPermission(STAFFREMOVE_PERM)) {
 					
-    				List<String> staffList = getConfig().getStringList("staff");
-    				String staff = args[1].toLowerCase();
+                        List<String> staffList = getConfig().getStringList("staff");
+                        String staff = args[1].toLowerCase();
                     
-    				if (staffList.contains(staff)) {
+                        if (staffList.contains(staff)) {
                         		staffList.remove(staff);
                         		getConfig().set("staff", staffList);
                         		saveConfig();
                         		sender.sendMessage(prefix + "staff member removed from the list");
-    				} else {
-    					sender.sendMessage(prefix + ChatColor.RED + ChatColor.BOLD + "Error! The name you have typed is already not on the list");
-    				}
-				
-				}
+                        } else {
+                            sender.sendMessage(prefix + ChatColor.RED + ChatColor.BOLD + "Error! The name you have typed is already not on the list");
+                        }
+                    
+                    }
     			}
         }
         
@@ -748,8 +751,11 @@ public class Bssentials extends JavaPlugin implements Listener {
         	}
         }
         return true;
-    }      
+    }     
     
+    /**
+     * Creates an Warp
+     **/
     public void createWarp(Player p, String warpname) {
         getWarpConfig().set("warps." + warpname + ".world", p.getLocation().getWorld().getName());
         getWarpConfig().set("warps." + warpname + ".x", p.getLocation().getX());
@@ -759,6 +765,10 @@ public class Bssentials extends JavaPlugin implements Listener {
         
         p.sendMessage(ChatColor.GREEN + warpname + " warp set!");
     }
+    
+    /**
+     * Creates the player's home
+     **/
     public void createHome(Player p) {
     	String homename = p.getName();
         getHomeConfig().set("homes." + homename + ".world", p.getLocation().getWorld().getName());
@@ -769,6 +779,10 @@ public class Bssentials extends JavaPlugin implements Listener {
         
         p.sendMessage(ChatColor.GREEN + "Your home has been set!");
     }
+    
+    /**
+     * Deleates the player's home
+     **/
     public void delHome(Player p) {
     	String homename = p.getName();
     	getHomeConfig().set("homes." + homename, null);
