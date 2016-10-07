@@ -8,40 +8,39 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.Plugin;
 
-//import io.github.isaiah.bssentials.Bssentials;
 import ml.bssentials.main.Bssentials;
 
 public class Plugins implements Listener {
 
 	@EventHandler
-    public void pluginCommand(PlayerCommandPreprocessEvent event) {
-        Player player = event.getPlayer();
-        String plnoperm = ChatColor.GREEN + "[Bssentials] " + ChatColor.GOLD + "You don't have permission to use that command!";
-        if(event.getMessage().equalsIgnoreCase("/plugins") || event.getMessage().equalsIgnoreCase("/pl") || event.getMessage().equalsIgnoreCase("/plugins ver") || event.getMessage().equalsIgnoreCase("/pl ver")) {
-            if (player.hasPermission(Bssentials.PLUGINS_PERM)) {
-                if (event.getMessage().equalsIgnoreCase("/plugins ver") || event.getMessage().equalsIgnoreCase("/pl ver")) {
-                    event.setCancelled(true);
-                    player.sendMessage(ChatColor.GREEN + "[Bssentials] " + ChatColor.GOLD + "Bukkit Plugins:");
-                    player.sendMessage(getPluginsWithVer());
-                } else {
-                    event.setCancelled(true);
-                    player.sendMessage(ChatColor.GREEN + "[Bssentials] " + ChatColor.GOLD + "Bukkit Plugins:");
-                    player.sendMessage(getPlugins());
-                }
-            } else {
-                event.setCancelled(true);
-                player.sendMessage(plnoperm);
-            }
-        }
-    }
+        public void pluginCommand(PlayerCommandPreprocessEvent event) {
+        	Player player = event.getPlayer();
+       		 String plnoperm = ChatColor.GREEN + "[Bssentials] " + ChatColor.GOLD + "You don't have permission to use that command!";
+       		 if(event.getMessage().equalsIgnoreCase("/plugins") || event.getMessage().equalsIgnoreCase("/pl") || event.getMessage().equalsIgnoreCase("/plugins ver") || event.getMessage().equalsIgnoreCase("/pl ver")) {
+            	 	if (player.hasPermission(Bssentials.PLUGINS_PERM)) {
+                 		if (event.getMessage().equalsIgnoreCase("/plugins ver") || event.getMessage().equalsIgnoreCase("/pl ver")) {
+                    			event.setCancelled(true);
+                   			player.sendMessage(ChatColor.GREEN + "[Bssentials] " + ChatColor.GOLD + "Bukkit Plugins:");
+                    			player.sendMessage(getPluginsWithVer());
+                		} else {
+                    			event.setCancelled(true);
+                   			player.sendMessage(ChatColor.GREEN + "[Bssentials] " + ChatColor.GOLD + "Bukkit Plugins:");
+                   			player.sendMessage(getPlugins());
+               			 }
+            		} else {
+                		event.setCancelled(true);
+                		player.sendMessage(plnoperm);
+            		}
+        	}
+    	}
     
 	public static String getPlugins() {
 		return getPlugins(false);
 	}
 
 	public static String getPluginsWithVer() {
-        return getPlugins(true);
-    }
+        	return getPlugins(true);
+    	}
 	
     public static String getPlugins(boolean showVer) {
         Plugin[] plugins;
