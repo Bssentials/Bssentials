@@ -418,7 +418,7 @@ public class Bssentials extends JavaPlugin implements Listener {
                         List<String> staffList = getConfig().getStringList("staff");
                  		String staff = args[1].toLowerCase();
                     
-                 		if (!words.contains(staff)) {
+                 		if (!staffList.contains(staff)) {
                  			staffList.add(staff);
                  			getConfig().set("staff", staffList);
                  			saveConfig();
