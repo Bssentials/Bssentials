@@ -29,8 +29,15 @@ public class BssUtils {
 	/**
 	 * Broadcast an message to the server
 	 **/
-	public static void broadcastMessage(Object message) {
+	public static void broadcastMessage(String message) {
 		Bukkit.broadcastMessage(message);
+	}
+	
+	/**
+	 * Broadcast an message to the server
+	 **/
+	public static void broadcastMessage(Object message) {
+		Bukkit.broadcastMessage(message.toString());
 	}
 
 }
