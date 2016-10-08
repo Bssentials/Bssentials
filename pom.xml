@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   
-  <groupId>io.github.isaiah</groupId>
+  <groupId>ml.bssentials.main</groupId>
   <artifactId>Bssentials</artifactId>
   <version>2.x</version>
   <packaging>jar</packaging>
@@ -13,6 +13,9 @@
   <build>
     <defaultGoal>package</defaultGoal>
     <directory>${basedir}</directory>
+
+    <sourceDirectory>${basedir}/src/</sourceDirectory>
+	  
     <finalName>Bssentials-2.x</finalName>
     <plugins>
       <plugin>

@@ -5,7 +5,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-//import io.github.isaiah.bssentials.Bssentials;
 import ml.bssentials.main.Bssentials;
 
 public class Ping implements CommandExecutor {

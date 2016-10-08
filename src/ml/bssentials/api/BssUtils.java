@@ -1,6 +1,7 @@
 package ml.bssentials.api;
 
 import org.bukkit.entity.Player;
+import org.bukkit.Bukkit;
 
 import io.github.ramidzkh.utils.PlayerCheck;
 
@@ -23,6 +24,20 @@ public class BssUtils {
 	 * */
 	public static void noPermMsg(Player p) {
 		p.sendMessage("No permisson!");
+	}
+	
+	/**
+	 * Broadcast an message to the server
+	 **/
+	public static void broadcastMessage(String message) {
+		Bukkit.broadcastMessage(message);
+	}
+	
+	/**
+	 * Broadcast an message to the server
+	 **/
+	public static void broadcastMessage(Object message) {
+		Bukkit.broadcastMessage(message.toString());
 	}
 
 }

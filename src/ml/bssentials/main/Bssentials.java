@@ -74,11 +74,13 @@ import ml.bssentials.updater.Updater;
 
 public class Bssentials extends JavaPlugin implements Listener {
 	
-	public static String version = "2.5-dev";
+        public static String version = "2.5-dev";
 	public Logger logger = getLogger();
 	
 	public static final Permission GAMEMODE_PERM = new Permission ("bssentials.command.gm");
 	public static final Permission STAFFLIST_PERM = new Permission ("bssentials.command.staff");
+	public static final Permission STAFFADD_PERM = new Permission ("bssentials.command.staff.add");
+	public static final Permission STAFFREMOVE_PERM = new Permission ("bssentials.command.staff.remove");
 	public static final Permission INVSEE_PERM = new Permission ("bssentials.command.invsee");
 	public static final Permission SETWARP_PERM = new Permission ("bssentials.command.setwarp");
 	public static final Permission SETWARP_OR_PERM = new Permission ("bssentials.command.setwarp.or");
@@ -96,40 +98,39 @@ public class Bssentials extends JavaPlugin implements Listener {
  	public static final Permission WIKI_PERM = new Permission("bssentials.command.mcwiki");
  	public static final Permission YOUTUBE_PERM = new Permission("bssentials.command.mcwiki");
   	public static final Permission BUKKIT_PERM = new Permission("bssentials.command.bukkitdev");
-    public static final Permission PLUGINS_PERM = new Permission("bssentials.command.plugins");
-    public static final Permission PM_PERM = new Permission("bssentials.command.pm");
+        public static final Permission PLUGINS_PERM = new Permission("bssentials.command.plugins");
+        public static final Permission PM_PERM = new Permission("bssentials.command.pm");
 	public static final Permission GOD_PERM = new Permission("bssentials.command.god");
-    public static final Permission PLUGIN_INFO_PERM = new Permission("bssentials.command.bssentials");
-    public static final Permission SETSPAWN_PERM = new Permission("bssentials.command.spawn");
-    public static final Permission BROADCAST_PERM = new Permission("bssentials.command.broadcast");    
+        public static final Permission PLUGIN_INFO_PERM = new Permission("bssentials.command.bssentials");
+        public static final Permission SETSPAWN_PERM = new Permission("bssentials.command.spawn");
+        public static final Permission BROADCAST_PERM = new Permission("bssentials.command.broadcast");    
     
 	public static final String prefix = ChatColor.GREEN + "[Bssentials]" + ChatColor.GOLD + " ";
-    public static final String PREFIX = prefix;
+        public static final String PREFIX = prefix;
     
-    public FileConfiguration config = new YamlConfiguration();
-    public FileConfiguration warps = new YamlConfiguration();
-    public FileConfiguration homes = new YamlConfiguration();
+        public FileConfiguration config = new YamlConfiguration();
+        public FileConfiguration warps = new YamlConfiguration();
+        public FileConfiguration homes = new YamlConfiguration();
     
-    public void onEnable() {
-        PluginManager pm = getServer().getPluginManager();
+        public void onEnable() {
+                PluginManager pm = getServer().getPluginManager();
 		Updater updater = new Updater(this);
 		updater.checkForUpdate();
 		
 		saveDefaultConfig();
 		registerPermissions(pm);
-        createFiles();
-        saveDefaultConfig();
+                createFiles();
+                saveDefaultConfig();
         
-        getCommand("spawnmob").setExecutor(new spawnmob());
-        getCommand("viewnick").setExecutor(new ViewNick());
-        getCommand("ping").setExecutor(new Ping());
-        getCommand("broadcast").setExecutor(new Broadcast());
-        getCommand("pm").setExecutor(new Pm());
+                getCommand("spawnmob").setExecutor(new spawnmob());
+                getCommand("viewnick").setExecutor(new ViewNick());
+                getCommand("ping").setExecutor(new Ping());
+                getCommand("broadcast").setExecutor(new Broadcast());
+                getCommand("pm").setExecutor(new Pm());
         
+                registerGoogleChat();
         
-        registerGoogleChat();
-        
-        pm.registerEvents(new ChatFormat(this), this);
+                pm.registerEvents(new ChatFormat(this), this);
 		pm.registerEvents(new Plugins(), this);
 		pm.registerEvents(new onJoinNick(this), this);
 		pm.registerEvents(new SpawnJoin(this), this);
@@ -138,18 +139,30 @@ public class Bssentials extends JavaPlugin implements Listener {
 
     private File configf, warpsf, homesf;
 
+    /**
+    * Gets the warps.yml
+    */
     public FileConfiguration getWarpConfig() {
         return this.warps;
     }
     
+    /**
+    * Gets the homes.yml
+    */
     public FileConfiguration getHomeConfig() {
     	return this.homes;
     }
     
+    /**
+    * Saves the warps.yml
+    */
     public void saveWarpConfig() {
     	YamlConf.saveConf(warps, warpsf);
     }
     
+    /**
+    * Gets the homes.yml
+    */
     public void saveHomeConfig() {
     	YamlConf.saveConf(homes, homesf);
     }
@@ -193,15 +206,17 @@ public class Bssentials extends JavaPlugin implements Listener {
     
 	private void registerGoogleChat() {
 		getCommand("BukkitDev").setExecutor(new GoogleChat());
-        getCommand("youtube").setExecutor(new GoogleChat());
-        getCommand("google").setExecutor(new GoogleChat());
-        getCommand("mcwiki").setExecutor(new GoogleChat());
+                getCommand("youtube").setExecutor(new GoogleChat());
+                getCommand("google").setExecutor(new GoogleChat());
+                getCommand("mcwiki").setExecutor(new GoogleChat());
 	}
 	
     private void registerPermissions(PluginManager pm) {
         pm.addPermission(GAMEMODE_PERM);
-		pm.addPermission(STAFFLIST_PERM);
-		pm.addPermission(INVSEE_PERM);
+	pm.addPermission(STAFFLIST_PERM);
+	pm.addPermission(STAFFADD_PERM);
+ 	pm.addPermission(STAFFREMOVE_PERM);
+	pm.addPermission(INVSEE_PERM);
         pm.addPermission(SETWARP_PERM);
         pm.addPermission(SETWARP_OR_PERM);
         pm.addPermission(SPAWNMOB_PERM);
@@ -224,22 +239,8 @@ public class Bssentials extends JavaPlugin implements Listener {
         pm.addPermission(WARP_OTHERS_PERM);
     }
     
-    @SuppressWarnings("unused")
-	private void registerPerms(PluginManager pm, Permission... perms) {
-    	for (Permission perm : perms) {
-            pm.addPermission(perm);
-        }
-    }
-    
     @Deprecated
     public void nickName(Player player, String name) { ChatAPI.nickName(player, name); }
-    
-    public boolean ifCommand(Command cmd, String cmd2) {
-    	if (cmd.getName().equalsIgnoreCase(cmd2)) {
-    		
-    	}
-		return true;
-	}
     
     @SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args) {
@@ -267,11 +268,10 @@ public class Bssentials extends JavaPlugin implements Listener {
             player.sendMessage(pre + "Version: " + ChatColor.GREEN + version);
             player.sendMessage(pre + "Authors: " + ChatColor.GREEN + authors);
             player.sendMessage(pre + "Description: " + ChatColor.GREEN + "Essentials for 1.10");
-            //player.sendMessage(pre + "Addons: " + ChatColor.GREEN + AddonManager.getAllAddons());
         }
      
         if (cmd.getName().equalsIgnoreCase("nick")) {
-            nickName(player, StringUtils.join(args, " "));
+            ChatAPI.nickName(player, StringUtils.join(args, " "));
         }
         
         if (cmd.getName().equalsIgnoreCase("info")) {
@@ -397,12 +397,56 @@ public class Bssentials extends JavaPlugin implements Listener {
         }
 
         if (cmd.getName().equalsIgnoreCase("staff")) {
-                if (sender.hasPermission(STAFFLIST_PERM)) {
-			sender.sendMessage(ChatColor.GREEN + "[Bssentials] Staff:");
-                	sender.sendMessage(" " + ChatColor.YELLOW + getConfig().getStringList("staff"));
-		} else {
-                sender.sendMessage("No Permission");
-            }
+            if (args.length == 0) {
+		
+               	if (sender.hasPermission(STAFFLIST_PERM)) {
+                    sender.sendMessage(ChatColor.GREEN + "[Bssentials] Staff:");
+
+                    Set<String> keys = getConfig().getConfigurationSection("staff").getKeys(false);
+                    String staffList = "";
+                    for (String s:keys) {
+                        staffList = staffList + s + ", ";
+                    }
+                    sender.sendMessage(ChatColor.BLUE + staffList);
+				
+                } else {
+                        sender.sendMessage("No Permission");
+                    }
+                } else if (args.length == 2 && args[0].equalsIgnoreCase("add")) {
+                    if (sender.hasPermission(STAFFADD_PERM)) {
+				
+                        List<String> staffList = getConfig().getStringList("staff");
+                 		String staff = args[1].toLowerCase();
+                    
+                 		if (!staffList.contains(staff)) {
+                 			staffList.add(staff);
+                 			getConfig().set("staff", staffList);
+                 			saveConfig();
+                 			sender.sendMessage(prefix + "Staff member added to the list");
+                 		} else {
+                 			sender.sendMessage(prefix + ChatColor.RED + ChatColor.BOLD + "Error! The name you have typed is already not on the list");
+                 		}
+					
+                    } else {
+                        sender.sendMessage("No permission");
+                    }
+    			} else if (args.length == 2 && args[0].equalsIgnoreCase("remove")) {
+                    if (sender.hasPermission(STAFFREMOVE_PERM)) {
+					
+                        List<String> staffList = getConfig().getStringList("staff");
+                        String staff = args[1].toLowerCase();
+                    
+                        if (staffList.contains(staff)) {
+                        		staffList.remove(staff);
+                        		getConfig().set("staff", staffList);
+                        		saveConfig();
+                        		sender.sendMessage(prefix + "staff member removed from the list");
+                        } else {
+                            sender.sendMessage(prefix + ChatColor.RED + ChatColor.BOLD + "Error! The name you have typed is already not on the list");
+                        }
+                    
+                    }
+    			}
         }
         
        if (cmd.getName().equalsIgnoreCase("setspawn")) {
@@ -634,7 +678,7 @@ public class Bssentials extends JavaPlugin implements Listener {
             }
 		}
         
-        
+        /* WARP COMMAND */
         if (cmd.getName().equalsIgnoreCase("warp")) {
         	if(p.hasPermission(WARP_PERM)) {
 	            if (getWarpConfig().getConfigurationSection("warps") == null) {
@@ -674,9 +718,11 @@ public class Bssentials extends JavaPlugin implements Listener {
 	                } else if (args.length == 0 ) {
 	                	Set<String> keys = getWarpConfig().getConfigurationSection("warps").getKeys(false);
 	                	sender.sendMessage(ChatColor.BLUE + "List of warps:");
+				String warpList = "";
 	                	for (String s:keys) {
-	                		sender.sendMessage(ChatColor.BLUE + "  " + s);
+					warpList = warpList + s + ", ";
 	                	}
+				sender.sendMessage(ChatColor.BLUE + warpList);
 	            	} else {
 	                    sender.sendMessage(ChatColor.RED + "Invalid args");
 	                }
@@ -705,8 +751,11 @@ public class Bssentials extends JavaPlugin implements Listener {
         	}
         }
         return true;
-    }      
+    }     
     
+    /**
+     * Creates an Warp
+     **/
     public void createWarp(Player p, String warpname) {
         getWarpConfig().set("warps." + warpname + ".world", p.getLocation().getWorld().getName());
         getWarpConfig().set("warps." + warpname + ".x", p.getLocation().getX());
@@ -716,6 +765,10 @@ public class Bssentials extends JavaPlugin implements Listener {
         
         p.sendMessage(ChatColor.GREEN + warpname + " warp set!");
     }
+    
+    /**
+     * Creates the player's home
+     **/
     public void createHome(Player p) {
     	String homename = p.getName();
         getHomeConfig().set("homes." + homename + ".world", p.getLocation().getWorld().getName());
@@ -726,6 +779,10 @@ public class Bssentials extends JavaPlugin implements Listener {
         
         p.sendMessage(ChatColor.GREEN + "Your home has been set!");
     }
+    
+    /**
+     * Deleates the player's home
+     **/
     public void delHome(Player p) {
     	String homename = p.getName();
     	getHomeConfig().set("homes." + homename, null);

@@ -12,11 +12,11 @@ public class ChatFormat implements Listener {
 	private Bssentials main;
 	
 	public ChatFormat(Bssentials bs) {
-    	this.main = bs;
-    }
+    	    this.main = bs;
+        }
 	
 	@EventHandler
-    public void onChat(AsyncPlayerChatEvent event) {
+        public void onChat(AsyncPlayerChatEvent event) {
 		if (main.getConfig().getBoolean("ranks.enable") != false) {
 			Player player = event.getPlayer();
 			String rankname;
@@ -29,8 +29,7 @@ public class ChatFormat implements Listener {
 				}
 			}
 			String rank = main.getConfig().getString("ranks." + rankname + ".prefix");
-      
-			//String format = "%rank% %s : %s";
+
 			String format = main.getConfig().getString("ranks.format");
 			if (format == null) {
 				main.getConfig().set("ranks.format", "%rank% %s : %s");

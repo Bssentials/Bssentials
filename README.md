@@ -1,13 +1,12 @@
 ## Bssentials v2.x [![Build Status](https://travis-ci.org/Bssentials/Bssentials-2.svg?branch=master)](https://travis-ci.org/Bssentials/Bssentials-2)
 Bssentials v2.x,
 
-[![Tested](http://isaiahpatton.github.io/TestedonMinicraft.png)](http://miniweb.enjin.com)
-
-## what is bssentials?
+## What is Bssentials?
 Bssentials is a TOTAL remake of Essentials from the ground up!
 
 ## changing code
 Before you change any line of code <a href="https://www.clahub.com/agreements/Bssentials/Bssentials-2">sign the Contributor License Agreement</a>, this is just for proof that you agree to license your code under GPLv3.
+(so, Bssentials can't get an DMCA take down from you)
 
 After that you might what to look at the CONTRIBUTING.md for an guideline (if you what)
 
