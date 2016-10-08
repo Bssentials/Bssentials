@@ -60,6 +60,12 @@ public class MobAPI {
             spawnMob(EntityType.POLAR_BEAR, world, TargetLocation);
         }else if(mob.equalsIgnoreCase("RABBIT")) {
             spawnMob(EntityType.RABBIT, world, TargetLocation);
+	}else if(mob.equalsIgnoreCase("MINECART")) {
+		spawnMob(EntityType.MINECART, world, TargetLocation);
+	}else if(mob.equalsIgnoreCase("HORSE")) {
+		spawnMob(EntityType.HORSE, world, TargetLocation);
+	}else if(mob.equalsIgnoreCase("SHULKER")) {
+		spawnMob(EntityType.SHULKER, world, TargetLocation);
         } else {
             sender.sendMessage("Mob not programed! use /summon!");
         }
