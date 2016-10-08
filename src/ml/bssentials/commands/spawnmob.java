@@ -24,7 +24,7 @@ public class spawnmob implements CommandExecutor {
                     player.sendMessage(ChatColor.GOLD + "Wolf, Pig, PigZombie, Cow, Blaze, CaveSpider, Chicken, Creeper,");
                     player.sendMessage(ChatColor.GOLD + "EnderDragon, Enderman, Ghast, Giant, IronGolem, MagmaCube, Ocelot,");
                     player.sendMessage(ChatColor.GOLD + "Sheep, SilverFish, Skeleton, Slime, Spider, Squid, Villager, Zombie,");
-                    player.sendMessage(ChatColor.GOLD + "PolarBear, Rabbit");
+                    player.sendMessage(ChatColor.GOLD + "PolarBear, Rabbit, Minecart, Horse, Shulker");
                 } else {
                     World world = player.getWorld();
                     Location TargetLocation = player.getLocation();
