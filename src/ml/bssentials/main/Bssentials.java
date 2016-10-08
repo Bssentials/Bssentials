@@ -403,7 +403,7 @@ public class Bssentials extends JavaPlugin implements Listener {
                     sender.sendMessage(ChatColor.GREEN + "[Bssentials] Staff:");
 
                     Set<String> keys = getConfig().getConfigurationSection("staff").getKeys(false);
-                    String staffList;
+                    String staffList = "";
                     for (String s:keys) {
                         staffList = staffList + s + ", ";
                     }
@@ -678,7 +678,7 @@ public class Bssentials extends JavaPlugin implements Listener {
             }
 		}
         
-        
+        /* WARP COMMAND */
         if (cmd.getName().equalsIgnoreCase("warp")) {
         	if(p.hasPermission(WARP_PERM)) {
 	            if (getWarpConfig().getConfigurationSection("warps") == null) {
@@ -718,7 +718,7 @@ public class Bssentials extends JavaPlugin implements Listener {
 	                } else if (args.length == 0 ) {
 	                	Set<String> keys = getWarpConfig().getConfigurationSection("warps").getKeys(false);
 	                	sender.sendMessage(ChatColor.BLUE + "List of warps:");
-				String warpList;
+				String warpList = "";
 	                	for (String s:keys) {
 					warpList = warpList + s + ", ";
 	                	}
