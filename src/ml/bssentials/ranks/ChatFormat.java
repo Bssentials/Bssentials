@@ -17,22 +17,22 @@ public class ChatFormat implements Listener {
 	
 	@EventHandler
         public void onChat(AsyncPlayerChatEvent event) {
-		if (main.getConfig().getBoolean("ranks.enable") != false) {
+		if (main.getRankConfig().getBoolean("ranks.enable") != false) {
 			Player player = event.getPlayer();
 			String rankname;
-			if (main.getConfig().getString("playerdata." + player.getName() + ".rank") != null) {
+			if (main.getRankConfig().getString("playerdata." + player.getName() + ".rank") != null) {
 				rankname = main.getConfig().getString("playerdata." + player.getName() + ".rank");
 			} else {
 				rankname = "default";
-				if (main.getConfig().getString("ranks." + rankname + ".prefix") == null) {
-					main.getConfig().set("ranks."+rankname+".prefix", "&7[Default]&f");
+				if (main.getRankConfig().getString("ranks." + rankname + ".prefix") == null) {
+					main.getRankConfig().set("ranks."+rankname+".prefix", "&7[Default]&f");
 				}
 			}
-			String rank = main.getConfig().getString("ranks." + rankname + ".prefix");
+			String rank = main.getRankConfig().getString("ranks." + rankname + ".prefix");
 
-			String format = main.getConfig().getString("ranks.format");
+			String format = main.getRankConfig().getString("ranks.format");
 			if (format == null) {
-				main.getConfig().set("ranks.format", "%rank% %s : %s");
+				main.getRankConfig().set("ranks.format", "%rank% %s : %s");
 			}
         
 			event.setFormat(format.replaceAll("%rank%", ChatColor.translateAlternateColorCodes('&', rank)));

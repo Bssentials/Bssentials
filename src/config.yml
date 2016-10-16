@@ -3,31 +3,22 @@
 #Enable the update check?
 checkForUpdate: true
 
-#Your server's Staff members
+# Your server's Staff members
 staff:
   - 'This is the staff command!'
   - 'Edit this in your Bssentials config.yml'
 
-#Ranks
-ranks:
-    #the format is the way the chat will look!
-    # %rank% is the players rank!
-    # the 1st %s is the players name
-    # the 2nt %s is the chat message
-    format: "%rank% %s : %s"
-    #the Enable is if you don't what to have the built-in ranks you can set it to false
-    enable: true
-    #Here are example ranks!
-    default:
-        prefix: "&7[Default]&f"
-    owner:
-        prefix: "&4[Owner]&c"
-        
+# Ranks are Now in ranks.yml !
     
+commandBlackList:
+    - 'cmd1'
+    - 'cmd2'
+    
+antiswear:
+    - 'word1'
+    - 'word2'
 
-#Here is player's data, ex: nicknames and ranks!
+songOfTheDay: ''
+
+# Here is player's data, ex: nicknames and ranks!
 playerdata:
-
-
-#Warps!!
-#Now stored in warps.yml
