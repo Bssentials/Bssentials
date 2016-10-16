@@ -187,7 +187,7 @@ public class Bssentials extends JavaPlugin implements Listener {
         configf = new File(getDataFolder(), "config.yml");
         warpsf = new File(getDataFolder(), "warps.yml");
         homesf = new File(getDataFolder(), "homes.yml");
-        ranksf = new File(getDataFolder(), "ranks.yml")
+        ranksf = new File(getDataFolder(), "ranks.yml");
 
         if (!configf.exists()) {
             configf.getParentFile().mkdirs();
