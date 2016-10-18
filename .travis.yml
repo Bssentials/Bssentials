@@ -1,5 +1,5 @@
 language: java
 sudo: false
-script: mvn compile
+script: mvn package
 deploy:
   skip_cleanup: true
