@@ -16,7 +16,7 @@
 
     <sourceDirectory>${basedir}/src/</sourceDirectory>
 	  
-    <finalName>Bssentials-2.x</finalName>
+    <finalName>Bssentials-${project.version}</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
