@@ -1,7 +1,8 @@
-package ml.bssentials.api;
+ package ml.bssentials.api;
 
 import org.bukkit.entity.Player;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
 
 import io.github.ramidzkh.utils.PlayerCheck;
 
@@ -25,6 +26,16 @@ public class BssUtils {
 	public static void noPermMsg(Player p) {
 		p.sendMessage("No permisson!");
 	}
+    
+    /**
+	 * Send the no permission message to the player!
+	 * 
+	 * @author Bssentials
+	 * */
+	public static void noPermMsg(Player p, Command c) {
+		p.sendMessage("You don't have permission: bssentials.command." + cmd.getName().toLowerCase(););
+	}
+    
 	
 	/**
 	 * Broadcast an message to the server

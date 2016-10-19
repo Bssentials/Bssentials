@@ -266,12 +266,10 @@ public class Bssentials extends JavaPlugin implements Listener {
     
     @SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args) {
-    	if(!(sender instanceof Player) && !cmd.getName().equalsIgnoreCase("bssentials")){
+    	if(!(sender instanceof Player)){
     		sender.sendMessage("You are not a player");
     		return false;
-    	} else if (!(sender instanceof Player) && cmd.getName().equalsIgnoreCase("bssentials")){
-    		sender.sendMessage("Bssentials!");
-    	}
+        }
     	
         String authors = "Isaiah Patton, & ramidzkh";
         String NoPerm = prefix + "You don't have permission: bssentials.command." + cmd.getName().toLowerCase();
@@ -287,10 +285,18 @@ public class Bssentials extends JavaPlugin implements Listener {
             }
             String pre = PREFIX;
 		
-            player.sendMessage(pre + "Name: " + ChatColor.GREEN + "Bssentials");
-            player.sendMessage(pre + "Version: " + ChatColor.GREEN + version);
-            player.sendMessage(pre + "Authors: " + ChatColor.GREEN + authors);
-            player.sendMessage(pre + "Description: " + ChatColor.GREEN + "Essentials for 1.10");
+            if (args.length == 0) {
+                player.sendMessage(pre + "Name: " + ChatColor.GREEN + "Bssentials");
+                player.sendMessage(pre + "Version: " + ChatColor.GREEN + version);
+                player.sendMessage(pre + "Authors: " + ChatColor.GREEN + authors);
+                player.sendMessage(pre + "Description: " + ChatColor.GREEN + "Essentials for 1.10");
+                player.sendMessage(pre + "Song of the day: " + getConfig().getString("songOfTheDay"));
+            } else {
+                if (args[0] == "version") { player.sendMessage(pre + "Version: " + ChatColor.GREEN + version); }
+                if (args[0] == "authors") { player.sendMessage(pre + "Authors: " + ChatColor.GREEN + authors); }
+                if (args[0] == "about") { player.sendMessage(pre + "Description: " + ChatColor.GREEN + "Essentials for 1.10"); }
+                if (args[0] == "sotd") { player.sendMessage(pre + "Song of the day: " + getConfig().getString("songOfTheDay")); }
+            }
         }
      
         /* NICK COMMAND */
@@ -343,7 +349,7 @@ public class Bssentials extends JavaPlugin implements Listener {
                         sender.sendMessage("/removelag unloadchunks <world>");
                     }
                 } else {
-                    BssUtils.noPermMsg(p);
+                    BssUtils.noPermMsg(p, cmd);
                 }
                 return true;
             }
@@ -366,8 +372,12 @@ public class Bssentials extends JavaPlugin implements Listener {
 
         /* CI COMMAND */
         if (cmd.getName().equalsIgnoreCase("ci")) {
-            player.getInventory().clear();
-            sender.sendMessage(prefix + "Inventory cleared!");
+            if (sender.hasPermForCommand("ci")) {
+                player.getInventory().clear();
+                sender.sendMessage(prefix + "Inventory cleared!");
+            } else {
+                BssUtils.noPermMsg(p, cmd);
+            }
         }
     
         /* CONTROL COMMAND */
@@ -380,23 +390,29 @@ public class Bssentials extends JavaPlugin implements Listener {
         	 	} else {
         	 		target.chat(argss);
         	 	}
-        	}
+        	} else {
+                BssUtils.noPermMsg(p, cmd);
+            }
         }
         
         /* RANK COMMAND */
         if (cmd.getName().equalsIgnoreCase("rank")) {
-        	if (args.length == 0) {
-        		sender.sendMessage("Use /rank create <rankname> <display>");
-        		sender.sendMessage("Or: /rank setplayer <player> <rank>");
-        	} else if (args[0].equalsIgnoreCase("create")) {
-        		getConfig().set("ranks."+args[1]+".prefix", args[2]);
-        		saveConfig();
-        		sender.sendMessage("Created rank: "+args[1]+" With the display of: " +args[2]);
-        	} else if (args[0].equalsIgnoreCase("setplayer")) {
-        		getConfig().set("playerdata." + args[1] + ".rank", args[2]);
-			saveConfig();
-        		sender.sendMessage("Added "+args[1]+" to the rank" + args[2]);
-        	}
+            if (BssUtils.hasPermForCommand(p, "rank")) {
+                if (args.length == 0) {
+                    sender.sendMessage("Use /rank create <rankname> <display>");
+                    sender.sendMessage("Or: /rank setplayer <player> <rank>");
+                } else if (args[0].equalsIgnoreCase("create")) {
+                    getConfig().set("ranks."+args[1]+".prefix", args[2]);
+                    saveConfig();
+                    sender.sendMessage("Created rank: "+args[1]+" With the display of: " +args[2]);
+                } else if (args[0].equalsIgnoreCase("setplayer")) {
+                    getConfig().set("playerdata." + args[1] + ".rank", args[2]);
+                    saveConfig();
+                    sender.sendMessage("Added "+args[1]+" to the rank" + args[2]);
+                }
+            } else {
+                BssUtils.noPermMsg(p, cmd);
+            }
         }
         
         /* DISNICK COMMAND */
@@ -413,7 +429,7 @@ public class Bssentials extends JavaPlugin implements Listener {
         if (cmd.getName().equalsIgnoreCase("gamemode")) {
             if (args.length == 0) {
                 sender.sendMessage(ChatColor.GREEN + "[Bssentials]" + ChatColor.GRAY + " Usage /gm <0|1>");
-            } else if (sender.hasPermission(GAMEMODE_PERM) || sender.isOp()) {
+            } else if (BssUtils.hasPermForCommand(p, "gamemode")) {
                 if (args.length == 1 && args[0].equalsIgnoreCase("0")) {
                 	player.setGameMode(GameMode.SURVIVAL);
                 } else if (args.length == 1 && args[0].equalsIgnoreCase("1")) {
@@ -424,7 +440,7 @@ public class Bssentials extends JavaPlugin implements Listener {
                 	player.setGameMode(GameMode.CREATIVE);
                 }
 			} else {
-		        sender.sendMessage(ChatColor.GREEN + "[Bssentials] " + ChatColor.RED + "You don't have permission: bssentials.command.gm");  
+		        sender.sendMessage(ChatColor.GREEN + "[Bssentials] " + ChatColor.RED + "You don't have permission: bssentials.command.gamemode");  
             }
         }
 
