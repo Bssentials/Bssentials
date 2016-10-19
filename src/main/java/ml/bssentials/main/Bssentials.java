@@ -509,11 +509,11 @@ public class Bssentials extends JavaPlugin implements Listener {
 
         /* SPAWN COMMAND */
         if (cmd.getName().equalsIgnoreCase("spawn")) {
-            if (getConfig().getConfigurationSection("warps.spawn") == null) {
+            if (getWarpConfig().getConfigurationSection("warps.spawn") == null) {
                 sender.sendMessage(ChatColor.RED + "Spawn has not been set!");
             } else {
                 if (args.length == 0) {
-                    World w = Bukkit.getServer().getWorld(getConfig().getString("warps.spawn.world"));
+                    World w = Bukkit.getServer().getWorld(getWarpConfig().getString("warps.spawn.world"));
                     double x = getWarpConfig().getDouble("warps.spawn.x");
                     double y = getWarpConfig().getDouble("warps.spawn.y");
                     double z = getWarpConfig().getDouble("warps.spawn.z");
