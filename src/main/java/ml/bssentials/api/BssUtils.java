@@ -33,7 +33,7 @@ public class BssUtils {
 	 * @author Bssentials
 	 */
 	public static void noPermMsg(Player p, Command c) {
-		p.sendMessage("You don't have permission: bssentials.command." + cmd.getName().toLowerCase());
+		p.sendMessage("You don't have permission: bssentials.command." + c.getName().toLowerCase());
 	}
     
 	
