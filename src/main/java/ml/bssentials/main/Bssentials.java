@@ -372,7 +372,7 @@ public class Bssentials extends JavaPlugin implements Listener {
 
         /* CI COMMAND */
         if (cmd.getName().equalsIgnoreCase("ci")) {
-            if (sender.hasPermForCommand("ci")) {
+            if (BssUtils.hasPermForCommand(p, "ci")) {
                 player.getInventory().clear();
                 sender.sendMessage(prefix + "Inventory cleared!");
             } else {
