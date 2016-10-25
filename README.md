@@ -3,7 +3,7 @@ Bssentials v2.x,
 
 Bssentials: [![Build Status](https://travis-ci.org/Bssentials/Bssentials.svg?branch=master)](https://travis-ci.org/Bssentials/Bssentials)
 
-Bssentials Bleading: [![Build Status](https://travis-ci.org/IsaiahPatton/Bssentials-Testing.svg?branch=master)](https://travis-ci.org/IsaiahPatton/Bssentials-Testing)
+Bleading:    [![Build Status](https://travis-ci.org/IsaiahPatton/Bssentials-Testing.svg?branch=master)](https://travis-ci.org/IsaiahPatton/Bssentials-Testing)
 
 ## What is Bssentials?
 Bssentials is a TOTAL remake of Essentials from the ground up!
