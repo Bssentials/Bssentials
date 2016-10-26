@@ -2,4 +2,9 @@ language: java
 sudo: false
 script: mvn package
 deploy:
+  provider: releases
+  api_key: "8fa4aa0077db14e62184ee552b3f4c776453630b"
+  file: "Bssentials-2.x.jar"
   skip_cleanup: true
+  on:
+    tags: true
