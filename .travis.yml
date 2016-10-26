@@ -7,4 +7,4 @@ deploy:
   file: "Bssentials-2.x.jar"
   skip_cleanup: true
   on:
-    tags: true
+    branch: master
