@@ -1,14 +1,5 @@
-# The Bssentials main config!
-
-#Enable the update check?
-checkForUpdate: true
-
-#Your server's Staff members
-staff:
-  - 'This is the staff command!'
-  - 'Edit this in your Bssentials config.yml'
-
-#Ranks
+# Ranks!
+# (if you had an older version with the ranks in the main config you can copy and paste them!)
 ranks:
     #the format is the way the chat will look!
     # %rank% is the players rank!
@@ -22,12 +13,3 @@ ranks:
         prefix: "&7[Default]&f"
     owner:
         prefix: "&4[Owner]&c"
-        
-    
-
-#Here is player's data, ex: nicknames and ranks!
-playerdata:
-
-
-#Warps!!
-#Now stored in warps.yml

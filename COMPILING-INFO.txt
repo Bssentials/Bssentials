@@ -1,3 +1,9 @@
+==================
+==  Use Java 7  ==
+==================
+
+
+
 1. Open Eclipse,
 2. Edit the files you what,
 3. then Click on the Project tab, (if Build Automatly is on skip to step 5)
@@ -7,6 +13,12 @@
 7. Select Bssentials from the export tab
 8. Then you got your jar file
 
-==================
-==  Use Java 7  ==
-==================
+
+OR
+
+
+1. open the command prompt or console
+2. set the dir to this folder
+3. type mvn package
+4. Then you got your jar file
+
