@@ -18,19 +18,19 @@ import ml.bssentials.main.Bssentials;
  */
 public class Updater {
 	
-	private Logger bsLogger;
-	private Bssentials main;
-	private String ver;
-	private PluginDescriptionFile pdfFile;
+	private static Logger bsLogger;
+	private static Bssentials main;
+	private static String ver;
+	private static PluginDescriptionFile pdfFile;
 	
     public Updater(Bssentials bs) {
-    	this.bsLogger = bs.getLogger();
-    	this.main = bs;
-    	pdfFile = main.getDescription();
-    	this.ver = pdfFile.getVersion();
+    	Updater.bsLogger = bs.getLogger();
+    	Updater.main = bs;
+    	Updater.pdfFile = main.getDescription();
+    	Updater.ver = pdfFile.getVersion();
     }
     
-	public void checkForUpdate() {
+	public static void checkForUpdate() {
 		ver = pdfFile.getVersion();
         URL checkVerURL;
 		try {
@@ -43,10 +43,26 @@ public class Updater {
         		if (Update.contains("1.")) {
         			//Should not happen, Bssentials's version is v2.x not v1.x
         		} else {
-        			if (main.getConfig().getBoolean("CheckForUpdate") == true) {
-        				bsLogger.info("======= Bssentials v2 ========");
-        				bsLogger.info("     Update found: " + Update);
-        				bsLogger.info("==============================");
+        			double ver2 = Double.valueOf(ver.replaceAll("[^A-Za-z]", ""));
+        			double Update2 = Double.valueOf(Update);
+        			
+        			if (main.getConfig().getBoolean("checkForUpdate") == true) {
+        				if (Update2 > ver2) {
+        					bsLogger.info(" ");
+        					bsLogger.info("======= Bssentials v2 ========");
+        					bsLogger.info("     Update found: " + Update);
+        					bsLogger.info("==============================");
+        					bsLogger.info(" ");
+        				} else {
+        					if (ver.contains("dev")) {
+        						bsLogger.info("You are using an dev build of Bssentials!");
+        						bsLogger.info("Dev builds might contain bugs!");
+        					} else {
+        						bsLogger.info("Oh no.. Our updater will not work! Don't worry!");
+        					}
+        				}
+        			} else {
+        				bsLogger.info("The update checker is disabled");
         			}
         		}
         	}

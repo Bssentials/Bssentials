@@ -9,20 +9,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang.StringUtils;
-
-// Bukkit
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -42,13 +33,12 @@ import io.github.isaiah.listeners.onJoinNick;
 
 // KodeAPI
 import io.github.ramidzkh.KodeAPI.api.YamlConf;
-import io.github.ramidzkh.utils.PlayerCheck;
 
 // Bssentials classes
 import ml.bssentials.addons.GoogleChat;
-import ml.bssentials.api.BssUtils;
 import ml.bssentials.api.ChatAPI;
 import ml.bssentials.commands.Broadcast;
+import ml.bssentials.commands.Commands;
 import ml.bssentials.commands.Ping;
 import ml.bssentials.commands.Pm;
 import ml.bssentials.commands.ViewNick;
@@ -66,7 +56,7 @@ import ml.bssentials.updater.Updater;
     @author ramidzkh
     @author FunWithJava
     
-    @version 2.x
+    @version 2.5-dev
     
     @see {@link JavaPlugin}
     @see {@link PluginDescriptionFile}
@@ -113,10 +103,13 @@ public class Bssentials extends JavaPlugin implements Listener {
     public FileConfiguration homes = new YamlConfiguration();
     public FileConfiguration ranks = new YamlConfiguration();
     
+    /**
+     * On the plugin enable.
+     * */
     public void onEnable() {
-                PluginManager pm = getServer().getPluginManager();
-		Updater updater = new Updater(this);
-		updater.checkForUpdate();
+        PluginManager pm = getServer().getPluginManager();
+		new Updater(this);
+		Updater.checkForUpdate();
 		
 		saveDefaultConfig();
 		registerPermissions(pm);
@@ -129,7 +122,7 @@ public class Bssentials extends JavaPlugin implements Listener {
         getCommand("broadcast").setExecutor(new Broadcast());
         getCommand("pm").setExecutor(new Pm());
         
-        registerGoogleChat();
+        regCommands();
         
         pm.registerEvents(new ChatFormat(this), this);
 		pm.registerEvents(new Plugins(), this);
@@ -138,6 +131,49 @@ public class Bssentials extends JavaPlugin implements Listener {
 		pm.registerEvents(this, this);
 	}
 
+    /**
+     * Registers commands!
+     * */
+    public void regCommands(){
+    	getCommand("info").setExecutor(new Commands(this));
+    	getCommand("bssentials").setExecutor(new Commands(this));
+    	getCommand("gm").setExecutor(new Commands(this));
+    	getCommand("rules").setExecutor(new Commands(this));
+    	getCommand("setrules").setExecutor(new Commands(this));
+    	getCommand("removelag").setExecutor(new Commands(this));
+    	getCommand("ci").setExecutor(new Commands(this));
+    	getCommand("day").setExecutor(new Commands(this));
+    	getCommand("night").setExecutor(new Commands(this));
+    	getCommand("rain").setExecutor(new Commands(this));
+    	getCommand("staff").setExecutor(new Commands(this));
+    	getCommand("invsee").setExecutor(new Commands(this));
+    	getCommand("setspawn").setExecutor(new Commands(this));
+    	getCommand("spawn").setExecutor(new Commands(this));
+    	getCommand("welcome").setExecutor(new Commands(this));
+    	getCommand("heal").setExecutor(new Commands(this));
+    	getCommand("feed").setExecutor(new Commands(this));
+    	getCommand("fly").setExecutor(new Commands(this));
+    	/*GoogleChat*/getCommand("BukkitDev").setExecutor(new GoogleChat());
+        /*GoogleChat*/getCommand("youtube").setExecutor(new GoogleChat());
+        /*GoogleChat*/getCommand("google").setExecutor(new GoogleChat());
+        /*GoogleChat*/getCommand("mcwiki").setExecutor(new GoogleChat());
+    	getCommand("god").setExecutor(new Commands(this));
+    	getCommand("pm").setExecutor(new Commands(this));
+    	getCommand("setwarp").setExecutor(new Commands(this));
+    	getCommand("warp").setExecutor(new Commands(this));
+    	getCommand("nick").setExecutor(new Commands(this));
+    	getCommand("underheal").setExecutor(new Commands(this));
+    	getCommand("disnick").setExecutor(new Commands(this));
+    	getCommand("alias").setExecutor(new Commands(this));
+    	getCommand("rank").setExecutor(new Commands(this));
+    	getCommand("control").setExecutor(new Commands(this));
+    	getCommand("delwarp").setExecutor(new Commands(this));
+    	getCommand("home").setExecutor(new Commands(this));
+    	getCommand("sethome").setExecutor(new Commands(this));
+    	getCommand("delhome").setExecutor(new Commands(this));
+    	getCommand("bancheck").setExecutor(new Commands(this));
+    }
+    
     private File configf, warpsf, homesf, ranksf;
 
     /**
@@ -225,13 +261,6 @@ public class Bssentials extends JavaPlugin implements Listener {
     }
     
 	public void onDisable() {}
-    
-	private void registerGoogleChat() {
-		getCommand("BukkitDev").setExecutor(new GoogleChat());
-        getCommand("youtube").setExecutor(new GoogleChat());
-        getCommand("google").setExecutor(new GoogleChat());
-        getCommand("mcwiki").setExecutor(new GoogleChat());
-	}
 	
     private void registerPermissions(PluginManager pm) {
         pm.addPermission(GAMEMODE_PERM);
@@ -263,551 +292,7 @@ public class Bssentials extends JavaPlugin implements Listener {
     
     @Deprecated
     public void nickName(Player player, String name) { ChatAPI.nickName(player, name); }
-    
-    @SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args) {
-    	if(!(sender instanceof Player)){
-    		sender.sendMessage("You are not a player");
-    		return false;
-        }
-    	
-        String authors = "Isaiah Patton, & ramidzkh";
-        String NoPerm = prefix + "You don't have permission: bssentials.command." + cmd.getName().toLowerCase();
-        
-        Player player = (Player) sender;
-        Player p = player;
-        
-        /* BSSENTIALS COMMAND */
-        if (cmd.getName().equalsIgnoreCase("bssentials")) {
-            if(!PlayerCheck.hasPerm(player, PLUGIN_INFO_PERM)){
-                player.sendMessage(NoPerm);
-                return false;
-            }
-            String pre = PREFIX;
-		
-            if (args.length == 0) {
-                player.sendMessage(pre + "Name: " + ChatColor.GREEN + "Bssentials");
-                player.sendMessage(pre + "Version: " + ChatColor.GREEN + version);
-                player.sendMessage(pre + "Authors: " + ChatColor.GREEN + authors);
-                player.sendMessage(pre + "Description: " + ChatColor.GREEN + "Essentials for 1.10");
-                player.sendMessage(pre + "Song of the day: " + getConfig().getString("songOfTheDay"));
-            } else {
-                if (args[0] == "version") { player.sendMessage(pre + "Version: " + ChatColor.GREEN + version); }
-                if (args[0] == "authors") { player.sendMessage(pre + "Authors: " + ChatColor.GREEN + authors); }
-                if (args[0] == "about") { player.sendMessage(pre + "Description: " + ChatColor.GREEN + "Essentials for 1.10"); }
-                if (args[0] == "sotd") { player.sendMessage(pre + "Song of the day: " + getConfig().getString("songOfTheDay")); }
-            }
-        }
-     
-        /* NICK COMMAND */
-        if (cmd.getName().equalsIgnoreCase("nick")) {
-            ChatAPI.nickName(player, StringUtils.join(args, " "));
-        }
-        
-        /* INFO COMMAND */
-        if (cmd.getName().equalsIgnoreCase("info")) {
-            Bukkit.dispatchCommand(sender, "warp info");
-        }
 
-        /* REMOVELAG COMMAND */
-        if (cmd.getName().equalsIgnoreCase("removelag")) {
-        	if (args.length == 0) {
-        		Bukkit.dispatchCommand(sender, "lagg gc");
-        		Bukkit.dispatchCommand(sender, "lagg clear");
-        		Bukkit.dispatchCommand(sender, "lagg unloadchunks");
-        		sender.sendMessage(prefix + "Removed Lagg!");
-        	} else if (args.length !=0 && args[0].equalsIgnoreCase("unloadchunks")) {
-                if (BssUtils.hasPermForCommand(p, "removelag.unloadchunks")) {
-                    if (args.length == 2 || args.length == 1) {
-                        World w = null;
-                        if (args.length == 2) {
-                            try {
-                                w = Bukkit.getWorld((String)args[1]);
-                            }
-                            catch (Exception e) {
-                                sender.sendMessage("World \"" + args[1] + "\" could not be found.");
-                                return true;
-                            }
-                        } else if (p != null) {
-                            w = p.getWorld();
-                        }
-                        if (w == null) {
-                            sender.sendMessage("/removelag unloadchunks <world>");
-                        } else {
-                            int c = 0;
-                            if (w.getPlayers().size() == 0) {
-                                for (Chunk chunk : w.getLoadedChunks()) {
-                                    w.unloadChunk(chunk);
-                                    ++c;
-                                }
-                                sender.sendMessage(c + " chunks in world \"" + w.getName() + "\" have been unloaded.");
-                            } else {
-                            	sender.sendMessage("Unloading chunks in worlds that contain players has been disabled due to glitches.");
-                            }
-                        }
-                    } else {
-                        sender.sendMessage("/removelag unloadchunks <world>");
-                    }
-                } else {
-                    BssUtils.noPermMsg(p, cmd);
-                }
-                return true;
-            }
-        }
-
-        /* RAIN COMMAND */
-        if (cmd.getName().equalsIgnoreCase("rain")) {
-            Bukkit.dispatchCommand(sender, "weather rain");
-        }
-
-        /* DAY COMMAND */
-        if (cmd.getName().equalsIgnoreCase("day")) {
-            Bukkit.dispatchCommand(sender, "time set day");
-        }
-
-        /* NIGHT COMMAND */
-        if (cmd.getName().equalsIgnoreCase("night")) {
-            Bukkit.dispatchCommand(sender, "time set night");
-		}
-
-        /* CI COMMAND */
-        if (cmd.getName().equalsIgnoreCase("ci")) {
-            if (BssUtils.hasPermForCommand(p, "ci")) {
-                player.getInventory().clear();
-                sender.sendMessage(prefix + "Inventory cleared!");
-            } else {
-                BssUtils.noPermMsg(p, cmd);
-            }
-        }
-    
-        /* CONTROL COMMAND */
-        if (cmd.getName().equalsIgnoreCase("control")) {
-        	if (PlayerCheck.hasPermForCommand(p, "control")){
-        	 	Player target = player.getServer().getPlayer(args[0]);
-        	 	String argss = StringUtils.join(args, " ").replace(args[0], "");
-        	 	if(argss.contains("/")) {
-        	 		getServer().dispatchCommand(target, argss.replace("/", ""));
-        	 	} else {
-        	 		target.chat(argss);
-        	 	}
-        	} else {
-                BssUtils.noPermMsg(p, cmd);
-            }
-        }
-        
-        /* RANK COMMAND */
-        if (cmd.getName().equalsIgnoreCase("rank")) {
-            if (BssUtils.hasPermForCommand(p, "rank")) {
-                if (args.length == 0) {
-                    sender.sendMessage("Use /rank create <rankname> <display>");
-                    sender.sendMessage("Or: /rank setplayer <player> <rank>");
-                } else if (args[0].equalsIgnoreCase("create")) {
-                    getConfig().set("ranks."+args[1]+".prefix", args[2]);
-                    saveConfig();
-                    sender.sendMessage("Created rank: "+args[1]+" With the display of: " +args[2]);
-                } else if (args[0].equalsIgnoreCase("setplayer")) {
-                    getConfig().set("playerdata." + args[1] + ".rank", args[2]);
-                    saveConfig();
-                    sender.sendMessage("Added "+args[1]+" to the rank" + args[2]);
-                }
-            } else {
-                BssUtils.noPermMsg(p, cmd);
-            }
-        }
-        
-        /* DISNICK COMMAND */
-        if (cmd.getName().equalsIgnoreCase("disnick")) {
-        	if (player.getName() == player.getDisplayName()) {
-        		sender.sendMessage("Your nickname and real name are the same!");
-        	} else {
-        		player.setDisplayName(player.getName());
-        		sender.sendMessage("Reseted your name!");
-        	}
-        }
-        
-        /* GAMEMODE COMMAND */
-        if (cmd.getName().equalsIgnoreCase("gamemode")) {
-            if (args.length == 0) {
-                sender.sendMessage(ChatColor.GREEN + "[Bssentials]" + ChatColor.GRAY + " Usage /gm <0|1>");
-            } else if (BssUtils.hasPermForCommand(p, "gamemode")) {
-                if (args.length == 1 && args[0].equalsIgnoreCase("0")) {
-                	player.setGameMode(GameMode.SURVIVAL);
-                } else if (args.length == 1 && args[0].equalsIgnoreCase("1")) {
-                    player.setGameMode(GameMode.CREATIVE);
-                } else if (args.length == 1 && args[0].equalsIgnoreCase("survival")) {
-                	player.setGameMode(GameMode.SURVIVAL);
-                } else if (args.length == 1 && args[0].equalsIgnoreCase("creative")) {
-                	player.setGameMode(GameMode.CREATIVE);
-                }
-			} else {
-		        sender.sendMessage(ChatColor.GREEN + "[Bssentials] " + ChatColor.RED + "You don't have permission: bssentials.command.gamemode");  
-            }
-        }
-
-        /* STAFF COMMAND */
-        if (cmd.getName().equalsIgnoreCase("staff")) {
-            if (args.length == 0) {
-		
-               	if (sender.hasPermission(STAFFLIST_PERM)) {
-                    sender.sendMessage(ChatColor.GREEN + "[Bssentials] Staff:");
-
-                    Set<String> keys = getConfig().getConfigurationSection("staff").getKeys(false);
-                    String staffList = "";
-                    for (String s:keys) {
-                        staffList = staffList + s + ", ";
-                    }
-                    sender.sendMessage(ChatColor.BLUE + staffList);
-				
-                } else {
-                        sender.sendMessage("No Permission");
-                    }
-                } else if (args.length == 2 && args[0].equalsIgnoreCase("add")) {
-                    if (sender.hasPermission(STAFFADD_PERM)) {
-				
-                        List<String> staffList = getConfig().getStringList("staff");
-                 		String staff = args[1].toLowerCase();
-                    
-                 		if (!staffList.contains(staff)) {
-                 			staffList.add(staff);
-                 			getConfig().set("staff", staffList);
-                 			saveConfig();
-                 			sender.sendMessage(prefix + "Staff member added to the list");
-                 		} else {
-                 			sender.sendMessage(prefix + ChatColor.RED + ChatColor.BOLD + "Error! The name you have typed is already not on the list");
-                 		}
-					
-                    } else {
-                        sender.sendMessage("No permission");
-                    }
-    			} else if (args.length == 2 && args[0].equalsIgnoreCase("remove")) {
-                    if (sender.hasPermission(STAFFREMOVE_PERM)) {
-					
-                        List<String> staffList = getConfig().getStringList("staff");
-                        String staff = args[1].toLowerCase();
-                    
-                        if (staffList.contains(staff)) {
-                        		staffList.remove(staff);
-                        		getConfig().set("staff", staffList);
-                        		saveConfig();
-                        		sender.sendMessage(prefix + "staff member removed from the list");
-                        } else {
-                            sender.sendMessage(prefix + ChatColor.RED + ChatColor.BOLD + "Error! The name you have typed is already not on the list");
-                        }
-                    
-                    }
-    			}
-        }
-        
-        /* SETSPAWN COMMAND */
-        if (cmd.getName().equalsIgnoreCase("setspawn")) {
-            if (sender.hasPermission(SETSPAWN_PERM)) {
-                createWarp(p, "spawn");
-            } else {
-                sender.sendMessage("No Permission");
-            }
-        }
-
-        /* SPAWN COMMAND */
-        if (cmd.getName().equalsIgnoreCase("spawn")) {
-            if (getWarpConfig().getConfigurationSection("warps.spawn") == null) {
-                sender.sendMessage(ChatColor.RED + "Spawn has not been set!");
-            } else {
-                if (args.length == 0) {
-                    World w = Bukkit.getServer().getWorld(getWarpConfig().getString("warps.spawn.world"));
-                    double x = getWarpConfig().getDouble("warps.spawn.x");
-                    double y = getWarpConfig().getDouble("warps.spawn.y");
-                    double z = getWarpConfig().getDouble("warps.spawn.z");
-                    player.teleport(new Location(w, x, y, z));
-                    sender.sendMessage(ChatColor.GREEN + "Warping to spawn");
-                } else {
-                    sender.sendMessage(ChatColor.RED + "Invalid args");
-                }
-            }
-        }
-        
-        /* WELCOME COMMAND */
-        if (cmd.getName().equalsIgnoreCase("welcome")) {
-            if (args.length == 0) {
-                sender.sendMessage("Wrong args!");
-            } else if (args.length == 1) {
-                if (sender.hasPermission("bssentials.command.welcome")) {
-					Player theNewPlayer = player.getServer().getPlayer(args[0]);
-                    theNewPlayer.sendMessage(ChatColor.YELLOW + sender.getName() + " " + ChatColor.AQUA + "says Welcome to The Server!");
-                    sender.sendMessage("You welcomed " + args[0] + " to the server");
-                } else {
-                    sender.sendMessage("No Permission");
-                }
-			}
-        }
-        
-        /* HEAL COMMAND */
-        if (cmd.getName().equalsIgnoreCase("heal")) {
-            if (args.length == 0) {
-                if (player.hasPermission(HEAL_PERM)) {
-                    player.setHealth(20);
-                    player.setFoodLevel(20);
-                    player.sendMessage(ChatColor.GREEN + "You have been healed!");
-                } else {
-                    sender.sendMessage("No Permission");
-                }
-            } else {
-                if (sender.hasPermission(HEAL_OUTHER_PERM)) {
-					Player target = Bukkit.getServer().getPlayer(args[0]);
-                    if (target == null) {
-                        player.sendMessage(ChatColor.RED + "Could not find player!");
-                    } else {
-                        target.setHealth(20);
-                        target.setFoodLevel(20);
-                        target.sendMessage(ChatColor.GREEN + "You have been healed!");
-                        player.sendMessage(ChatColor.GREEN + target.getName() + " has been healed!");
-                    }
-                } else {
-                    sender.sendMessage("No Permission");
-                }
-            }
-        }
-        
-        /* UNDERHEAL COMMMAND */
-        if (cmd.getName().equalsIgnoreCase("underheal")) {
-            player.setHealth(1);
-            player.setFoodLevel(1); 
-        }
-        
-        /* CHECKBAN COMMAND */
-        if (cmd.getName().equalsIgnoreCase("checkban")) {
-        	if (args.length == 0) {
-        		sender.sendMessage("Banned Players: " + Bukkit.getBannedPlayers());
-        	} else {
-				Player target = Bukkit.getServer().getPlayer(args[0]);
-                if (target == null) {
-                    player.sendMessage(ChatColor.RED + "Could not find player!");
-                } else {
-                	String banned;
-                	if (target.isBanned() == true) {
-                		banned = "banned!";
-                	} else {
-                		banned = "NOT banned!";
-                	}
-                	sender.sendMessage(target.getName() + " is " + banned);
-                }
-        	}
-        }
-        
-        /* FEED COMMAND */
-        if (cmd.getName().equalsIgnoreCase("feed")) {
-            if (args.length == 0) {
-                if (sender.hasPermission(FEED_PERM)) {
-                    player.setFoodLevel(20);
-                    player.sendMessage(ChatColor.GREEN + "You have been fed!");
-                } else {
-                    sender.sendMessage("No Permission");
-                }
-            } else {
-                if (sender.hasPermission(FEED_OUTHER_PERM)) {
-					Player target = Bukkit.getServer().getPlayer(args[0]);
-                    if (target == null) {
-                        player.sendMessage(ChatColor.RED + "Could not find player!");
-                    } else {
-                        target.setFoodLevel(20);
-                        target.sendMessage(ChatColor.GREEN + "You have been fed!");
-                        player.sendMessage(ChatColor.GREEN + target.getName() + " has been fed!");
-                    }
-                } else {
-                    sender.sendMessage("No Permission");
-                }
-            }
-        }
-        
-        /* FLY COMMAND */
-        if(cmd.getName().equalsIgnoreCase("fly")) {
-        	if(!(sender.hasPermission(FLY_PERM))){
-        		sender.sendMessage("You can't fly!");
-        		return false;
-        	}
-        	
-        	if(args.length == 0) {
-        		sender.sendMessage("Usage is /fly [on/off] or /fly [on/off] [player]");
-        	}
-        	if(args.length == 1){
-        		if(args[0].equalsIgnoreCase("off")) {
-        			player.setFlying(false);
-        		} else if(args[0].equalsIgnoreCase("on")){
-        			player.setFlying(true);
-        		}
-        	} else {
-				Player fly = getServer().getPlayer(args[1]);
-        		if(args[0].equalsIgnoreCase("off")) {
-        			fly.setFlying(false);
-        		} else if(args[0].equalsIgnoreCase("on")){
-        			fly.setFlying(true);
-        		}
-        	}
-        }
-        
-        /* REPAIR COMMAND */
-        if (cmd.getName().equalsIgnoreCase("repair")) {
-        	if (PlayerCheck.hasPermForCommand(p, "repair")) {
-        		player.getItemInHand().setDurability((short) 0);
-        		sender.sendMessage("Repaired!");
-        	} else {
-        		sender.sendMessage("No Permission!");
-        	}
-        }
-        
-        
-        /* INVSEE COMMAND */
-        if (cmd.getName().equalsIgnoreCase("invsee")) {
-            if (args.length == 0) {
-                sender.sendMessage("Wrong args!");
-            } else if (args.length == 1) {
-                if (sender.hasPermission("bssentials.command.invsee")) {
-					Player targetPlayer = player.getServer().getPlayer(args[0]);
-                    ((Player) sender).openInventory(targetPlayer.getInventory());
-                } else {
-                    sender.sendMessage("No Permission");
-                }
-			}
-	    }
-        
-        /* SETWARP COMMAND */
-        if (cmd.getName().equalsIgnoreCase("setwarp")) {
-            if (args.length == 1) {
-                String warpname = args[0];
-                if (getWarpConfig().getConfigurationSection("warps." + warpname) != null) {
-                    if (sender.hasPermission(SETWARP_OR_PERM)) {
-                        createWarp(player, args[0]);
-                    } else {
-                        sender.sendMessage(ChatColor.GREEN + "[Bssentials]" + ChatColor.RED + " You can't overwrite that");
-                    }
-                } else {
-                    if (sender.hasPermission(SETWARP_PERM) || sender.isOp()) {
-                    	createWarp(player, args[0]);
-                    }
-                }
-            } else  {
-                sender.sendMessage(ChatColor.RED + "Invalid args");
-            }
-        }
-        
-        /* ALIAS COMMAND */
-        if (cmd.getName().equalsIgnoreCase("alias")) {
-        	if(args.length == 2) {
-        		if(getCommand(args[0]).getAliases() == null) {
-        			List<String> aliases = new ArrayList<String>();
-        			aliases.add(args[1]);
-        			getCommand(args[0]).setAliases(aliases);
-        		} else {
-        			List<String> aliases = getCommand(args[0]).getAliases();
-        			aliases.add(args[1]);
-        			getCommand(args[0]).setAliases(aliases);
-        		}
-        	} else {
-        		sender.sendMessage("Usage: /alias command shortcut");
-        	}
-        }
-        
-        /* SETHOME COMMAND */
-        if(cmd.getName().equalsIgnoreCase("sethome")) {
-        	createHome(p);
-        }
-        
-        /* DELHOME COMMAND */
-        if(cmd.getName().equalsIgnoreCase("delhome")) {
-        	delHome(p);
-        }
-        
-        /* HOME COMMAND */
-        if(cmd.getName().equalsIgnoreCase("home")) {
-        	if (getHomeConfig().getConfigurationSection("homes." + p.getName()) == null) {
-                sender.sendMessage(ChatColor.RED + "You have to set your home first /sethome");
-            } else {
-                if (args.length == 0) {
-                    World w = Bukkit.getServer().getWorld(getHomeConfig().getString("homes." + p.getName() + ".world"));
-                    double x = getHomeConfig().getDouble("homes." + p.getName() + ".x");
-                    double y = getHomeConfig().getDouble("homes." + p.getName() + ".y");
-                    double z = getHomeConfig().getDouble("homes." + p.getName() + ".z");
-                    player.teleport(new Location(w, x, y, z));
-                    sender.sendMessage(ChatColor.GREEN + "Welcome home " + p.getName() + "!");
-                } else {
-                    sender.sendMessage(ChatColor.RED + "Invalid args");
-                }
-            }
-		}
-        
-        /* WARP COMMAND */
-        if (cmd.getName().equalsIgnoreCase("warp")) {
-        	if(p.hasPermission(WARP_PERM)) {
-	            if (getWarpConfig().getConfigurationSection("warps") == null) {
-	                sender.sendMessage(ChatColor.RED + "No warps set!");
-	            } else {
-	                if (args.length == 1) {
-	                	if(getWarpConfig().getConfigurationSection("warps." + args[0]) != null) {
-	                		World w = Bukkit.getServer().getWorld(getWarpConfig().getString("warps." + args[0] + ".world"));
-		                    double x = getWarpConfig().getDouble("warps." + args[0] + ".x");
-		                    double y = getWarpConfig().getDouble("warps." + args[0] + ".y");
-		                    double z = getWarpConfig().getDouble("warps." + args[0] + ".z");
-		                    
-		                    teleport(player, new Location(w,x,y,z));
-		                    sender.sendMessage(ChatColor.GREEN + "Warping to " + args[0]);
-	                	} else {
-	                		sender.sendMessage(ChatColor.RED + "No warp by that name exists.");
-	                	}
-	                } else if (args.length == 2 ) {
-	                	if(p.hasPermission(WARP_OTHERS_PERM)) {
-	                		Player targetPlayer = player.getServer().getPlayer(args[1]);
-	                		if(targetPlayer != null) {
-	    	                	if(getWarpConfig().getConfigurationSection("warps." + args[0]) != null) {
-	    	                		World w = Bukkit.getServer().getWorld(getWarpConfig().getString("warps." + args[0] + ".world"));
-	    	                		double x = getWarpConfig().getDouble("warps." + args[0] + ".x");
-	    		                	double y = getWarpConfig().getDouble("warps." + args[0] + ".y");
-	    		                	double z = getWarpConfig().getDouble("warps." + args[0] + ".z");
-	    		                	teleport(targetPlayer, new Location(w, x, y, z));
-	    		                	sender.sendMessage(ChatColor.GREEN + "Warping " + args[1] + " to " + args[0]);
-	    		                	targetPlayer.sendMessage(ChatColor.GREEN + p.getName() + " warped you to " + args[0]);
-	    	                	} else {
-	    	                		sender.sendMessage(ChatColor.RED + "No warp by that name exists.");
-	    	                	}	                			
-	                		}
-	                	} else {
-	                		sender.sendMessage(ChatColor.RED + "You do not have permission to warp other players.");
-	                	}
-	                } else if (args.length == 0 ) {
-	                	Set<String> keys = getWarpConfig().getConfigurationSection("warps").getKeys(false);
-	                	sender.sendMessage(ChatColor.BLUE + "List of warps:");
-				String warpList = "";
-	                	for (String s:keys) {
-					warpList = warpList + s + ", ";
-	                	}
-				sender.sendMessage(ChatColor.BLUE + warpList);
-	            	} else {
-	                    sender.sendMessage(ChatColor.RED + "Invalid args");
-	                }
-	            }
-        	} else {
-        		sender.sendMessage(ChatColor.RED + "You don't have permission to warp.");
-        	}
-        }
-        
-        /* DELWARP COMMAND */
-        if (cmd.getName().equalsIgnoreCase("delwarp")) {
-        	if (p.hasPermission(SETWARP_OR_PERM)) {
-        		try {
-	        		if(getWarpConfig().getConfigurationSection("warps." + args[0]) != null) {
-	        			getWarpConfig().set("warps." + args[0], null);
-	        			saveWarpConfig();
-	        			sender.sendMessage(ChatColor.GREEN + "Deleted warp " + args[0]);
-	        		} else {
-	        			sender.sendMessage(ChatColor.RED + "Unable to find warp to delete.");
-	        		}
-        		} catch(Exception e) {
-        			sender.sendMessage(ChatColor.RED + "Unable to delete warp.");
-        		}
-        	} else {
-        		sender.sendMessage(ChatColor.RED + "You do not have permission to delete warps.");
-        	}
-        }
-        return true;
-    }     
     
     /**
      * Creates an Warp
