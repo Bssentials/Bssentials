@@ -5,19 +5,18 @@
 The Bssentials project prides itself on being community built and driven.  We love it when members of our community want to jump right in and get involved, so here's what you need to know.
 
 ## Quick Guide
-- Does your proposed change [fit Bssentials's goals](#does-the-change-fit-bukkits-goals)?
+- Does your proposed change [fit Bssentials's goals](#does-the-change-fit-bssentials-goals)?
 - Fork the repository if you haven't done so already.
-- Make your changes in a new branch (if your change affects both Bssentials and CraftBssentials, we highly suggest you use the same name for your branches in both repos).
+- Make your changes.
 - Test your changes.
 - Push to your fork and submit a pull request.
-- **Note:** The project is put under a code freeze leading up to the release of a Minecraft update in order to give the Bssentials team a static code base to work on.
 
 ![Life Cycle of a Bssentials Improvement](http://i.imgur.com/Ed6T7AE.png)
 
 ## Getting Started
 - You'll need a free [GitHub account](https://github.com/signup/free).
 - Fork the repository on GitHub.
-- **Note:** The project is put under a code freeze leading up to the release of a Minecraft update in order to give the Bssentials team a static code base to work on.
+
 
 ## Does the Change Fit Bssentials's Goals?
 As a rough guideline, ask yourself the following questions to determine if your proposed change fits the Bssentials project's goals. Please remember that this is only a rough guideline and may or may not reflect the definitive answer to this question.
