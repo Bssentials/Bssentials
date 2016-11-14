@@ -64,14 +64,17 @@ public class Commands implements CommandExecutor {
             } else {
                 if (args[0] == "version") { player.sendMessage(pre + "Version: " + ChatColor.GREEN + Bssentials.version); }
                 if (args[0] == "authors") { player.sendMessage(pre + "Authors: " + ChatColor.GREEN + authors); }
-                if (args[0] == "about") { player.sendMessage(pre + "Description: " + ChatColor.GREEN + "Essentials for 1.10"); }
-                if (args[0] == "sotd") { player.sendMessage(pre + "Song of the day: " + main.getConfig().getString("songOfTheDay")); }
+                if (args[0] == "about")   { player.sendMessage(pre + "Description: " + ChatColor.GREEN + "Essentials for 1.10"); }
+                if (args[0] == "sotd")    { player.sendMessage(pre + "Song of the day: " + main.getConfig().getString("songOfTheDay")); }
             }
         }
      
         /* NICK COMMAND */
         if (cmd.getName().equalsIgnoreCase("nick")) {
-            ChatAPI.nickName(player, StringUtils.join(args, " "));
+            //ChatAPI.nickName(player, StringUtils.join(args, " "));
+            main.getConfig().set("playerdata." + player.getName() + ".nick", StringUtils.join(args, " "));
+            player.setDisplayName(ChatColor.translateAlternateColorCodes('&', StringUtils.join(args, " "));
+            main.saveConfig();
         }
         
         /* INFO COMMAND */
@@ -392,26 +395,25 @@ public class Commands implements CommandExecutor {
         if(cmd.getName().equalsIgnoreCase("fly")) {
         	if(!(sender.hasPermission(Bssentials.FLY_PERM))){
         		sender.sendMessage("You can't fly!");
-        		return false;
-        	}
-        	
-        	if(args.length == 0) {
-        		sender.sendMessage("Usage is /fly [on/off] or /fly [on/off] [player]");
-        	}
-        	if(args.length == 1){
-        		if(args[0].equalsIgnoreCase("off")) {
-        			player.setFlying(false);
-        		} else if(args[0].equalsIgnoreCase("on")){
-        			player.setFlying(true);
-        		}
         	} else {
+        		if(args.length == 1){
+				Player plr = (Player) sender;
+        			if(args[0].equalsIgnoreCase("off")) {
+        				plr.setFlying(false);
+        			} else if(args[0].equalsIgnoreCase("on")){
+        				plr.setFlying(true);
+        			}
+        		} else if (args.length == 2){
 				Player fly = main.getServer().getPlayer(args[1]);
-        		if(args[0].equalsIgnoreCase("off")) {
-        			fly.setFlying(false);
-        		} else if(args[0].equalsIgnoreCase("on")){
-        			fly.setFlying(true);
-        		}
-        	}
+        			if(args[0].equalsIgnoreCase("off")) {
+        				fly.setFlying(false);
+        			} else if(args[0].equalsIgnoreCase("on")){
+        				fly.setFlying(true);
+        			}
+        		} else {
+		  	      sender.sendMessage("Usage is /fly [on/off] or /fly [on/off] [player]");
+			}
+	        }
         }
         
         /* REPAIR COMMAND */
