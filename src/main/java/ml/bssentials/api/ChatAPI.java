@@ -6,7 +6,11 @@ import org.bukkit.entity.Player;
 import ml.bssentials.main.Bssentials;
 
 public class ChatAPI {
-	public static Bssentials main;
+	public static Bssentials bss;
+	
+	public ChatAPI(Bssentials bss) {
+		bss = main;
+	}
 	
 	/**
 	 * Sets an player's display name.
@@ -15,9 +19,9 @@ public class ChatAPI {
 	 * */
 	public static void nickName(Player player, String name) {
 	   main.getConfig().set("playerdata." + player.getName() + ".nick", name);
-       String thenickname = main.getConfig().getString("playerdata." + player.getName() + ".nick");
-       thenickname = ChatColor.translateAlternateColorCodes('&', thenickname);
-       player.setDisplayName(thenickname);
-       main.saveConfig();
+           String thenickname = main.getConfig().getString("playerdata." + player.getName() + ".nick");
+           thenickname = ChatColor.translateAlternateColorCodes('&', thenickname);
+           player.setDisplayName(thenickname);
+           main.saveConfig();
    }
 }
