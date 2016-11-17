@@ -73,7 +73,7 @@ public class Commands implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("nick")) {
             //ChatAPI.nickName(player, StringUtils.join(args, " "));
             main.getConfig().set("playerdata." + player.getName() + ".nick", StringUtils.join(args, " "));
-            player.setDisplayName(ChatColor.translateAlternateColorCodes('&', StringUtils.join(args, " "));
+            player.setDisplayName(ChatColor.translateAlternateColorCodes('&', StringUtils.join(args, " ")));
             main.saveConfig();
         }
         
