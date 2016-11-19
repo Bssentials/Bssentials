@@ -6,10 +6,10 @@ import org.bukkit.entity.Player;
 import ml.bssentials.main.Bssentials;
 
 public class ChatAPI {
-	public static Bssentials bss;
+	public static Bssentials main;
 	
 	public ChatAPI(Bssentials bss) {
-		bss = main;
+            main = bss;
 	}
 	
 	/**
