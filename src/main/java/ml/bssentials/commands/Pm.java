@@ -31,9 +31,9 @@ public class Pm implements CommandExecutor {
  
                         message += args[i] + " ";
 
-                        target.sendMessage(sender.getName() + " -> " + target.getName() + ": " + ChatColor.translateAlternateColorCodes('&', message));
+                        target.sendMessage("["+sender.getName() + " -> " + "me] " + ChatColor.translateAlternateColorCodes('&', message));
  
-                        sender.sendMessage("me" + " -> " + target.getName() + " " + message);
+                        sender.sendMessage("[me" + " -> " + target.getName() + "] " + message);
  
                 } else if(target == null) {
                     sender.sendMessage("That player is not currently online!");
