@@ -1,4 +1,4 @@
- package ml.bssentials.api;
+package ml.bssentials.api;
 
 import org.bukkit.entity.Player;
 import org.bukkit.Bukkit;
@@ -48,7 +48,7 @@ public class BssUtils {
 	 * Broadcast an message to the server
 	 **/
 	public static void broadcastMessage(Object message) {
-		Bukkit.broadcastMessage(message.toString());
+		broadcastMessage(message.toString());
 	}
 
 }

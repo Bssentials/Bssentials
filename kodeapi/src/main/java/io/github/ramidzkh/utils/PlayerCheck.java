@@ -33,8 +33,6 @@ public class PlayerCheck {
 	 * @return <b>{@link Boolean}</b> If the player is an operator or has the permission; either <code>true</code> or <code>false</code>.
 	 */
 	public static boolean hasPerm(Player player, String perm) {
-		String command = perm.replace("bssentials.command.", "");
-		//return (player.isOp() | player.hasPermission(perm));
-		return (hasPermForCommand(player, command));
+		return (player.isOp() | player.hasPermission(perm));
 	}
 }

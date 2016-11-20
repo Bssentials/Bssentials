@@ -19,10 +19,7 @@ import org.bukkit.entity.Player;
 import io.github.ramidzkh.utils.PlayerCheck;
 
 import ml.bssentials.api.BssUtils;
-import ml.bssentials.api.ChatAPI;
 import ml.bssentials.main.Bssentials;
-
-
 
 public class Commands implements CommandExecutor {
 	private Bssentials main;
@@ -155,7 +152,7 @@ public class Commands implements CommandExecutor {
     
         /* CONTROL COMMAND */
         if (cmd.getName().equalsIgnoreCase("control")) {
-        	if (PlayerCheck.hasPermForCommand(p, "control")){
+        	if (BssUtils.hasPermForCommand(p, "control")){
         	 	Player target = player.getServer().getPlayer(args[0]);
         	 	String argss = StringUtils.join(args, " ").replace(args[0], "");
         	 	if(argss.contains("/")) {
@@ -418,7 +415,7 @@ public class Commands implements CommandExecutor {
         
         /* REPAIR COMMAND */
         if (cmd.getName().equalsIgnoreCase("repair")) {
-        	if (PlayerCheck.hasPermForCommand(p, "repair")) {
+        	if (BssUtils.hasPermForCommand(p, "repair")) {
         		player.getItemInHand().setDurability((short) 0);
         		sender.sendMessage(prefix + "Repaired!");
         	} else {
