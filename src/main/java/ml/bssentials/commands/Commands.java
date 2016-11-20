@@ -420,7 +420,7 @@ public class Commands implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("repair")) {
         	if (PlayerCheck.hasPermForCommand(p, "repair")) {
         		player.getItemInHand().setDurability((short) 0);
-        		sender.sendMessage("Repaired!");
+        		sender.sendMessage(prefix + "Repaired!");
         	} else {
         		sender.sendMessage(prefix + "No Permission!");
         	}
@@ -435,6 +435,7 @@ public class Commands implements CommandExecutor {
                 if (sender.hasPermission("bssentials.command.invsee")) {
 					Player targetPlayer = player.getServer().getPlayer(args[0]);
                     ((Player) sender).openInventory(targetPlayer.getInventory());
+					sender.sendMessage(prefix + "Openned Inv.");
                 } else {
                     sender.sendMessage(prefix + "No Permission");
                 }
