@@ -411,7 +411,7 @@ public class Commands implements CommandExecutor {
         				fly.setFlying(true);
         			}
         		} else {
-		  	      sender.sendMessage("Usage is /fly [on/off] or /fly [on/off] [player]");
+		  	      sender.sendMessage(prefix + "Usage is /fly [on/off] or /fly [on/off] [player]");
 			}
 	        }
         }
@@ -422,7 +422,7 @@ public class Commands implements CommandExecutor {
         		player.getItemInHand().setDurability((short) 0);
         		sender.sendMessage("Repaired!");
         	} else {
-        		sender.sendMessage("No Permission!");
+        		sender.sendMessage(prefix + "No Permission!");
         	}
         }
         
@@ -436,7 +436,7 @@ public class Commands implements CommandExecutor {
 					Player targetPlayer = player.getServer().getPlayer(args[0]);
                     ((Player) sender).openInventory(targetPlayer.getInventory());
                 } else {
-                    sender.sendMessage("No Permission");
+                    sender.sendMessage(prefix + "No Permission");
                 }
 			}
 	    }
@@ -474,7 +474,7 @@ public class Commands implements CommandExecutor {
         			main.getCommand(args[0]).setAliases(aliases);
         		}
         	} else {
-        		sender.sendMessage("Usage: /alias command shortcut");
+        		sender.sendMessage(prefix + "Usage: /alias command shortcut");
         	}
         }
         
