@@ -65,4 +65,12 @@
     </license>
   </licenses>
   
+  <distributionManagement>
+	<!--md_5 put Bssentials on to his jenkins-->
+        <repository>
+            <id>spigot-repo</id>
+            <name>md-5 Releases</name>
+            <url>http://ci.md-5.net</url>
+        </repository>
+  </distributionManagement>
 </project>
