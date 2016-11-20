@@ -15,7 +15,7 @@ public class BssUtils {
 	 * */
 	public static boolean hasPermForCommand(Player player, String command) {
 		Player p = player;
-		return (player.isOp() | PlayerCheck.hasPerm(p, "bssentials.command"+command) | PlayerCheck.hasPerm(p, "essentials."+command) | PlayerCheck.hasPerm(p, "accentials.command"+command) | PlayerCheck.hasPerm(p, "dssentials.command"+command) | PlayerCheck.hasPerm(p, "bssentials.command.*"));
+		return (player.isOp() | PlayerCheck.hasPerm(p, "bssentials.command"+command) | PlayerCheck.hasPerm(p, "essentials."+command) | PlayerCheck.hasPerm(p, "accentials.command"+command) | PlayerCheck.hasPerm(p, "dssentials.command"+command) | PlayerCheck.hasPerm(p, "bssentials.command.*") | PlayerCheck.hasPerm(p, "se."+command));
 	}
 	
 	/**
