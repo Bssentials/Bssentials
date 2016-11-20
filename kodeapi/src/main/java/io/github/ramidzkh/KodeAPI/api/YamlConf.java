@@ -21,8 +21,8 @@ public class YamlConf {
 		return YamlConfiguration.loadConfiguration(f);
 	}
 	
-	public void loadFromJar(File file) {/*To do*/}
-	public void writeTo(File file, String text) {/*To do*/}
+	@SuppressWarnings("unused") public void loadFromJar(File file) {/*To do*/}
+	@SuppressWarnings("unused") public void writeTo(File file, String text) {/*To do*/}
 	public void writeTo(String file, String text) {
 		File file1 = new File(file);
 		writeTo(file1, text);

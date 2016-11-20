@@ -18,7 +18,6 @@ public class ViewNick implements CommandExecutor {
     		if (args.length == 0) {
     			sender.sendMessage("/viewnick <player>");
     		} else {
-    			//@SuppressWarnings("deprecation")
     			Player target = player.getServer().getPlayer(args[0]);
     			String targetsnick = target.getDisplayName();
     			String line = "------------";

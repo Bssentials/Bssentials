@@ -1,68 +1,61 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  
-  <groupId>ml.bssentials.main</groupId>
-  <artifactId>Bssentials</artifactId>
-  <version>2.x</version>
-  <packaging>jar</packaging>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <name>Bssentials</name>
-  <url>http://bssentials.github.io/</url>
-  
-  <build>
-    <defaultGoal>package</defaultGoal>
-    <directory>${basedir}</directory>
+    <groupId>ml.bssentials</groupId>
+    <artifactId>bssentials-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>2.x</version>
+    <modules>
+        <module>kodeapi</module>
+        <module>bssentials</module>
+    </modules>
 
-    <sourceDirectory>${basedir}/src/</sourceDirectory>
-	  
-    <finalName>Bssentials-${project.version}</finalName>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
-        <configuration>
-          <target>1.7</target>
-          <source>1.7</source>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+    <properties>
+        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <build.number>unknown</build.number>
+        <minecraft.version>1.11</minecraft.version>
+    </properties>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.build.targetEncoding>UTF-8</project.build.targetEncoding>
-  </properties>
-  <repositories>
-    <repository>
-      <id>spigot-api</id>
-      <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-    </repository>
-  </repositories>
+    <profiles>
+        <profile>
+            <id>jenkins</id>
+            <activation>
+                <property>
+                    <name>env.BUILD_NUMBER</name>
+                </property>
+            </activation>
+            <properties>
+                <build.number>2.5-dev${env.BUILD_NUMBER}</build.number>
+            </properties>
+        </profile>
+    </profiles>
 
-  <dependencies>
-  <!-- Bukkit's the base and spigot is optional
-    <dependency>
-      <groupId>org.spigotmc</groupId>
-      <artifactId>spigot-api</artifactId>
-      <version>1.10.2-R0.1-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
-	-->
-    <dependency>
-      <groupId>org.bukkit</groupId>
-      <artifactId>bukkit</artifactId>
-      <version>1.10.2-R0.1-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
-  </dependencies>
-  
-  <licenses>
-    <license>
-      <name>GNU General Public License</name>
-      <url>https://raw.githubusercontent.com/Bssentials/Bssentials-2/master/LICENSE</url>
-    </license>
-  </licenses>
-  
+    <repositories>
+        <repository>
+			<id>spigot-api</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+		</repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+			<id>spigot-api</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <distributionManagement>
+		<!--md_5 put Bssentials on to his jenkins-->
+        <repository>
+            <id>spigot-repo</id>
+            <name>md-5 Releases</name>
+            <url>http://ci.md-5.net</url>
+        </repository>
+    </distributionManagement>
+
 </project>

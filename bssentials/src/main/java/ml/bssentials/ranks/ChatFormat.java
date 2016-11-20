@@ -13,7 +13,7 @@ public class ChatFormat implements Listener {
 	
 	public ChatFormat(Bssentials bs) {
     	    this.main = bs;
-        }
+    }
 	
 	@EventHandler
         public void onChat(AsyncPlayerChatEvent event) {
@@ -32,6 +32,7 @@ public class ChatFormat implements Listener {
 
 			String format = main.getRankConfig().getString("ranks.format");
 			if (format == null) {
+			    format = "%rank% %s : %s";
 				main.getRankConfig().set("ranks.format", "%rank% %s : %s");
 			}
         

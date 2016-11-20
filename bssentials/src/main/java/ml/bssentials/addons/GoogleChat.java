@@ -9,6 +9,9 @@ import org.bukkit.entity.Player;
 
 import ml.bssentials.main.Bssentials;
 
+/**
+ * The plugin GoogleChat (http://dev.bukkit.org/bukkit-plugins/googlechat) added into Bssentials! 
+ */
 public class GoogleChat implements CommandExecutor {
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args) {
@@ -17,11 +20,11 @@ public class GoogleChat implements CommandExecutor {
     		return false;
     	}
 		
-    	//Strings needed for GoogleChat
         String TooManyArgs = "Too many args! Max 15! sorry.";
         String NoArgs = "No args!";
-        String Perm = "No Permisson: bssentials.command.<command>";
+        String Perm = "No Permisson: bssentials.command."+cmd.getName().toLowerCase();
         
+        //BUKKITDEV COMMAND
         if (cmd.getName().equalsIgnoreCase("BukkitDev")) {
             if (sender.hasPermission(Bssentials.BUKKIT_PERM)) {
                 if (args.length > 0) {
@@ -36,6 +39,7 @@ public class GoogleChat implements CommandExecutor {
             }
         }
         
+        //YOUTUBE COMMAND
         if (cmd.getName().equalsIgnoreCase("YouTube")) {
             if (sender.hasPermission(Bssentials.YOUTUBE_PERM)) {
                 if (args.length > 0) {
@@ -49,6 +53,8 @@ public class GoogleChat implements CommandExecutor {
                 sender.sendMessage(ChatColor.RED + Perm);
             }
         }
+        
+        //GOOGLE COMMAND
         if (cmd.getName().equalsIgnoreCase("Google")) {
             if (sender.hasPermission(Bssentials.GOOGLE_PERM)) {
                 if (args.length > 0) {
@@ -62,6 +68,8 @@ public class GoogleChat implements CommandExecutor {
                 sender.sendMessage(ChatColor.RED + Perm);
             }
         }
+        
+        //MCWIKI COMMAND
         if (cmd.getName().equalsIgnoreCase("MCWiki")) {
         	if (sender.hasPermission(Bssentials.WIKI_PERM)) {
                 	if (args.length > 0) {

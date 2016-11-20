@@ -24,6 +24,10 @@ public class onJoinNick implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		Player player = e.getPlayer();
+		if (!player.hasPlayedBefore()) {
+		    main.getConfig().set("playerdata."+player.getName()+"uuid", player.getUniqueId().toString());
+		}
+		
 		if (main.getConfig().getString("playerdata." + player.getName() + ".nick") != null) {
 			player.setDisplayName(main.getConfig().getString("playerdata." + player.getName() + ".nick"));
 			player.sendMessage(Bssentials.PREFIX + ChatColor.GOLD + "Found a nick name you set! type /disnick to disable your nickname!");
