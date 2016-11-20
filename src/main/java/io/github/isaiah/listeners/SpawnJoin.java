@@ -39,7 +39,7 @@ public class SpawnJoin implements Listener {
                 p.teleport(new Location(w, x, y, z));
                 p.sendMessage(ChatColor.GREEN + "Warping to spawn");
             }
-	    Bukkit.broadcastMessage(main.PREFIX + " Please welcome " + p.getName() + " to the server!");
+			Bukkit.broadcastMessage(main.PREFIX + " Please welcome " + p.getName() + " to the server!");
         }
     }
 }

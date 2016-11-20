@@ -71,9 +71,9 @@ public class Plugins implements Listener {
             
             		if (!showVer == true) {
             			pluginList.append(plugin.getDescription().getName());
-           		} else {
+           		    } else {
             			pluginList.append(plugin.getDescription().getName() + ChatColor.GRAY + "(" + plugin.getDescription().getVersion() + ")" + ChatColor.RESET);
-           		}
+           		    }
             		++n2;
         	}
         
