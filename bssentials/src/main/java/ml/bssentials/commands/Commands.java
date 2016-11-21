@@ -516,8 +516,10 @@ public class Commands implements CommandExecutor {
 		                    double x = main.getWarpConfig().getDouble("warps." + args[0] + ".x");
 		                    double y = main.getWarpConfig().getDouble("warps." + args[0] + ".y");
 		                    double z = main.getWarpConfig().getDouble("warps." + args[0] + ".z");
+		                    float yaw = main.getWarpConfig().getInt("warps" + args[0] + ".yaw");
+		                    float pitch = main.getWarpConfig().getInt("warps" + args[0] + "pitch");
 		                    
-		                    main.teleport(player, new Location(w,x,y,z));
+		                    main.teleport(player, new Location(w,x,y,z,yaw,pitch));
 		                    sender.sendMessage(ChatColor.GREEN + "Warping to " + args[0]);
 	                	} else {
 	                		sender.sendMessage(ChatColor.RED + "No warp by that name exists.");

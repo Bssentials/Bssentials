@@ -300,6 +300,8 @@ public class Bssentials extends JavaPlugin implements Listener {
         getWarpConfig().set("warps." + warpname + ".x", p.getLocation().getX());
         getWarpConfig().set("warps." + warpname + ".y", p.getLocation().getY());
         getWarpConfig().set("warps." + warpname + ".z", p.getLocation().getZ());
+        getWarpConfig().set("warps." + warpname + "yaw", p.getLocation().getYaw());
+        getWarpConfig().set("warps." + warpname + "pitch", p.getLocation().getPitch());
         saveWarpConfig();
         
         p.sendMessage(ChatColor.GREEN + warpname + " warp set!");
