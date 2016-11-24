@@ -34,15 +34,15 @@
 
     <repositories>
         <repository>
-			<id>spigot-api</id>
-			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-		</repository>
+            <id>spigot-api</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
     </repositories>
 
     <pluginRepositories>
         <pluginRepository>
-			<id>spigot-api</id>
-			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <id>spigot-api</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -50,10 +50,9 @@
     </pluginRepositories>
 
     <distributionManagement>
-		<!--md_5 put Bssentials on to his jenkins-->
         <repository>
             <id>spigot-repo</id>
-            <name>md-5 Releases</name>
+            <name>md-5</name>
             <url>http://ci.md-5.net</url>
         </repository>
     </distributionManagement>

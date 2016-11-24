@@ -1,8 +1,3 @@
-/**
- * Lincence under GPLv3!
- * 
- * http://github.com/bssentials/
- * */
 package ml.bssentials.main;
 
 import java.io.File;
@@ -25,9 +20,9 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 // Listeners
-import io.github.isaiah.listeners.Plugins;
-import io.github.isaiah.listeners.SpawnJoin;
-import io.github.isaiah.listeners.onJoinNick;
+import ml.bssentials.listeners.CommandLis;
+import ml.bssentials.listeners.PlayerJoinLis;
+import ml.bssentials.listeners.ChatLis;
 
 // KodeAPI
 import io.github.ramidzkh.KodeAPI.api.YamlConf;
@@ -41,23 +36,22 @@ import ml.bssentials.commands.Ping;
 import ml.bssentials.commands.Pm;
 import ml.bssentials.commands.ViewNick;
 import ml.bssentials.commands.spawnmob;
-import ml.bssentials.ranks.ChatFormat;
 import ml.bssentials.updater.Updater;
 
 /**
     <b>Bssentials</b><br>
     <br>
     Created by: Isaiah Patton & ramidzkh<br>
-    About: Better Essentials for 1.10
+    About: Better Essentials for 1.10 & 1.11
     
     @author Isaiah Patton
     @author ramidzkh
-    @author FunWithJava
     
     @version 2.5-dev
     
     @see {@link JavaPlugin}
     @see {@link PluginDescriptionFile}
+    @see {@link Commands} Bssentials' Commands
 */
 
 public class Bssentials extends JavaPlugin implements Listener {
@@ -122,10 +116,9 @@ public class Bssentials extends JavaPlugin implements Listener {
         
         regCommands();
         
-        pm.registerEvents(new ChatFormat(this), this);
-		pm.registerEvents(new Plugins(), this);
-		pm.registerEvents(new onJoinNick(this), this);
-		pm.registerEvents(new SpawnJoin(this), this);
+        pm.registerEvents(new ChatLis(this), this);
+		pm.registerEvents(new CommandLis(this), this);
+		pm.registerEvents(new PlayerJoinLis(this), this);
 		pm.registerEvents(this, this);
 	}
 

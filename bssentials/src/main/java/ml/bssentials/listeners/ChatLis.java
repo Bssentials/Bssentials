@@ -1,5 +1,7 @@
-package ml.bssentials.ranks;
+package ml.bssentials.listeners;
 
+import org.apache.commons.lang3.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,17 +10,17 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import ml.bssentials.main.Bssentials;
 
-public class ChatFormat implements Listener {
+public class ChatLis implements Listener {
 	private Bssentials main;
 	
-	public ChatFormat(Bssentials bs) {
+	public ChatLis(Bssentials bs) {
     	    this.main = bs;
     }
 	
 	@EventHandler
-        public void onChat(AsyncPlayerChatEvent event) {
+    public void onChat(AsyncPlayerChatEvent event) {
+	    Player player = event.getPlayer();
 		if (main.getRankConfig().getBoolean("ranks.enable") != false) {
-			Player player = event.getPlayer();
 			String rankname;
 			if (main.getRankConfig().getString("playerdata." + player.getName() + ".rank") != null) {
 				rankname = main.getConfig().getString("playerdata." + player.getName() + ".rank");
@@ -38,5 +40,14 @@ public class ChatFormat implements Listener {
         
 			event.setFormat(format.replaceAll("%rank%", ChatColor.translateAlternateColorCodes('&', rank)));
 		}
+		
+		for (String word : main.getConfig().getStringList("antiswear")) {
+		    if (Bukkit.getServer().getPluginManager().getPlugin("BSwear") == null) {
+		        if (event.getMessage().equalsIgnoreCase(word)) {
+		            event.setMessage(event.getMessage().replaceAll(word, StringUtils.repeat("*", word.length())));
+		            player.sendMessage(ChatColor.RED + "[Bssentials] The word: "+word+" is blocked!");
+		        }
+		    }
+        }
     }
 }

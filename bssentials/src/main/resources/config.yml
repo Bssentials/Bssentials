@@ -9,15 +9,18 @@ staff:
   - 'Edit this in your Bssentials config.yml'
 
 # Ranks are Now in ranks.yml !
-    
+
+# Disable any command on your server
 commandBlackList:
     - 'cmd1'
     - 'cmd2'
-    
+
+# Block swearing in the chat
 antiswear:
     - 'word1'
     - 'word2'
 
+#An name of an song, used in /bssentials and /bssentials sotd
 songOfTheDay: ''
 
 # Here is player's data, ex: nicknames and ranks!
