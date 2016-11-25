@@ -13,7 +13,7 @@ public class MobAPI {
         world.spawnEntity(TargetLocation, entity);
     }
 	public static void spawnMobCommand(String mob, CommandSender sender, World world, Location TargetLocation) {
-        if(mob.equalsIgnoreCase("Wolf")){
+	    if(mob.equalsIgnoreCase("Wolf")){
             spawnMob(EntityType.WOLF, world, TargetLocation);
         }else if(mob.equalsIgnoreCase("Pig")){
             spawnMob(EntityType.PIG, world, TargetLocation);
