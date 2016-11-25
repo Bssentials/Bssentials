@@ -29,7 +29,6 @@ import io.github.ramidzkh.KodeAPI.api.YamlConf;
 
 // Bssentials classes
 import ml.bssentials.addons.GoogleChat;
-import ml.bssentials.api.ChatAPI;
 import ml.bssentials.commands.Broadcast;
 import ml.bssentials.commands.Commands;
 import ml.bssentials.commands.Ping;
@@ -281,8 +280,8 @@ public class Bssentials extends JavaPlugin implements Listener {
         pm.addPermission(WARP_OTHERS_PERM);
     }
     
-    @Deprecated
-    public void nickName(Player player, String name) { ChatAPI.nickName(player, name); }
+    //@Deprecated
+    //public void nickName(Player player, String name) { ChatAPI.nickName(player, name); }
 
     
     /**
