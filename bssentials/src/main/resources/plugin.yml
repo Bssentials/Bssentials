@@ -1,5 +1,5 @@
 name: Bssentials
-version: 2.5-dev
+version: 2.5
 authors: [view on bukkit dev]
 main: ml.bssentials.main.Bssentials
 prefix: Bssentials
