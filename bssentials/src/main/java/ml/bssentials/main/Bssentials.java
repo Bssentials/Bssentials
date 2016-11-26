@@ -55,7 +55,7 @@ import ml.bssentials.updater.Updater;
 
 public class Bssentials extends JavaPlugin implements Listener {
 	
-    public static String version = "2.5-dev";
+    public static String version = "2.5";
 	public Logger logger = getLogger();
 	
 	public static final Permission GAMEMODE_PERM    = new Permission ("bssentials.command.gm");
