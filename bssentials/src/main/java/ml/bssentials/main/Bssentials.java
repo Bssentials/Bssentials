@@ -46,7 +46,7 @@ import ml.bssentials.updater.Updater;
     @author Isaiah Patton
     @author ramidzkh
     
-    @version 2.5-dev
+    @version 2.6-dev
     
     @see {@link JavaPlugin}
     @see {@link PluginDescriptionFile}
@@ -55,7 +55,7 @@ import ml.bssentials.updater.Updater;
 
 public class Bssentials extends JavaPlugin implements Listener {
 	
-    public static String version = "2.5";
+    public static String version = "2.6-dev";
 	public Logger logger = getLogger();
 	
 	public static final Permission GAMEMODE_PERM    = new Permission ("bssentials.command.gm");
