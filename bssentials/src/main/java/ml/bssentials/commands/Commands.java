@@ -10,11 +10,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import io.github.ramidzkh.utils.PlayerCheck;
 
@@ -150,13 +153,33 @@ public class Commands implements CommandExecutor {
             }
         }
     
+        /* HAT COMMAND */
+        if (cmd.getName().equalsIgnoreCase("hat")) {
+            if (BssUtils.hasPermForCommand(player, cmd.getName().toLowerCase())) {
+                if (player.getItemInHand().getType() != Material.AIR) {
+                    ItemStack itemHand = player.getItemInHand();
+                    PlayerInventory inventory = player.getInventory();
+                    ItemStack itemHead = inventory.getHelmet();
+                    inventory.removeItem(new ItemStack[]{itemHand});
+                    inventory.setHelmet(itemHand);
+                    inventory.setItemInHand(itemHead);
+                    player.sendMessage(ChatColor.YELLOW + "Item successfuly put on your head.");
+                    return true;
+                }
+                player.sendMessage(ChatColor.YELLOW + "You must have something to put on your head!");
+                return true;
+            }
+            BssUtils.noPermMsg(player, cmd);
+            return true;
+        }
+        
         /* CONTROL COMMAND */
         if (cmd.getName().equalsIgnoreCase("control")) {
         	if (BssUtils.hasPermForCommand(p, "control")){
         	 	Player target = player.getServer().getPlayer(args[0]);
         	 	String argss = StringUtils.join(args, " ").replace(args[0], "");
         	 	if(argss.contains("/")) {
-        	 		main.getServer().dispatchCommand(target, argss.replace("/", ""));
+        	 		target.performCommand(argss.replace("/", ""));
         	 	} else {
         	 		target.chat(argss);
         	 	}
@@ -208,6 +231,12 @@ public class Commands implements CommandExecutor {
                 	player.setGameMode(GameMode.SURVIVAL);
                 } else if (args.length == 1 && args[0].equalsIgnoreCase("creative")) {
                 	player.setGameMode(GameMode.CREATIVE);
+                } else if (args.length == 1 && args[0].equalsIgnoreCase("switch")) {
+                    if (player.getGameMode() == GameMode.SURVIVAL) {
+                        player.setGameMode(GameMode.CREATIVE);
+                    } else {
+                        player.setGameMode(GameMode.SURVIVAL);
+                    }
                 }
 			} else {
 		        sender.sendMessage(ChatColor.GREEN + "[Bssentials] " + ChatColor.RED + "You don't have permission: bssentials.command.gamemode");  
