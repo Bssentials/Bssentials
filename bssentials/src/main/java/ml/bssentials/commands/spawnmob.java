@@ -8,6 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import ml.bssentials.api.BssUtils;
 import ml.bssentials.api.MobAPI;
 
 public class spawnmob implements CommandExecutor {
@@ -31,7 +32,7 @@ public class spawnmob implements CommandExecutor {
                     MobAPI.spawnMobCommand(args[0], sender, world, TargetLocation);
                 }
             } else {
-                sender.sendMessage("No Permission!");
+                BssUtils.noPermMsg(player, cmd);
             }
         }
 		return true;

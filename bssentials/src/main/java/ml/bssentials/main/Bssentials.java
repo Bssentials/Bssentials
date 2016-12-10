@@ -24,9 +24,6 @@ import ml.bssentials.listeners.CommandLis;
 import ml.bssentials.listeners.PlayerJoinLis;
 import ml.bssentials.listeners.ChatLis;
 
-// KodeAPI
-import io.github.ramidzkh.KodeAPI.api.YamlConf;
-
 // Bssentials classes
 import ml.bssentials.addons.GoogleChat;
 import ml.bssentials.commands.Broadcast;
@@ -191,25 +188,42 @@ public class Bssentials extends JavaPlugin implements Listener {
     * Saves the warps.yml
     */
     public void saveWarpConfig() {
-    	YamlConf.saveConf(warps, warpsf);
+    	try {
+            warps.save(warpsf); 
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("[Bssentials] Could not save file warps.yml");
+        }
     }
     
     /**
     * Saves the homes.yml
     */
     public void saveHomeConfig() {
-    	YamlConf.saveConf(homes, homesf);
+    	try {
+            homes.save(homesf); 
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("[Bssentials] Could not save homes.yml");
+        }
     }
     
     /**
     * Saves the ranks.yml
     */
     public void saveRankConfig() {
-    	YamlConf.saveConf(ranks, ranksf);
+        try {
+            ranks.save(ranksf); 
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("[Bssentials] Could not save file ranks.yml");
+        }
     }
 
+    /**
+     * Create config (yaml) files.
+     */
     private void createFiles() {
-
         configf = new File(getDataFolder(), "config.yml");
         warpsf = new File(getDataFolder(), "warps.yml");
         homesf = new File(getDataFolder(), "homes.yml");
@@ -246,10 +260,6 @@ public class Bssentials extends JavaPlugin implements Listener {
         }
     }
     
-    public void FileSave() {
-    	saveConfig();
-    }
-    
 	public void onDisable() {/*On plugin disable*/}
 	
     private static void registerPermissions(PluginManager pm) {
@@ -279,11 +289,7 @@ public class Bssentials extends JavaPlugin implements Listener {
         pm.addPermission(WARP_PERM);
         pm.addPermission(WARP_OTHERS_PERM);
     }
-    
-    //@Deprecated
-    //public void nickName(Player player, String name) { ChatAPI.nickName(player, name); }
 
-    
     /**
      * Creates an Warp
      **/

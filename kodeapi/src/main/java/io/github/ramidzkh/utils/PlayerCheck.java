@@ -6,7 +6,7 @@ import org.bukkit.permissions.Permission;
 
 public class PlayerCheck {
 
-	public static boolean isPlayer(CommandSender sender){
+	/*public static boolean isPlayer(CommandSender sender){
 		return (sender instanceof Player);
 	}
 	
@@ -20,7 +20,7 @@ public class PlayerCheck {
 	 * @param player The player to check {@link Player}.
 	 * @param perm The permission the player should have. {@link Permission} as the permission.
 	 * @return <b>{@link Boolean}</b> If the player is an operator or has the permission; either <code>true</code> or <code>false</code>.
-	 */
+	 *
 	public static boolean hasPerm(Player player, Permission perm) {
 		return (player.isOp() | player.hasPermission(perm));
 	}
@@ -31,8 +31,8 @@ public class PlayerCheck {
 	 * @param player The player to check {@linkplain Player}.
 	 * @param perm The permission the player should have. {@link String} as the permission.
 	 * @return <b>{@link Boolean}</b> If the player is an operator or has the permission; either <code>true</code> or <code>false</code>.
-	 */
+	 *
 	public static boolean hasPerm(Player player, String perm) {
 		return (player.isOp() | player.hasPermission(perm));
-	}
+	}*/
 }

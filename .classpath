@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="bssentials/src/main/java"/>
 	<classpathentry kind="src" path="kodeapi/src/main/java"/>
+	<classpathentry kind="src" path="groupmanager/src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/craftbukkit-latest.jar"/>
 	<classpathentry kind="output" path="bin"/>

@@ -19,8 +19,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import io.github.ramidzkh.utils.PlayerCheck;
-
 import ml.bssentials.api.BssUtils;
 import ml.bssentials.main.Bssentials;
 
@@ -39,18 +37,13 @@ public class Commands implements CommandExecutor {
         }
     	String prefix = Bssentials.prefix;
     	
-    	
         String authors = "Isaiah Patton, & ramidzkh";
-        String NoPerm = prefix + "You don't have permission: bssentials.command." + cmd.getName().toLowerCase();
-        
-        
         Player player = (Player) sender;
-        Player p = player;
         
         /* BSSENTIALS COMMAND */
         if (cmd.getName().equalsIgnoreCase("bssentials")) {
-            if(!PlayerCheck.hasPerm(player, Bssentials.PLUGIN_INFO_PERM)){
-                player.sendMessage(NoPerm);
+            if(!BssUtils.hasPermForCommand(player, cmd.getName().toLowerCase())){
+                BssUtils.noPermMsg(player, cmd);
                 return false;
             }
             String pre = prefix;
@@ -71,7 +64,6 @@ public class Commands implements CommandExecutor {
      
         /* NICK COMMAND */
         if (cmd.getName().equalsIgnoreCase("nick")) {
-            //ChatAPI.nickName(player, StringUtils.join(args, " "));
             main.getConfig().set("playerdata." + player.getName() + ".nick", StringUtils.join(args, " "));
             player.setDisplayName(ChatColor.translateAlternateColorCodes('&', StringUtils.join(args, " ")));
             main.saveConfig();
@@ -90,7 +82,7 @@ public class Commands implements CommandExecutor {
         		Bukkit.dispatchCommand(sender, "lagg unloadchunks");
         		sender.sendMessage(Bssentials.prefix + "Removed Lagg!");
         	} else if (args.length !=0 && args[0].equalsIgnoreCase("unloadchunks")) {
-                if (BssUtils.hasPermForCommand(p, "removelag.unloadchunks")) {
+                if (BssUtils.hasPermForCommand(player, "removelag.unloadchunks")) {
                     if (args.length == 2 || args.length == 1) {
                         World w = null;
                         if (args.length == 2) {
@@ -101,8 +93,8 @@ public class Commands implements CommandExecutor {
                                 sender.sendMessage("World \"" + args[1] + "\" could not be found.");
                                 return true;
                             }
-                        } else if (p != null) {
-                            w = p.getWorld();
+                        } else if (player != null) {
+                            w = player.getWorld();
                         }
                         if (w == null) {
                             sender.sendMessage("/removelag unloadchunks <world>");
@@ -122,7 +114,7 @@ public class Commands implements CommandExecutor {
                         sender.sendMessage("/removelag unloadchunks <world>");
                     }
                 } else {
-                    BssUtils.noPermMsg(p, cmd);
+                    BssUtils.noPermMsg(player, cmd);
                 }
                 return true;
             }
@@ -145,11 +137,11 @@ public class Commands implements CommandExecutor {
 
         /* CI COMMAND */
         if (cmd.getName().equalsIgnoreCase("ci")) {
-            if (BssUtils.hasPermForCommand(p, "ci")) {
+            if (BssUtils.hasPermForCommand(player, "ci")) {
                 player.getInventory().clear();
                 sender.sendMessage(prefix + "Inventory cleared!");
             } else {
-                BssUtils.noPermMsg(p, cmd);
+                BssUtils.noPermMsg(player, cmd);
             }
         }
     
@@ -175,7 +167,7 @@ public class Commands implements CommandExecutor {
         
         /* CONTROL COMMAND */
         if (cmd.getName().equalsIgnoreCase("control")) {
-        	if (BssUtils.hasPermForCommand(p, "control")){
+        	if (BssUtils.hasPermForCommand(player, "control")){
         	 	Player target = player.getServer().getPlayer(args[0]);
         	 	String argss = StringUtils.join(args, " ").replace(args[0], "");
         	 	if(argss.contains("/")) {
@@ -184,13 +176,13 @@ public class Commands implements CommandExecutor {
         	 		target.chat(argss);
         	 	}
         	} else {
-                BssUtils.noPermMsg(p, cmd);
+                BssUtils.noPermMsg(player, cmd);
             }
         }
         
         /* RANK COMMAND */
         if (cmd.getName().equalsIgnoreCase("rank")) {
-            if (BssUtils.hasPermForCommand(p, "rank")) {
+            if (BssUtils.hasPermForCommand(player, "rank")) {
                 if (args.length == 0) {
                     sender.sendMessage("Use /rank create <rankname> <display>");
                     sender.sendMessage("Or: /rank setplayer <player> <rank>");
@@ -204,7 +196,7 @@ public class Commands implements CommandExecutor {
                     sender.sendMessage("Added "+args[1]+" to the rank" + args[2]);
                 }
             } else {
-                BssUtils.noPermMsg(p, cmd);
+                BssUtils.noPermMsg(player, cmd);
             }
         }
         
@@ -222,7 +214,7 @@ public class Commands implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("gamemode")) {
             if (args.length == 0) {
                 sender.sendMessage(ChatColor.GREEN + "[Bssentials]" + ChatColor.GRAY + " Usage /gm <0|1>");
-            } else if (BssUtils.hasPermForCommand(p, "gamemode")) {
+            } else if (BssUtils.hasPermForCommand(player, "gamemode")) {
                 if (args.length == 1 && args[0].equalsIgnoreCase("0")) {
                 	player.setGameMode(GameMode.SURVIVAL);
                 } else if (args.length == 1 && args[0].equalsIgnoreCase("1")) {
@@ -300,7 +292,7 @@ public class Commands implements CommandExecutor {
         /* SETSPAWN COMMAND */
         if (cmd.getName().equalsIgnoreCase("setspawn")) {
             if (sender.hasPermission(Bssentials.SETSPAWN_PERM)) {
-                main.createWarp(p, "spawn");
+                main.createWarp(player, "spawn");
             } else {
                 sender.sendMessage("No Permission");
             }
@@ -444,7 +436,7 @@ public class Commands implements CommandExecutor {
         
         /* REPAIR COMMAND */
         if (cmd.getName().equalsIgnoreCase("repair")) {
-        	if (BssUtils.hasPermForCommand(p, "repair")) {
+        	if (BssUtils.hasPermForCommand(player, "repair")) {
         		player.getItemInHand().setDurability((short) 0);
         		sender.sendMessage(prefix + "Repaired!");
         	} else {
@@ -507,26 +499,26 @@ public class Commands implements CommandExecutor {
         
         /* SETHOME COMMAND */
         if(cmd.getName().equalsIgnoreCase("sethome")) {
-        	main.createHome(p);
+        	main.createHome(player);
         }
         
         /* DELHOME COMMAND */
         if(cmd.getName().equalsIgnoreCase("delhome")) {
-        	main.delHome(p);
+        	main.delHome(player);
         }
         
         /* HOME COMMAND */
         if(cmd.getName().equalsIgnoreCase("home")) {
-        	if (main.getHomeConfig().getConfigurationSection("homes." + p.getName()) == null) {
+        	if (main.getHomeConfig().getConfigurationSection("homes." + player.getName()) == null) {
                 sender.sendMessage(ChatColor.RED + "You have to set your home first /sethome");
             } else {
                 if (args.length == 0) {
-                    World w = Bukkit.getServer().getWorld(main.getHomeConfig().getString("homes." + p.getName() + ".world"));
-                    double x = main.getHomeConfig().getDouble("homes." + p.getName() + ".x");
-                    double y = main.getHomeConfig().getDouble("homes." + p.getName() + ".y");
-                    double z = main.getHomeConfig().getDouble("homes." + p.getName() + ".z");
+                    World w = Bukkit.getServer().getWorld(main.getHomeConfig().getString("homes." + player.getName() + ".world"));
+                    double x = main.getHomeConfig().getDouble("homes." + player.getName() + ".x");
+                    double y = main.getHomeConfig().getDouble("homes." + player.getName() + ".y");
+                    double z = main.getHomeConfig().getDouble("homes." + player.getName() + ".z");
                     player.teleport(new Location(w, x, y, z));
-                    sender.sendMessage(ChatColor.GREEN + "Welcome home " + p.getName() + "!");
+                    sender.sendMessage(ChatColor.GREEN + "Welcome home " + player.getName() + "!");
                 } else {
                     sender.sendMessage(ChatColor.RED + "Invalid args");
                 }
@@ -535,7 +527,7 @@ public class Commands implements CommandExecutor {
         
         /* WARP COMMAND */
         if (cmd.getName().equalsIgnoreCase("warp")) {
-        	if(p.hasPermission(Bssentials.WARP_PERM)) {
+        	if(player.hasPermission(Bssentials.WARP_PERM)) {
 	            if (main.getWarpConfig().getConfigurationSection("warps") == null) {
 	                sender.sendMessage(ChatColor.RED + "No warps set!");
 	            } else {
@@ -554,7 +546,7 @@ public class Commands implements CommandExecutor {
 	                		sender.sendMessage(ChatColor.RED + "No warp by that name exists.");
 	                	}
 	                } else if (args.length == 2 ) {
-	                	if(p.hasPermission(Bssentials.WARP_OTHERS_PERM)) {
+	                	if(player.hasPermission(Bssentials.WARP_OTHERS_PERM)) {
 	                		Player targetPlayer = player.getServer().getPlayer(args[1]);
 	                		if(targetPlayer != null) {
 	    	                	if(main.getWarpConfig().getConfigurationSection("warps." + args[0]) != null) {
@@ -564,7 +556,7 @@ public class Commands implements CommandExecutor {
 	    		                	double z = main.getWarpConfig().getDouble("warps." + args[0] + ".z");
 	    		                	main.teleport(targetPlayer, new Location(w, x, y, z));
 	    		                	sender.sendMessage(ChatColor.GREEN + "Warping " + args[1] + " to " + args[0]);
-	    		                	targetPlayer.sendMessage(ChatColor.GREEN + p.getName() + " warped you to " + args[0]);
+	    		                	targetPlayer.sendMessage(ChatColor.GREEN + player.getName() + " warped you to " + args[0]);
 	    	                	} else {
 	    	                		sender.sendMessage(ChatColor.RED + "No warp by that name exists.");
 	    	                	}	                			
@@ -591,7 +583,7 @@ public class Commands implements CommandExecutor {
         
         /* DELWARP COMMAND */
         if (cmd.getName().equalsIgnoreCase("delwarp")) {
-        	if (p.hasPermission(Bssentials.SETWARP_OR_PERM)) {
+        	if (player.hasPermission(Bssentials.SETWARP_OR_PERM)) {
         		try {
 	        		if(main.getWarpConfig().getConfigurationSection("warps." + args[0]) != null) {
 	        			main.getWarpConfig().set("warps." + args[0], null);
