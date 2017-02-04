@@ -25,12 +25,14 @@ import ml.bssentials.listeners.PlayerJoinLis;
 import ml.bssentials.listeners.ChatLis;
 
 // Bssentials classes
-import ml.bssentials.addons.GoogleChat;
+import ml.bssentials.commands.GoogleChat;
+import ml.bssentials.commands.Home;
 import ml.bssentials.commands.Broadcast;
 import ml.bssentials.commands.Commands;
 import ml.bssentials.commands.Ping;
 import ml.bssentials.commands.Pm;
 import ml.bssentials.commands.ViewNick;
+import ml.bssentials.commands.Warp;
 import ml.bssentials.commands.spawnmob;
 import ml.bssentials.updater.Updater;
 
@@ -43,8 +45,6 @@ import ml.bssentials.updater.Updater;
     @author Isaiah Patton
     @author ramidzkh
     
-    @version 2.6-dev
-    
     @see {@link JavaPlugin}
     @see {@link PluginDescriptionFile}
     @see {@link Commands} Bssentials' Commands
@@ -52,7 +52,7 @@ import ml.bssentials.updater.Updater;
 
 public class Bssentials extends JavaPlugin implements Listener {
 	
-    public static String version = "2.6-dev";
+    public String version = this.getDescription().getVersion();
 	public Logger logger = getLogger();
 	
 	public static final Permission GAMEMODE_PERM    = new Permission ("bssentials.command.gm");
@@ -81,7 +81,7 @@ public class Bssentials extends JavaPlugin implements Listener {
 	public static final Permission GOD_PERM         = new Permission ("bssentials.command.god");
     public static final Permission PLUGIN_INFO_PERM = new Permission ("bssentials.command.bssentials");
     public static final Permission SETSPAWN_PERM    = new Permission ("bssentials.command.spawn");
-    public static final Permission BROADCAST_PERM   = new Permission ("bssentials.command.broadcast");    
+    public static final Permission BROADCAST_PERM   = new Permission ("bssentials.command.broadcast");
     
 	public static final String prefix = ChatColor.GREEN + "[Bssentials]" + ChatColor.GOLD + " ";
     public static final String PREFIX = prefix;
@@ -109,8 +109,43 @@ public class Bssentials extends JavaPlugin implements Listener {
         getCommand("ping").setExecutor(new Ping());
         getCommand("broadcast").setExecutor(new Broadcast());
         getCommand("pm").setExecutor(new Pm());
-        
-        regCommands();
+        getCommand("info").setExecutor(new Commands(this));
+        getCommand("bssentials").setExecutor(new Commands(this));
+        getCommand("gm").setExecutor(new Commands(this));
+        getCommand("rules").setExecutor(new Commands(this));
+        getCommand("setrules").setExecutor(new Commands(this));
+        getCommand("removelag").setExecutor(new Commands(this));
+        getCommand("ci").setExecutor(new Commands(this));
+        getCommand("day").setExecutor(new Commands(this));
+        getCommand("night").setExecutor(new Commands(this));
+        getCommand("rain").setExecutor(new Commands(this));
+        getCommand("staff").setExecutor(new Commands(this));
+        getCommand("invsee").setExecutor(new Commands(this));
+        getCommand("setspawn").setExecutor(new Commands(this));
+        getCommand("spawn").setExecutor(new Commands(this));
+        getCommand("welcome").setExecutor(new Commands(this));
+        getCommand("heal").setExecutor(new Commands(this));
+        getCommand("feed").setExecutor(new Commands(this));
+        getCommand("fly").setExecutor(new Commands(this));
+        /*GoogleChat*/getCommand("BukkitDev").setExecutor(new GoogleChat());
+        /*GoogleChat*/getCommand("youtube").setExecutor(new GoogleChat());
+        /*GoogleChat*/getCommand("google").setExecutor(new GoogleChat());
+        /*GoogleChat*/getCommand("mcwiki").setExecutor(new GoogleChat());
+        getCommand("god").setExecutor(new Commands(this));
+        getCommand("pm").setExecutor(new Commands(this));
+        getCommand("setwarp").setExecutor(new Warp(this));
+        getCommand("warp").setExecutor(new Warp(this));
+        getCommand("nick").setExecutor(new Commands(this));
+        getCommand("underheal").setExecutor(new Commands(this));
+        getCommand("disnick").setExecutor(new Commands(this));
+        getCommand("alias").setExecutor(new Commands(this));
+        getCommand("rank").setExecutor(new Commands(this));
+        getCommand("control").setExecutor(new Commands(this));
+        getCommand("delwarp").setExecutor(new Warp(this));
+        getCommand("home").setExecutor(new Home(this));
+        getCommand("sethome").setExecutor(new Home(this));
+        getCommand("delhome").setExecutor(new Home(this));
+        getCommand("bancheck").setExecutor(new Commands(this));
         
         pm.registerEvents(new ChatLis(this), this);
 		pm.registerEvents(new CommandLis(this), this);
@@ -118,49 +153,6 @@ public class Bssentials extends JavaPlugin implements Listener {
 		pm.registerEvents(this, this);
 	}
 
-    /**
-     * Registers commands!
-     * */
-    public void regCommands(){
-    	getCommand("info").setExecutor(new Commands(this));
-    	getCommand("bssentials").setExecutor(new Commands(this));
-    	getCommand("gm").setExecutor(new Commands(this));
-    	getCommand("rules").setExecutor(new Commands(this));
-    	getCommand("setrules").setExecutor(new Commands(this));
-    	getCommand("removelag").setExecutor(new Commands(this));
-    	getCommand("ci").setExecutor(new Commands(this));
-    	getCommand("day").setExecutor(new Commands(this));
-    	getCommand("night").setExecutor(new Commands(this));
-    	getCommand("rain").setExecutor(new Commands(this));
-    	getCommand("staff").setExecutor(new Commands(this));
-    	getCommand("invsee").setExecutor(new Commands(this));
-    	getCommand("setspawn").setExecutor(new Commands(this));
-    	getCommand("spawn").setExecutor(new Commands(this));
-    	getCommand("welcome").setExecutor(new Commands(this));
-    	getCommand("heal").setExecutor(new Commands(this));
-    	getCommand("feed").setExecutor(new Commands(this));
-    	getCommand("fly").setExecutor(new Commands(this));
-    	/*GoogleChat*/getCommand("BukkitDev").setExecutor(new GoogleChat());
-        /*GoogleChat*/getCommand("youtube").setExecutor(new GoogleChat());
-        /*GoogleChat*/getCommand("google").setExecutor(new GoogleChat());
-        /*GoogleChat*/getCommand("mcwiki").setExecutor(new GoogleChat());
-    	getCommand("god").setExecutor(new Commands(this));
-    	getCommand("pm").setExecutor(new Commands(this));
-    	getCommand("setwarp").setExecutor(new Commands(this));
-    	getCommand("warp").setExecutor(new Commands(this));
-    	getCommand("nick").setExecutor(new Commands(this));
-    	getCommand("underheal").setExecutor(new Commands(this));
-    	getCommand("disnick").setExecutor(new Commands(this));
-    	getCommand("alias").setExecutor(new Commands(this));
-    	getCommand("rank").setExecutor(new Commands(this));
-    	getCommand("control").setExecutor(new Commands(this));
-    	getCommand("delwarp").setExecutor(new Commands(this));
-    	getCommand("home").setExecutor(new Commands(this));
-    	getCommand("sethome").setExecutor(new Commands(this));
-    	getCommand("delhome").setExecutor(new Commands(this));
-    	getCommand("bancheck").setExecutor(new Commands(this));
-    }
-    
     private File configf, warpsf, homesf, ranksf;
 
     /**

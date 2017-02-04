@@ -17,14 +17,12 @@ import ml.bssentials.main.Bssentials;
  * @author ramidzkh
  */
 public class Updater {
-	
-	private static Logger bsLogger;
+    
 	private static Bssentials main;
 	private static String ver;
 	private static PluginDescriptionFile pdfFile;
 	
     public Updater(Bssentials bs) {
-    	Updater.bsLogger = bs.getLogger();
     	Updater.main = bs;
     	Updater.pdfFile = main.getDescription();
     	Updater.ver = pdfFile.getVersion();
@@ -34,7 +32,7 @@ public class Updater {
 		ver = pdfFile.getVersion();
         URL checkVerURL;
 		try {
-			checkVerURL = new URL("https://raw.githubusercontent.com/bssentials/bssentials-2/master/LastPublicVer.txt");
+			checkVerURL = new URL("https://raw.githubusercontent.com/IsaiahPatton/PluginUpdaterFiles/master/bssentials-lastpublicver.txt");
 		
 			BufferedReader UpdateFile = new BufferedReader(new InputStreamReader(checkVerURL.openStream()));
         	String Update = UpdateFile.readLine();
@@ -48,21 +46,21 @@ public class Updater {
         			
         			if (main.getConfig().getBoolean("checkForUpdate") == true) {
         				if (Update2 > ver2) {
-        					bsLogger.info(" ");
-        					bsLogger.info("======= Bssentials v2 ========");
-        					bsLogger.info("     Update found: " + Update);
-        					bsLogger.info("==============================");
-        					bsLogger.info(" ");
+        					System.out.println("[Bssentials] ");
+        					System.out.println("[Bssentials] ======= Bssentials v2 ========");
+        					System.out.println("[Bssentials]      Update found: " + Update);
+        					System.out.println("[Bssentials] ==============================");
+        					System.out.println("[Bssentials] ");
         				} else {
         					if (ver.contains("dev")) {
-        						bsLogger.info("You are using an dev build of Bssentials!");
-        						bsLogger.info("Dev builds might contain bugs!");
+        					    System.out.println("You are using an dev build of Bssentials!");
+        					    System.out.println("Dev builds might contain bugs!");
         					} else {
-        						bsLogger.info("Oh no.. Our updater will not work! Don't worry!");
+        					    System.out.println("Oh no.. Our updater will not work! Don't worry!");
         					}
         				}
         			} else {
-        				bsLogger.info("The update checker is disabled");
+        			    System.out.println("[Bssentials] The update checker is disabled");
         			}
         		}
         	}

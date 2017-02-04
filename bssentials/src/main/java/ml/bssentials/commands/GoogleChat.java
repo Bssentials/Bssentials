@@ -1,4 +1,4 @@
-package ml.bssentials.addons;
+package ml.bssentials.commands;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;

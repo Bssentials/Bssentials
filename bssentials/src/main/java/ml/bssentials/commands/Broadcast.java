@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class Broadcast implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args) {
-    	if(!(sender instanceof Player)){
+        if(!(sender instanceof Player)){
     		sender.sendMessage("You are not a player");
     		return false;
     	}

@@ -7,7 +7,6 @@
     <packaging>pom</packaging>
     <version>2.x</version>
     <modules>
-        <module>kodeapi</module>
 		<module>groupmanager</module>
         <module>bssentials</module>
     </modules>
@@ -16,22 +15,7 @@
         <maven.compiler.target>1.7</maven.compiler.target>
         <maven.compiler.source>1.7</maven.compiler.source>
         <build.number>unknown</build.number>
-        <minecraft.version>1.11</minecraft.version>
     </properties>
-
-    <profiles>
-        <profile>
-            <id>jenkins</id>
-            <activation>
-                <property>
-                    <name>env.BUILD_NUMBER</name>
-                </property>
-            </activation>
-            <properties>
-                <build.number>2.5-dev${env.BUILD_NUMBER}</build.number>
-            </properties>
-        </profile>
-    </profiles>
 
     <repositories>
         <repository>
@@ -54,7 +38,7 @@
         <repository>
             <id>spigot-repo</id>
             <name>md-5</name>
-            <url>http://ci.md-5.net</url>
+            <url>http://ci.md-5.net</url><!--Hopfully this will work-->
         </repository>
     </distributionManagement>
 

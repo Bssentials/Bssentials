@@ -7,8 +7,7 @@ import org.bukkit.entity.EntityType;
 
 public class MobAPI {
     //TODO Add all mobs
-    
-    
+
 	public static void spawnMob(EntityType entity, World world, Location TargetLocation) {
         world.spawnEntity(TargetLocation, entity);
     }

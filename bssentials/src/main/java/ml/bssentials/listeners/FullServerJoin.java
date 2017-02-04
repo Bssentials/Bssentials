@@ -1,4 +1,4 @@
-package ml.bssentials.addons;
+package ml.bssentials.listeners;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

@@ -44,7 +44,7 @@ public class CommandLis implements Listener {
         }
         
         for (String word : main.getConfig().getStringList("commandBlackList")) {
-            if (event.getMessage().substring(1).equalsIgnoreCase(word)) {
+            if (event.getMessage().substring(1).startsWith(word)) {
                 event.setCancelled(true);
                 player.sendMessage(ChatColor.RED + "This command is blocked!");
             }
@@ -69,7 +69,7 @@ public class CommandLis implements Listener {
             		}
             		pluginList.append((Object)(plugin.isEnabled() ? ChatColor.GREEN : ChatColor.RED));
             
-            		if (!showVer == true) {
+            		if (!showVer) {
             			pluginList.append(plugin.getDescription().getName());
            		    } else {
             			pluginList.append(plugin.getDescription().getName() + ChatColor.GRAY + "(" + plugin.getDescription().getVersion() + ")" + ChatColor.RESET);

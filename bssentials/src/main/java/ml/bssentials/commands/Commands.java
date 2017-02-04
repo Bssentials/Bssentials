@@ -46,19 +46,17 @@ public class Commands implements CommandExecutor {
                 BssUtils.noPermMsg(player, cmd);
                 return false;
             }
-            String pre = prefix;
-		
             if (args.length == 0) {
-                player.sendMessage(pre + "Name: " + ChatColor.GREEN + "Bssentials");
-                player.sendMessage(pre + "Version: " + ChatColor.GREEN + Bssentials.version);
-                player.sendMessage(pre + "Authors: " + ChatColor.GREEN + authors);
-                player.sendMessage(pre + "Description: " + ChatColor.GREEN + "Essentials for 1.10");
-                player.sendMessage(pre + "Song of the day: " + main.getConfig().getString("songOfTheDay"));
+                player.sendMessage(prefix + "Name: " + ChatColor.GREEN + "Bssentials");
+                player.sendMessage(prefix + "Version: " + ChatColor.GREEN + Bssentials.version);
+                player.sendMessage(prefix + "Authors: " + ChatColor.GREEN + authors);
+                player.sendMessage(prefix + "Description: " + ChatColor.GREEN + "Essentials for 1.10");
+                player.sendMessage(prefix + "Song of the day: " + main.getConfig().getString("songOfTheDay"));
             } else {
-                if (args[0] == "version") { player.sendMessage(pre + "Version: " + ChatColor.GREEN + Bssentials.version); }
-                if (args[0] == "authors") { player.sendMessage(pre + "Authors: " + ChatColor.GREEN + authors); }
-                if (args[0] == "about")   { player.sendMessage(pre + "Description: " + ChatColor.GREEN + "Essentials for 1.10"); }
-                if (args[0] == "sotd")    { player.sendMessage(pre + "Song of the day: " + main.getConfig().getString("songOfTheDay")); }
+                if (args[0] == "version") { player.sendMessage(prefix + "Version: " + ChatColor.GREEN + Bssentials.version); }
+                if (args[0] == "authors") { player.sendMessage(prefix + "Authors: " + ChatColor.GREEN + authors); }
+                if (args[0] == "about")   { player.sendMessage(prefix + "Description: " + ChatColor.GREEN + "Essentials for 1.10"); }
+                if (args[0] == "sotd")    { player.sendMessage(prefix + "Song of the day: " + main.getConfig().getString("songOfTheDay")); }
             }
         }
      
@@ -460,26 +458,6 @@ public class Commands implements CommandExecutor {
 			}
 	    }
         
-        /* SETWARP COMMAND */
-        if (cmd.getName().equalsIgnoreCase("setwarp")) {
-            if (args.length == 1) {
-                String warpname = args[0];
-                if (main.getWarpConfig().getConfigurationSection("warps." + warpname) != null) {
-                    if (sender.hasPermission(Bssentials.SETWARP_OR_PERM)) {
-                        main.createWarp(player, args[0]);
-                    } else {
-                        sender.sendMessage(ChatColor.GREEN + "[Bssentials]" + ChatColor.RED + " You can't overwrite that");
-                    }
-                } else {
-                    if (sender.hasPermission(Bssentials.SETWARP_PERM) || sender.isOp()) {
-                    	main.createWarp(player, args[0]);
-                    }
-                }
-            } else  {
-                sender.sendMessage(ChatColor.RED + "Invalid args");
-            }
-        }
-        
         /* ALIAS COMMAND */
         if (cmd.getName().equalsIgnoreCase("alias")) {
         	if(args.length == 2) {
@@ -494,109 +472,6 @@ public class Commands implements CommandExecutor {
         		}
         	} else {
         		sender.sendMessage(prefix + "Usage: /alias command shortcut");
-        	}
-        }
-        
-        /* SETHOME COMMAND */
-        if(cmd.getName().equalsIgnoreCase("sethome")) {
-        	main.createHome(player);
-        }
-        
-        /* DELHOME COMMAND */
-        if(cmd.getName().equalsIgnoreCase("delhome")) {
-        	main.delHome(player);
-        }
-        
-        /* HOME COMMAND */
-        if(cmd.getName().equalsIgnoreCase("home")) {
-        	if (main.getHomeConfig().getConfigurationSection("homes." + player.getName()) == null) {
-                sender.sendMessage(ChatColor.RED + "You have to set your home first /sethome");
-            } else {
-                if (args.length == 0) {
-                    World w = Bukkit.getServer().getWorld(main.getHomeConfig().getString("homes." + player.getName() + ".world"));
-                    double x = main.getHomeConfig().getDouble("homes." + player.getName() + ".x");
-                    double y = main.getHomeConfig().getDouble("homes." + player.getName() + ".y");
-                    double z = main.getHomeConfig().getDouble("homes." + player.getName() + ".z");
-                    player.teleport(new Location(w, x, y, z));
-                    sender.sendMessage(ChatColor.GREEN + "Welcome home " + player.getName() + "!");
-                } else {
-                    sender.sendMessage(ChatColor.RED + "Invalid args");
-                }
-            }
-		}
-        
-        /* WARP COMMAND */
-        if (cmd.getName().equalsIgnoreCase("warp")) {
-        	if(player.hasPermission(Bssentials.WARP_PERM)) {
-	            if (main.getWarpConfig().getConfigurationSection("warps") == null) {
-	                sender.sendMessage(ChatColor.RED + "No warps set!");
-	            } else {
-	                if (args.length == 1) {
-	                	if(main.getWarpConfig().getConfigurationSection("warps." + args[0]) != null) {
-	                		World w = Bukkit.getServer().getWorld(main.getWarpConfig().getString("warps." + args[0] + ".world"));
-		                    double x = main.getWarpConfig().getDouble("warps." + args[0] + ".x");
-		                    double y = main.getWarpConfig().getDouble("warps." + args[0] + ".y");
-		                    double z = main.getWarpConfig().getDouble("warps." + args[0] + ".z");
-		                    float yaw = main.getWarpConfig().getInt("warps" + args[0] + ".yaw");
-		                    float pitch = main.getWarpConfig().getInt("warps" + args[0] + "pitch");
-		                    
-		                    main.teleport(player, new Location(w,x,y,z,yaw,pitch));
-		                    sender.sendMessage(ChatColor.GREEN + "Warping to " + args[0]);
-	                	} else {
-	                		sender.sendMessage(ChatColor.RED + "No warp by that name exists.");
-	                	}
-	                } else if (args.length == 2 ) {
-	                	if(player.hasPermission(Bssentials.WARP_OTHERS_PERM)) {
-	                		Player targetPlayer = player.getServer().getPlayer(args[1]);
-	                		if(targetPlayer != null) {
-	    	                	if(main.getWarpConfig().getConfigurationSection("warps." + args[0]) != null) {
-	    	                		World w = Bukkit.getServer().getWorld(main.getWarpConfig().getString("warps." + args[0] + ".world"));
-	    	                		double x = main.getWarpConfig().getDouble("warps." + args[0] + ".x");
-	    		                	double y = main.getWarpConfig().getDouble("warps." + args[0] + ".y");
-	    		                	double z = main.getWarpConfig().getDouble("warps." + args[0] + ".z");
-	    		                	main.teleport(targetPlayer, new Location(w, x, y, z));
-	    		                	sender.sendMessage(ChatColor.GREEN + "Warping " + args[1] + " to " + args[0]);
-	    		                	targetPlayer.sendMessage(ChatColor.GREEN + player.getName() + " warped you to " + args[0]);
-	    	                	} else {
-	    	                		sender.sendMessage(ChatColor.RED + "No warp by that name exists.");
-	    	                	}	                			
-	                		}
-	                	} else {
-	                		sender.sendMessage(ChatColor.RED + "You do not have permission to warp other players.");
-	                	}
-	                } else if (args.length == 0 ) {
-	                	Set<String> keys = main.getWarpConfig().getConfigurationSection("warps").getKeys(false);
-	                	sender.sendMessage(ChatColor.BLUE + "List of warps:");
-				String warpList = "";
-	                	for (String s:keys) {
-					warpList = warpList + s + ", ";
-	                	}
-				sender.sendMessage(ChatColor.BLUE + warpList);
-	            	} else {
-	                    sender.sendMessage(ChatColor.RED + "Invalid args");
-	                }
-	            }
-        	} else {
-        		sender.sendMessage(ChatColor.RED + "You don't have permission to warp.");
-        	}
-        }
-        
-        /* DELWARP COMMAND */
-        if (cmd.getName().equalsIgnoreCase("delwarp")) {
-        	if (player.hasPermission(Bssentials.SETWARP_OR_PERM)) {
-        		try {
-	        		if(main.getWarpConfig().getConfigurationSection("warps." + args[0]) != null) {
-	        			main.getWarpConfig().set("warps." + args[0], null);
-	        			main.saveWarpConfig();
-	        			sender.sendMessage(ChatColor.GREEN + "Deleted warp " + args[0]);
-	        		} else {
-	        			sender.sendMessage(ChatColor.RED + "Unable to find warp to delete.");
-	        		}
-        		} catch(Exception e) {
-        			sender.sendMessage(ChatColor.RED + "Unable to delete warp.");
-        		}
-        	} else {
-        		sender.sendMessage(ChatColor.RED + "You do not have permission to delete warps.");
         	}
         }
         return true;
