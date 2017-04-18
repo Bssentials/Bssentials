@@ -35,11 +35,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.github.ramidzkh.KodeAPI.api</groupId>
-            <artifactId>kodeapi</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
 			<version>1.11-R0.1-SNAPSHOT</version>
