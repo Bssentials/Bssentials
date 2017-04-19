@@ -99,3 +99,5 @@ commands:
     sethome:
     delhome:
     bancheck:
+    uuid:
+    nuke:

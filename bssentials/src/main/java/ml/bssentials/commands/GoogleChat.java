@@ -13,13 +13,13 @@ import ml.bssentials.main.Bssentials;
  * The plugin GoogleChat (http://dev.bukkit.org/bukkit-plugins/googlechat) added into Bssentials! 
  */
 public class GoogleChat implements CommandExecutor {
-	
-	public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args) {
-    	if(!(sender instanceof Player)){
-    		sender.sendMessage("[Bssentials] You are not a player");
-    		return false;
-    	}
-		
+    
+    public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args) {
+        if(!(sender instanceof Player)){
+            sender.sendMessage("[Bssentials] You are not a player");
+            return false;
+        }
+        
         String TooManyArgs = "Too many args! Max 15! sorry.";
         String NoArgs = "No args!";
         String Perm = "No Permisson: bssentials.command."+cmd.getName().toLowerCase();
@@ -71,19 +71,19 @@ public class GoogleChat implements CommandExecutor {
         
         //MCWIKI COMMAND
         if (cmd.getName().equalsIgnoreCase("MCWiki")) {
-        	if (sender.hasPermission(Bssentials.WIKI_PERM)) {
-                	if (args.length > 0) {
-                   		sender.sendMessage("http://minecraftwiki.net/wiki/" + StringUtils.join(args, (String)"_"));
-                	} else if (args.length == 0) {
-                    		sender.sendMessage(ChatColor.RED + Bssentials.prefix + ChatColor.GOLD + " " + NoArgs);
-			} else if (args.length < 15) {
-                    		sender.sendMessage(ChatColor.RED + TooManyArgs);
-                	}
-            	} else {
-                	sender.sendMessage(ChatColor.RED + Perm);
-            	}
-       	}
-    	
-		return true;
-	}
+            if (sender.hasPermission(Bssentials.WIKI_PERM)) {
+                    if (args.length > 0) {
+                           sender.sendMessage("http://minecraftwiki.net/wiki/" + StringUtils.join(args, (String)"_"));
+                    } else if (args.length == 0) {
+                            sender.sendMessage(ChatColor.RED + Bssentials.prefix + ChatColor.GOLD + " " + NoArgs);
+            } else if (args.length < 15) {
+                            sender.sendMessage(ChatColor.RED + TooManyArgs);
+                    }
+                } else {
+                    sender.sendMessage(ChatColor.RED + Perm);
+                }
+           }
+        
+        return true;
+    }
 }

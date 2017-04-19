@@ -13,9 +13,7 @@ import ml.bssentials.main.Bssentials;
 
 /**
  * PlayerJoinEvent Listener.
- * 
- * @author Bssentials
- **/
+ */
 public class PlayerJoinLis implements Listener {
 
 	private Bssentials main;
@@ -30,13 +28,13 @@ public class PlayerJoinLis implements Listener {
 		Player player = e.getPlayer();
 		if (!player.hasPlayedBefore()) {
 		    main.getConfig().set("playerdata."+player.getName()+"uuid", player.getUniqueId().toString());
-		    if (main.getWarpConfig().getConfigurationSection("warps.spawn") == null) {
+		    if (main.warps.getConfigurationSection("warps.spawn") == null) {
                 player.sendMessage(ChatColor.RED + "Spawn has not been set!");
             } else {
-                World w = Bukkit.getServer().getWorld(main.getWarpConfig().getString("warps.spawn.world"));
-                double x = main.getWarpConfig().getDouble("warps.spawn.x");
-                double y = main.getWarpConfig().getDouble("warps.spawn.y");
-                double z = main.getWarpConfig().getDouble("warps.spawn.z");
+                World w = Bukkit.getServer().getWorld(main.warps.getString("warps.spawn.world"));
+                double x = main.warps.getDouble("warps.spawn.x");
+                double y = main.warps.getDouble("warps.spawn.y");
+                double z = main.warps.getDouble("warps.spawn.z");
                 player.teleport(new Location(w, x, y, z));
                 player.sendMessage(ChatColor.GREEN + "Warping to spawn");
             }

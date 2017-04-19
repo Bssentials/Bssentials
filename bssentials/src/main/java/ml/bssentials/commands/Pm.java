@@ -1,47 +1,29 @@
 package ml.bssentials.commands;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ml.bssentials.main.Bssentials;
-
-public class Pm implements CommandExecutor {
-	
-	public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args) {
-    	if(!(sender instanceof Player)){
-    		sender.sendMessage("You are not a player");
-    		return false;
-    	}
-		
-		if (cmd.getName().equalsIgnoreCase("pm")) {
+public class Pm extends CommandBase {
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
+        if (cmd.getName().equalsIgnoreCase("pm")) {
             if (args.length == 0) {
-                sender.sendMessage(ChatColor.GREEN + "[Bssentials]" + ChatColor.GRAY + " Usage /pm <player> <message>");
+                sendMessage(sender, ChatColor.GREEN + "[Bssentials]" + ChatColor.GRAY + " Usage /pm <player> <message>");
                 return false;
             }
-            if (sender.hasPermission(Bssentials.PM_PERM) || sender.isOp()) {
-				@SuppressWarnings("deprecation")
-				Player target = Bukkit.getPlayer(args[0]);
-                if(target != null) {
-                    String message = "";
-                    for(int i = 1; i != args.length; i++)
- 
-                        message += args[i] + " ";
+            Player target = Bukkit.getPlayer(args[0]);
+            if(target != null) {
+                String message = StringUtils.join(args, " ");
 
-                        target.sendMessage("["+sender.getName() + " -> " + "me] " + ChatColor.translateAlternateColorCodes('&', message));
- 
-                        sender.sendMessage("[me" + " -> " + target.getName() + "] " + message);
- 
-                } else if(target == null) {
-                    sender.sendMessage("That player is not currently online!");
-                }
-            } else {
-                sender.sendMessage(ChatColor.GREEN + "[Bssentials] " + ChatColor.RED + "You don't have permission: bssentials.command.pm");  
-            }
+                sendMessage(target, "["+sender.getName() + " -> " + "me] " + ChatColor.translateAlternateColorCodes('&', message));
+                sendMessage(sender, "[me" + " -> " + target.getName() + "] " +  ChatColor.translateAlternateColorCodes('&', message));
+
+            } else sendMessage(sender, "That player is not currently online!");
         }
-		return true;
-	}
+        return true;
+    }
 }

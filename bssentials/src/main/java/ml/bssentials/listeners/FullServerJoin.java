@@ -10,13 +10,9 @@ import org.bukkit.event.player.PlayerLoginEvent.Result;
  * Allow OPs to join the server if its full. 
  */
 public class FullServerJoin implements Listener {
-
     @EventHandler
     public void onPlayerLogin(PlayerLoginEvent e) {
         Player p = e.getPlayer();
-        if (e.getResult() == Result.KICK_FULL && p.isOp() && !p.isBanned()) {
-            e.allow();
-        }
+        if (e.getResult() == Result.KICK_FULL && p.isOp() && !p.isBanned()) e.allow();
     }
-
 }

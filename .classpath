@@ -3,6 +3,6 @@
 	<classpathentry kind="src" path="bssentials/src/main/java"/>
 	<classpathentry kind="src" path="groupmanager/src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/craftbukkit-latest.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Vons/Downloads/BUKKIT/1.11/server.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

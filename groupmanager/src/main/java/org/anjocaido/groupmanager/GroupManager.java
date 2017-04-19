@@ -78,7 +78,6 @@ public class GroupManager extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		
 		onDisable(false);
 	}
 	
