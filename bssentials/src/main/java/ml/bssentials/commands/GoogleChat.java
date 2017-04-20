@@ -26,7 +26,7 @@ public class GoogleChat implements CommandExecutor {
         
         //BUKKITDEV COMMAND
         if (cmd.getName().equalsIgnoreCase("BukkitDev")) {
-            if (sender.hasPermission(Bssentials.BUKKIT_PERM)) {
+            if (sender.hasPermission("googlechat.bukkitdev")) {
                 if (args.length > 0) {
                     sender.sendMessage("http://dev.bukkit.org/bukkit-plugins/?search=" + StringUtils.join(args, "+"));
                 } else if (args.length == 0) {
@@ -41,7 +41,7 @@ public class GoogleChat implements CommandExecutor {
         
         //YOUTUBE COMMAND
         if (cmd.getName().equalsIgnoreCase("YouTube")) {
-            if (sender.hasPermission(Bssentials.YOUTUBE_PERM)) {
+            if (sender.hasPermission("googlechat.youtube")) {
                 if (args.length > 0) {
                     sender.sendMessage("http://youtube.com/results?search_query=" + StringUtils.join(args, "+"));
                 } else if (args.length == 0) {
@@ -56,7 +56,7 @@ public class GoogleChat implements CommandExecutor {
         
         //GOOGLE COMMAND
         if (cmd.getName().equalsIgnoreCase("Google")) {
-            if (sender.hasPermission(Bssentials.GOOGLE_PERM)) {
+            if (sender.hasPermission("googlechat.google")) {
                 if (args.length > 0) {
                     sender.sendMessage("http://google.com/?gws_rd=ssl#q=" + StringUtils.join(args, "+"));
                 } else if (args.length == 0) {
@@ -71,7 +71,7 @@ public class GoogleChat implements CommandExecutor {
         
         //MCWIKI COMMAND
         if (cmd.getName().equalsIgnoreCase("MCWiki")) {
-            if (sender.hasPermission(Bssentials.WIKI_PERM)) {
+            if (sender.hasPermission("googlechat.mcwiki")) {
                     if (args.length > 0) {
                            sender.sendMessage("http://minecraftwiki.net/wiki/" + StringUtils.join(args, (String)"_"));
                     } else if (args.length == 0) {
