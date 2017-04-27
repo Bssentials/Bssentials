@@ -4,5 +4,6 @@
 	<classpathentry kind="src" path="groupmanager/src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Users/Vons/Downloads/BUKKIT/1.11/server.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Vons/Desktop/Server/Guardian-1.11.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

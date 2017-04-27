@@ -38,7 +38,7 @@ import ml.bssentials.updater.Skyupdater;
 
 /**
  * <b>Bssentials</b>
- * 
+ *
  * @author Isaiah Patton
  * @author ramidzkh
  */
@@ -48,8 +48,8 @@ public class Bssentials extends JavaPlugin implements Listener {
 
     public static final String prefix = ChatColor.GREEN + "[Bssentials]" + ChatColor.GOLD + " ";
 
-    @Deprecated
-    public static final String PREFIX = prefix;
+    // @Deprecated
+    // public static final String PREFIX = prefix;
 
     public File configf, warpsf, homesf, ranksf;
     public FileConfiguration config = new YamlConfiguration();

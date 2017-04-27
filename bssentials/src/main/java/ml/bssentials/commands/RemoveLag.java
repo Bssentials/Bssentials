@@ -1,5 +1,7 @@
 package ml.bssentials.commands;
 
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -7,6 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import PluginReference.MC_Player;
 import ml.bssentials.api.BssUtils;
 import ml.bssentials.main.Bssentials;
 
@@ -46,5 +49,21 @@ public class RemoveLag extends CommandBase {
             }
         }
         return true;
+    }
+
+    @Override
+    public List<String> getAliases() {
+        return null;
+    }
+
+    @Override
+    public String getCommandName() {
+        return "removelag";
+    }
+
+    @Override
+    public boolean onRainbowCommand(MC_Player sender, String cmdname, String[] args) {
+        sender.sendMessage("Command is not yet added!");
+        return false;
     }
 }

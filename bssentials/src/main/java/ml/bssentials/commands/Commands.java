@@ -1,8 +1,5 @@
 package ml.bssentials.commands;
 
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,7 +16,6 @@ import org.bukkit.inventory.PlayerInventory;
 
 import ml.bssentials.api.BssUtils;
 import ml.bssentials.main.Bssentials;
-import ml.bssentials.main.Perms;
 
 public class Commands implements CommandExecutor {
     private Bssentials main;
@@ -48,9 +44,21 @@ public class Commands implements CommandExecutor {
                 player.sendMessage(ChatColor.GREEN + "By: " + StringUtils.join(main.getDescription().getAuthors(), ", "));
                 return true;
             } else {
-                if (args[0].startsWith("ver")) { player.sendMessage(prefix + "Version: " + ChatColor.GREEN + main.getDescription().getVersion()); }
-                if (args[0] == "authors") { player.sendMessage(prefix + "Authors: " + ChatColor.GREEN + main.getDescription().getAuthors()); }
-                if (args[0] == "about")   { player.sendMessage(prefix + "Description: " + ChatColor.GREEN + main.getDescription().getDescription()); }
+                switch (args[0]) {
+                    case "version":
+                    case "ver":
+                        player.sendMessage(prefix + "Version: " + ChatColor.GREEN + main.getDescription().getVersion());
+                        break;
+                    case "authors":
+                        player.sendMessage(prefix + "Authors: " + ChatColor.GREEN + main.getDescription().getAuthors());
+                        break;
+                    case "about":
+                        player.sendMessage(
+                                prefix + "Description: " + ChatColor.GREEN + main.getDescription().getDescription());
+                        break;
+                    default:
+                        break;
+                }
                 return true;
             }
         }

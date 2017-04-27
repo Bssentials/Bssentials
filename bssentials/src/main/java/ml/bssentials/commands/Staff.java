@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
+import PluginReference.MC_Player;
 import ml.bssentials.main.Bssentials;
 import ml.bssentials.main.Perms;
 
@@ -58,6 +59,22 @@ public class Staff extends CommandBase {
             }
             return false;
         }
+        return false;
+    }
+
+    @Override
+    public List<String> getAliases() {
+        return null;
+    }
+
+    @Override
+    public String getCommandName() {
+        return "staff";
+    }
+
+    @Override
+    public boolean onRainbowCommand(MC_Player sender, String cmdname, String[] args) {
+        sender.sendMessage("Not added yet");
         return false;
     }
 }
