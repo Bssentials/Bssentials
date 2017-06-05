@@ -1,16 +1,11 @@
 package ml.bssentials.commands;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import PluginReference.MC_Player;
 
 public class Pm extends CommandBase {
     @Override
@@ -30,24 +25,5 @@ public class Pm extends CommandBase {
             } else sendMessage(sender, "That player is not currently online!");
         }
         return true;
-    }
-
-    @Override
-    public List<String> getAliases() {
-        // List<String> list = new ArrayList<String>();
-        // list.add("tell");
-        // list.add("msg");
-        return null;
-    }
-
-    @Override
-    public String getCommandName() {
-        return "pm";
-    }
-
-    @Override
-    public boolean onRainbowCommand(MC_Player sender, String cmdname, String[] args) {
-        sender.sendMessage("Not added yet, Sorry :(");
-        return false;
     }
 }

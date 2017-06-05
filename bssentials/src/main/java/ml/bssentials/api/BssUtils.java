@@ -56,7 +56,6 @@ public class BssUtils {
 
     public static String getServerMod() {
         try {
-            // A Spigot class
             Class.forName("net.md_5.bungee.api.ChatColor");// Spigot
             try {
                 Class.forName("com.destroystokyo.paper.PaperCommand");// Paper

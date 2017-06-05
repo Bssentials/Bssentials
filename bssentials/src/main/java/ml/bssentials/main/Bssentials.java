@@ -37,7 +37,7 @@ import ml.bssentials.listeners.PlayerJoinLis;
 import ml.bssentials.updater.Skyupdater;
 
 /**
- * <b>Bssentials</b>
+ * Bssentials
  *
  * @author Isaiah Patton
  * @author ramidzkh
@@ -47,9 +47,6 @@ public class Bssentials extends JavaPlugin implements Listener {
     public Logger logger = getLogger();
 
     public static final String prefix = ChatColor.GREEN + "[Bssentials]" + ChatColor.GOLD + " ";
-
-    // @Deprecated
-    // public static final String PREFIX = prefix;
 
     public File configf, warpsf, homesf, ranksf;
     public FileConfiguration config = new YamlConfiguration();
@@ -134,9 +131,6 @@ public class Bssentials extends JavaPlugin implements Listener {
         }
     }
 
-    /**
-     * Saves the homes.yml
-     */
     public void saveHomeConfig() {
         try {
             homes.save(homesf);
@@ -146,9 +140,6 @@ public class Bssentials extends JavaPlugin implements Listener {
         }
     }
 
-    /**
-     * Saves the ranks.yml
-     */
     public void saveRankConfig() {
         try {
             ranks.save(ranksf);
@@ -158,31 +149,16 @@ public class Bssentials extends JavaPlugin implements Listener {
         }
     }
 
-    /**
-     * Create config (yaml) files.
-     */
     private void createFiles() {
         configf = new File(getDataFolder(), "config.yml");
         warpsf = new File(getDataFolder(), "warps.yml");
         homesf = new File(getDataFolder(), "homes.yml");
         ranksf = new File(getDataFolder(), "ranks.yml");
 
-        if (!configf.exists()) {
-            configf.getParentFile().mkdirs();
-            saveResource("config.yml", false);
-        }
-        if (!warpsf.exists()) {
-            warpsf.getParentFile().mkdirs();
-            saveResource("warps.yml", false);
-        }
-        if (!homesf.exists()) {
-            homesf.getParentFile().mkdirs();
-            saveResource("homes.yml", false);
-        }
-        if (!ranksf.exists()) {
-            ranksf.getParentFile().mkdirs();
-            saveResource("ranks.yml", false);
-        }
+        saveRes(ranksf, "config.yml");
+        saveRes(ranksf, "warps.yml");
+        saveRes(ranksf, "homes.yml");
+        saveRes(ranksf, "ranks.yml");
 
         config = new YamlConfiguration();
         warps = new YamlConfiguration();
@@ -197,7 +173,13 @@ public class Bssentials extends JavaPlugin implements Listener {
             e.printStackTrace();
         }
     }
-    @Override public void onDisable() {/*On plugin disable*/}
+
+    private void saveRes(File file, String name) {
+        if (!file.exists()) {
+            file.getParentFile().mkdirs();
+            saveResource(name, false);
+        }
+    }
 
     /**
      * Creates an Warp

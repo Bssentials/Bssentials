@@ -1,14 +1,10 @@
 package ml.bssentials.commands;
 
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import PluginReference.MC_Player;
 
 public class UUIDCommand extends CommandBase {
     @Override
@@ -39,21 +35,5 @@ public class UUIDCommand extends CommandBase {
     @Override
     public boolean senderHasPerm(CommandSender sender, Command cmd) {
         return sender.isOp();
-    }
-
-    @Override
-    public List<String> getAliases() {
-        return null;
-    }
-
-    @Override
-    public String getCommandName() {
-        return "uuid";
-    }
-
-    @Override
-    public boolean onRainbowCommand(MC_Player sender, String cmdname, String[] args) {
-        sender.sendMessage("Your UUID: " + sender.getUUID());
-        return true;
     }
 }

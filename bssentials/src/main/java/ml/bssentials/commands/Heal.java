@@ -6,11 +6,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import ml.bssentials.main.Bssentials;
 import ml.bssentials.main.Perms;
 
 public class Heal extends CommandBase {
-
     @Override
     public boolean onlyPlayer() {
         return true;
@@ -20,7 +18,6 @@ public class Heal extends CommandBase {
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
         Player player = (Player) sender;
 
-        /* HEAL COMMAND */
         if (cmd.getName().equalsIgnoreCase("heal")) {
             if (args.length == 0) {
                 if (player.hasPermission(Perms.HEAL.permission)) {

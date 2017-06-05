@@ -1,14 +1,10 @@
 package ml.bssentials.commands;
 
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import PluginReference.MC_Player;
 
 public class Ping extends CommandBase {
     @Override
@@ -36,25 +32,5 @@ public class Ping extends CommandBase {
         } catch (Exception e) {
             return -1;
         }
-    }
-
-    @Override
-    public List<String> getAliases() {
-        return null;
-    }
-
-    @Override
-    public String getCommandName() {
-        return "ping";
-    }
-
-    @Override
-    public boolean onRainbowCommand(MC_Player sender, String cmdname, String[] args) {
-        if (sender == null) {
-            System.out.println("Pong");
-        } else {
-            sender.sendMessage("Pong");
-        }
-        return false;
     }
 }

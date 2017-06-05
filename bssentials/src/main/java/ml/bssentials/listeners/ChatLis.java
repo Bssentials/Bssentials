@@ -12,7 +12,6 @@ import ml.bssentials.main.Bssentials;
 
 public class ChatLis implements Listener {
     private Bssentials main;
-
     public ChatLis(Bssentials bs) {
         this.main = bs;
     }
