@@ -20,6 +20,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import ml.bssentials.commands.Broadcast;
 import ml.bssentials.commands.Commands;
+import ml.bssentials.commands.Enderchest;
+import ml.bssentials.commands.Exp;
 import ml.bssentials.commands.Heal;
 import ml.bssentials.commands.Home;
 import ml.bssentials.commands.Nuke;
@@ -27,6 +29,7 @@ import ml.bssentials.commands.Ping;
 import ml.bssentials.commands.Pm;
 import ml.bssentials.commands.RemoveLag;
 import ml.bssentials.commands.Staff;
+import ml.bssentials.commands.Sudo;
 import ml.bssentials.commands.UUIDCommand;
 import ml.bssentials.commands.ViewNick;
 import ml.bssentials.commands.Warp;
@@ -112,6 +115,9 @@ public class Bssentials extends JavaPlugin implements Listener {
         getCommand("bancheck").setExecutor(new Commands(this));
         getCommand("uuid").setExecutor(new UUIDCommand());
         getCommand("nuke").setExecutor(new Nuke());
+        getCommand("enderchest").setExecutor(new Enderchest());
+        getCommand("exp").setExecutor(new Exp());
+        getCommand("sudo").setExecutor(new Sudo());
 
         pm.registerEvents(new ChatLis(this), this);
         pm.registerEvents(new CommandLis(this), this);
@@ -210,9 +216,6 @@ public class Bssentials extends JavaPlugin implements Listener {
         p.sendMessage(ChatColor.GREEN + "Your home has been set!");
     }
 
-    /**
-     * Deleates the player's home
-     */
     public void delHome(Player p) {
         String homename = p.getName();
         homes.set("homes." + homename, null);

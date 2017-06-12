@@ -19,8 +19,7 @@ public class MyPlugin extends PluginBase {
     @Override
     public void onStartup(MC_Server server) {
         log("Bssentials starting up!");
-        log("Your running Rainbow API! This version of Bssentials is unstable!");
-        log("Rainbow API Level: " + a());
+        log("Your running Bssentials for the Rainbow API! This version of Bssentials is unstable!");
         this.server = server;
 
         server.registerCommand(new RemoveLag());
@@ -36,19 +35,5 @@ public class MyPlugin extends PluginBase {
 
     public void log(Object message) {
         System.out.println("[Bssentials] " + message);
-    }
-
-    private int a() {
-        try {
-            Class.forName("org.projectrails.Rails");
-            return 3;
-        } catch (ClassNotFoundException e) {
-            try {
-                Class.forName("guardianmc.Guardian");
-                return 2;
-            } catch (ClassNotFoundException e1) {
-                return 1;
-            }
-        }
     }
 }

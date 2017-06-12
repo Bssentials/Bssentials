@@ -1,5 +1,5 @@
 name: Bssentials
-version: 2.5
+version: 2.6
 authors: [view on bukkit dev]
 main: ml.bssentials.main.Bssentials
 prefix: Bssentials
@@ -101,3 +101,6 @@ commands:
     bancheck:
     uuid:
     nuke:
+    enderchest:
+    exp:
+    sudo:

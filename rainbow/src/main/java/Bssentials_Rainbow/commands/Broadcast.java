@@ -3,6 +3,7 @@ package Bssentials_Rainbow.commands;
 import java.util.Arrays;
 import java.util.List;
 
+import Bssentials_Rainbow.api.CommandBase;
 import PluginReference.MC_Player;
 
 public class Broadcast extends CommandBase {

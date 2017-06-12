@@ -1,4 +1,4 @@
-package Bssentials_Rainbow.commands;
+package Bssentials_Rainbow.api;
 
 import java.util.List;
 

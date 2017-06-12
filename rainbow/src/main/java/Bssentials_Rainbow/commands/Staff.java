@@ -3,6 +3,7 @@ package Bssentials_Rainbow.commands;
 import java.util.List;
 
 import Bssentials_Rainbow.MyPlugin;
+import Bssentials_Rainbow.api.CommandBase;
 import PluginReference.MC_Player;
 
 public class Staff extends CommandBase {
