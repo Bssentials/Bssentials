@@ -60,11 +60,9 @@ public class Heal extends CommandBase {
                 if (senderHasPerm(player, cmd)) {
                     player.setFoodLevel(20);
                     player.sendMessage(ChatColor.GREEN + "You have been fed!");
-                    return true;
-                } else {
-                    sender.sendMessage("No Permission");
-                    return false;
-                }
+                } else sender.sendMessage("No Permission");
+
+                return true;
             } else {
                 if (sender.hasPermission(Perms.FEED_OUTHER.permission)) {
                     Player target = Bukkit.getServer().getPlayer(args[0]);

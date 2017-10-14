@@ -12,7 +12,7 @@ public class UUIDCommand extends CommandBase {
         if(cmd.getName().equalsIgnoreCase("uuid")) {
             if (args.length == 0) {
                 if (!(sender instanceof Player)) {
-                    sendMessage(sender, "CONSOLE Usage: /uuid <player>");
+                    sendMessage(sender, "Console Usage: /uuid <player>");
                     return false;
                 }
                 Player p = (Player) sender;

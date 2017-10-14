@@ -23,6 +23,8 @@ public class Pm extends CommandBase {
                 sendMessage(sender, "[me" + " -> " + target.getName() + "] " +  ChatColor.translateAlternateColorCodes('&', message));
 
             } else sendMessage(sender, "That player is not currently online!");
+
+            return true;
         }
         return true;
     }

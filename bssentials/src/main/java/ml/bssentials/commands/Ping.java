@@ -11,8 +11,11 @@ public class Ping extends CommandBase {
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
         if (cmd.getName().equalsIgnoreCase("ping")) {
             int ping = pingPlayer((Player) sender);
+            if (ping <= -1) {
+                sender.sendMessage("Pong!");
+                return true;
+            }
             sender.sendMessage(ChatColor.GREEN + "Ping: " + ping + "ms");
-            return true;
         }
         return true;
     }

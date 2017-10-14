@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import ml.bssentials.api.BssUtils;
 
 public abstract class CommandBase implements CommandExecutor {
+    private String servermod = BssUtils.getServerMod();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args) {
@@ -35,14 +36,13 @@ public abstract class CommandBase implements CommandExecutor {
     }
 
     public void sendMessage(CommandSender cs, String message) {
-        if (cs instanceof Player) {
+        if (cs instanceof Player || servermod.equalsIgnoreCase("paper")) {
             cs.sendMessage(message);
-        } else {
-            cs.sendMessage(ChatColor.stripColor(message));
-        }
+        } else cs.sendMessage(ChatColor.stripColor(message));
     }
 
     public String getServerMod() {
+        this.servermod = BssUtils.getServerMod();
         return BssUtils.getServerMod();
     }
 
@@ -52,8 +52,6 @@ public abstract class CommandBase implements CommandExecutor {
     }
 
     public boolean isPaper() {
-        if (!isSpigot()) return false;
-
         return getServerMod().equalsIgnoreCase("paper");
     }
 

@@ -12,9 +12,9 @@ import ml.bssentials.main.Bssentials;
 import ml.bssentials.main.Perms;
 
 /**
- * The class that controls the /plugins and /pl (also the /plugins ver and /pl ver)
- *
- **/
+ * The class that controls the /plugins and /pl (also the /plugins ver and /pl
+ * ver)
+ */
 public class CommandLis implements Listener {
     public Bssentials main;
     public CommandLis(Bssentials bss) {
@@ -35,17 +35,14 @@ public class CommandLis implements Listener {
             player.sendMessage(plnoperm);
         }
 
-        for (String word : main.getConfig().getStringList("commandBlackList"))
+        for (String word : main.getConfig().getStringList("commandBlackList")) {
             if (event.getMessage().substring(1).startsWith(word)) {
                 event.setCancelled(true);
                 player.sendMessage(ChatColor.RED + "This command is blocked!");
             }
+        }
     }
 
-
-    /**
-     * Shows the server's plugins, with or with out the verions
-     **/
     public static String getPlugins(boolean showVer) {
         StringBuilder pluginList = new StringBuilder();
         Plugin[] plugins = Bukkit.getPluginManager().getPlugins();

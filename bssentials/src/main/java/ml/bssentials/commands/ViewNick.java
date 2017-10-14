@@ -15,11 +15,11 @@ public class ViewNick extends CommandBase {
             } else {
                 Player target = Bukkit.getServer().getPlayer(args[0]);
                 String targetsnick = target.getDisplayName();
-                String line = "------------";
-                sendMessage(sender, ChatColor.GOLD + line);
+                String line = ChatColor.GOLD + "------------";
+                sendMessage(sender, line);
                 sendMessage(sender, ChatColor.GOLD + "Real Name: " + target.getName());
                 sendMessage(sender, ChatColor.GOLD + "Nick Name: " + targetsnick);
-                sendMessage(sender, ChatColor.GOLD + line);
+                sendMessage(sender, line);
             }
         }
         return true;

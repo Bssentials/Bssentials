@@ -6,9 +6,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 
-/**
- * Allow OPs to join the server if its full. 
- */
 public class FullServerJoin implements Listener {
     @EventHandler
     public void onPlayerLogin(PlayerLoginEvent e) {

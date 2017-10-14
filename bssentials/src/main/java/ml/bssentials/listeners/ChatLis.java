@@ -19,7 +19,7 @@ public class ChatLis implements Listener {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-        if (main.ranks.getBoolean("ranks.enable") != false) {
+        if (main.ranks.getBoolean("ranks.enable")) {
             String rankname;
             if (main.ranks.getString("playerdata." + player.getName() + ".rank") != null) rankname = main.getConfig().getString("playerdata." + player.getName() + ".rank");
             else {
@@ -37,10 +37,13 @@ public class ChatLis implements Listener {
             event.setFormat(format.replaceAll("%rank%", ChatColor.translateAlternateColorCodes('&', rank)));
         }
 
-        for (String word : main.getConfig().getStringList("antiswear"))
-            if (Bukkit.getServer().getPluginManager().getPlugin("BSwear") == null) if (event.getMessage().equalsIgnoreCase(word)) {
-                event.setMessage(event.getMessage().replaceAll(word, StringUtils.repeat("*", word.length())));
-                player.sendMessage(ChatColor.RED + "[Bssentials] The word: "+word+" is blocked!");
+        for (String word : main.getConfig().getStringList("antiswear")) {
+            if (Bukkit.getServer().getPluginManager().getPlugin("BSwear") == null) {
+                if (event.getMessage().equalsIgnoreCase(word)) {
+                    event.setMessage(event.getMessage().replaceAll(word, StringUtils.repeat("*", word.length())));
+                    player.sendMessage(ChatColor.RED + "[Bssentials] The word: " + word + " is blocked!");
+                }
             }
+        }
     }
 }

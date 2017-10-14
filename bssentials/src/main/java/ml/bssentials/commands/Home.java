@@ -26,17 +26,13 @@ public class Home implements CommandExecutor {
         }
         Player player = (Player) sender;
 
-        /* SETHOME COMMAND */
-        if(cmd.getName().equalsIgnoreCase("sethome")) {
-            main.createHome(player);
-        }
+        // SETHOME COMMAND
+        if (cmd.getName().equalsIgnoreCase("sethome")) main.createHome(player);
 
-        /* DELHOME COMMAND */
-        if(cmd.getName().equalsIgnoreCase("delhome")) {
-            main.delHome(player);
-        }
+        // DELHOME COMMAND
+        if (cmd.getName().equalsIgnoreCase("delhome")) main.delHome(player);
 
-        /* HOME COMMAND */
+        // HOME COMMAND
         if(cmd.getName().equalsIgnoreCase("home")) {
             if (main.homes.getConfigurationSection("homes." + player.getName()) == null) {
                 sender.sendMessage(ChatColor.RED + "You have to set your home first /sethome");
@@ -48,9 +44,7 @@ public class Home implements CommandExecutor {
                     double z = main.homes.getDouble("homes." + player.getName() + ".z");
                     player.teleport(new Location(w, x, y, z));
                     sender.sendMessage(ChatColor.GREEN + "Welcome home " + player.getName() + "!");
-                } else {
-                    sender.sendMessage(ChatColor.RED + "Invalid args");
-                }
+                } else sender.sendMessage(ChatColor.RED + "Invalid args");
             }
         }
         return true;

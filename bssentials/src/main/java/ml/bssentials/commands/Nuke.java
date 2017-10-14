@@ -24,11 +24,9 @@ public class Nuke extends CommandBase {
                     nuke((Player) sender);
                     sender.sendMessage("TNT RAIN!");
                 } else {
-                    sendMessage(sender, "CONSOLE Usage: /nuke <player>");
+                    sendMessage(sender, "Console Usage: /nuke <player>");
                 }
-            } else {
-                sendMessage(sender, "Usage: /nuke <player>");
-            }
+            } else sendMessage(sender, "Usage: /nuke <player>");
 
             return true;
         }

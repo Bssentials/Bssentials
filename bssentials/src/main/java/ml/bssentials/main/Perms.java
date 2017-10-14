@@ -1,5 +1,7 @@
 package ml.bssentials.main;
 
+import java.util.Locale;
+
 import org.bukkit.Bukkit;
 import org.bukkit.permissions.Permission;
 
@@ -8,36 +10,23 @@ import org.bukkit.permissions.Permission;
  * @author Isaiah Patton
  */
 public enum Perms {
-    GAMEMODE("gamemode"),
-    STAFFLIST("staff"),
-    STAFFADD("staff.add"),
-    STAFFREMOVE("staff.remove"),
-    INVSEE("invsee"),
-    SETWARP("setwarp"),
+    STAFFLIST("staff"), STAFFADD("staff.add"), STAFFREMOVE("staff.remove"),
+    HEAL_OUTHER("heal.outher"), FEED_OUTHER("feed_outher"),
     SETWARP_OR("setwarp.or"),
-    SETRULES("setrules"),
-    SPAWNMOB("spawnmob"),
-    HEAL("heal"),
-    HEAL_OUTHER("heal.outher"),
-    FEED("feed"),
-    FEED_OUTHER("feed_outher"),
-    FLY("fly"),
-    WELCOME("welcome"),
-    WARP("warp"),
     WARP_OTHERS("warp.outhers"),
-    GOOGLE("google"),
-    WIKI("mcwiki"),
-    YOUTUBE("youtube"),
-    BUKKIT("bukkit"),
-    PLUGINS("plugins"),
-    PM("pm"),
     INVISABLE("god"),
     PLUGIN_INFO("bssentials"),
-    SETSPAWN("setspawn"),
-    BROADCAST("broadcast"),
-    NUKE("nuke");
+
+    GAMEMODE, INVSEE, SETWARP, SETRULES, SPAWNMOB, HEAL, FEED, FLY, WELCOME, WARP,
+    GOOGLE, WIKI("mcwiki"), YOUTUBE, BUKKIT, PLUGINS, PM, SETSPAWN, BROADCAST, NUKE;
 
     public final Permission permission;
+
+    private Perms() {
+        this.permission = new Permission("bssentials.command." + this.toString().toLowerCase(Locale.ENGLISH));
+        this.permission.addParent(Bssentials.ALL_PERM, true);
+        Bukkit.getServer().getPluginManager().addPermission(this.permission);
+    }
 
     private Perms(String perm) {
         this.permission = new Permission("bssentials.command." + perm);

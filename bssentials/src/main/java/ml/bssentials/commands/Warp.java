@@ -21,7 +21,8 @@ public class Warp implements CommandExecutor {
         main = bss;
     }
 
-    @Override public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args) {
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args) {
         if(!(sender instanceof Player)){
             sender.sendMessage("You are not a player");
             return false;

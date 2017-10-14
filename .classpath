@@ -4,7 +4,7 @@
 	<classpathentry kind="src" path="groupmanager/src/main/java"/>
 	<classpathentry kind="src" path="rainbow/src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="F:/spigot-api-latest-shaded.jar"/>
-	<classpathentry kind="lib" path="C:/Users/isaia/Desktop/Folders/server/Rails-1.11.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/isaia/Desktop/Rails-1.12.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/isaia/Desktop/Folders/server/BUKKIT/cache/patched_1.12.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

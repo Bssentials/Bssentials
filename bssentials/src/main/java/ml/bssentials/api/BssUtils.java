@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-
 import ml.bssentials.main.Bssentials;
 
 public class BssUtils {
@@ -16,8 +15,8 @@ public class BssUtils {
      * Checks if the player has permission for the command!
      */
     public static boolean hasPermForCommand(CommandSender p, String command) {
-        return (p.isOp() | p.hasPermission("bssentials.command" + command) | p.hasPermission("essentials." + command)
-                | p.hasPermission("accentials.command" + command) | p.hasPermission("dssentials.command" + command)
+        return (p.isOp() | p.hasPermission("bssentials.command." + command) | p.hasPermission("essentials." + command)
+                | p.hasPermission("accentials.command." + command) | p.hasPermission("dssentials.command." + command)
                 | p.hasPermission("bssentials.command.*") | p.hasPermission("se." + command));
     }
 

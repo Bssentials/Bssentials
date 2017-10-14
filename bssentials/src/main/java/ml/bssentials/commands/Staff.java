@@ -22,11 +22,14 @@ public class Staff extends CommandBase {
         if (cmd.getName().equalsIgnoreCase("staff")) {
             if (args.length == 0) {
                 if (sender.hasPermission(Perms.STAFFLIST.permission)) {
+
                     sender.sendMessage(ChatColor.GREEN + "[Bssentials] Staff:");
 
                     Set<String> keys = main.getConfig().getConfigurationSection("staff").getKeys(false);
                     sender.sendMessage(ChatColor.BLUE + StringUtils.join(keys, ", "));
+
                 } else if (args.length > 1 && args[0].equalsIgnoreCase("add")) {
+
                     List<String> staffList = main.getConfig().getStringList("staff");
                     String staff = args[1].toLowerCase();
 
@@ -35,10 +38,9 @@ public class Staff extends CommandBase {
                         main.getConfig().set("staff", staffList);
                         main.saveConfig();
                         sendMessage(sender, "Staff member added to the list");
-                    } else {
-                        sendMessage(sender,
-                                ChatColor.RED + "Error! The name you have typed is already not on the list");
-                    }
+                    } else sendMessage(sender,
+                            ChatColor.RED + "Error! The name you have typed is already not on the list");
+
                 } else if (args.length > 1 && args[0].equalsIgnoreCase("remove")) {
                     List<String> staffList = main.getConfig().getStringList("staff");
                     String staff = args[1].toLowerCase();

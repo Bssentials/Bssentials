@@ -22,6 +22,12 @@ public class Sudo extends CommandBase {
                 }
 
                 String command = StringUtils.join(args).split(args[0])[1];
+
+                if (command.startsWith("c:")) {
+                    p.chat(command);
+                    return true;
+                }
+
                 if (p.performCommand(command)) {
                     sendMessage(sender, ChatColor.GREEN + "Forced " + args[0] + " to run " + command);
                     return true;

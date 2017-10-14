@@ -10,6 +10,7 @@ public class MobAPI {
         world.spawnEntity(TargetLocation, entity);
     }
 
+    @Deprecated
     public static void spawnMobCommand(String mob, CommandSender sender, World world, Location TargetLocation) {
         spawnMob(getEntity(mob), world, TargetLocation);
     }
