@@ -1,5 +1,6 @@
-# ![Bssentials](https://media-elerium.cursecdn.com/attachments/123/323/Bssentials2017.png) [![Build Status](https://travis-ci.org/Bssentials/Bssentials.svg?branch=master)](https://travis-ci.org/Bssentials/Bssentials)
-Bssentials v2.x,
+# ![Bssentials](https://media-elerium.cursecdn.com/attachments/123/323/Bssentials2017.png) [![Build status](https://ci.appveyor.com/api/projects/status/1mpai28weyinpceu?svg=true)](https://ci.appveyor.com/project/IsaiahPatton/bssentials)
+
+Bssentials 2.x
 
 ## What is Bssentials
 Bssentials is a total remake of Essentials from the ground up!
