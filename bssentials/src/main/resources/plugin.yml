@@ -91,7 +91,6 @@ commands:
     ping:
     underheal:
     disnick:
-    alias:
     rank:
     control:
     delwarp:

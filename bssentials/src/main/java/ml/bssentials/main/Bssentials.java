@@ -127,7 +127,6 @@ public class Bssentials extends JavaPlugin implements Listener {
         register("god", new Commands(this));
         register("pm", new Commands(this));
         register("disnick", new Commands(this)); // Deprecated
-        register("alias", new Commands(this)); // Deprecated
         register("rank", new Commands(this));
         register("control", new Commands(this)); // Deprecated
         register("bancheck", new Commands(this));

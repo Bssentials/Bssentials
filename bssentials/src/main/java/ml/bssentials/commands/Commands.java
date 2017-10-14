@@ -188,11 +188,6 @@ public class Commands implements CommandExecutor {
             }
         }
 
-        /* ALIAS COMMAND */
-        if (cmd.getName().equalsIgnoreCase("alias")) {
-            sender.sendMessage("Deprecated command");
-            return false;
-        }
         return true;
     }
 }
