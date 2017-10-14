@@ -19,12 +19,11 @@ public class Spawn extends CommandBase {
 
         /* SETSPAWN COMMAND */
         if (cmd.getName().equalsIgnoreCase("setspawn")) {
-            if (BssUtils.hasPermForCommand(sender, "setspawn")) {
-                if (sender instanceof Player) {
-                    main.createWarp((Player) sender, "spawn");
-                } else sender.sendMessage("Your not a player.");
-                return true;
-            } else BssUtils.noPermMsg(sender, cmd);
+            if (sender instanceof Player) {
+                main.createWarp((Player) sender, "spawn");
+            } else sender.sendMessage("Your not a player.");
+
+            return true;
         }
 
         /* SPAWN COMMAND */
