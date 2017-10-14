@@ -67,7 +67,7 @@ public class Commands implements CommandExecutor {
 
         /* HAT COMMAND */
         if (cmd.getName().equalsIgnoreCase("hat")) {
-            if (BssUtils.hasPermForCommand(player, cmd.getName().toLowerCase())) {
+            if (BssUtils.hasPermForCommand(player, "hat")) {
                 if (player.getItemInHand().getType() != Material.AIR) {
                     ItemStack itemHand = player.getItemInHand();
                     PlayerInventory inventory = player.getInventory();
