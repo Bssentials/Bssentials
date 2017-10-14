@@ -154,6 +154,7 @@ public class Bssentials extends JavaPlugin implements Listener {
     /**
      * Saves the warps.yml
      */
+    @Deprecated
     public void saveWarpConfig() {
         try {
             warps.save(warpsf);
@@ -217,7 +218,7 @@ public class Bssentials extends JavaPlugin implements Listener {
      * Creates an Warp
      */
     public void createWarp(Player p, String warpname) {
-        // TODO: per warp config
+        // TODO: per warp configuration
         warps.set("warps." + warpname + ".world", p.getLocation().getWorld().getName());
         warps.set("warps." + warpname + ".x", p.getLocation().getX());
         warps.set("warps." + warpname + ".y", p.getLocation().getY());
