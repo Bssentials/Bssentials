@@ -24,10 +24,7 @@ public class Spawn extends CommandBase {
                     main.createWarp((Player) sender, "spawn");
                 } else sender.sendMessage("Your not a player.");
                 return true;
-            } else {
-                sender.sendMessage("No Permission");
-                return false;
-            }
+            } else BssUtils.noPermMsg(sender, cmd);
         }
 
         /* SPAWN COMMAND */
