@@ -92,7 +92,6 @@ commands:
     underheal:
     disnick:
     rank:
-    control:
     delwarp:
     home:
     sethome:
@@ -103,3 +102,4 @@ commands:
     enderchest:
     exp:
     sudo:
+      alias: [control]

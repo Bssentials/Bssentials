@@ -86,24 +86,6 @@ public class Commands implements CommandExecutor {
             return true;
         }
 
-        /* CONTROL COMMAND */
-        if (cmd.getName().equalsIgnoreCase("control")) {
-            sender.sendMessage("This command will be replaced with \"/sudo\" in the next release.");
-            if (BssUtils.hasPermForCommand(player, "control")){
-                Player target = player.getServer().getPlayer(args[0]);
-                String argss = StringUtils.join(args, " ").replace(args[0], "");
-                if(argss.startsWith("/")) {
-                    target.performCommand(argss.substring(1));
-                    return true;
-                } else {
-                    target.chat(argss);
-                    return true;
-                }
-            } else {
-                BssUtils.noPermMsg(player, cmd);
-            }
-        }
-
         /* RANK COMMAND */
         if (cmd.getName().equalsIgnoreCase("rank")) {
             if (BssUtils.hasPermForCommand(player, "rank")) {
