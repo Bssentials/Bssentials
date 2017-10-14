@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import ml.bssentials.main.Bssentials;
 
 public class BssUtils {
+    private static String servermod = "unknown";
 
     /**
      * Checks if the player has permission for the command!
@@ -54,15 +55,19 @@ public class BssUtils {
     }
 
     public static String getServerMod() {
+        if (!servermod.equalsIgnoreCase("unknown")) { return servermod; }
         try {
             Class.forName("net.md_5.bungee.api.ChatColor");// Spigot
             try {
                 Class.forName("com.destroystokyo.paper.PaperCommand");// Paper
+                servermod = "PAPER";
                 return "PAPER";
             } catch (ClassNotFoundException notPaper) {
+                servermod = "SPIGOT";
                 return "SPIGOT";
             }
         } catch (ClassNotFoundException notSpigot) {
+            servermod = "CRAFTBUKKIT";
             return "CRAFTBUKKIT";
         }
     }
