@@ -9,6 +9,10 @@
     <modules>
 		<module>groupmanager</module>
         <module>bssentials</module>
+        <module>BssentialsAntiBuild</module>
+        <module>BssentialsChat</module>
+        <module>BssentialsProtect</module>
+        <module>BssentialsSpawn</module>
     </modules>
 
     <properties>
