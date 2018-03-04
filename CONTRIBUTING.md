@@ -32,26 +32,15 @@ If you answered yes to any of these questions, chances are high your change does
 ## Making the Changes
 * Create a branch on your fork where you'll be making your changes.
     * Name your branch something relevant to the change you are looking to make.
-    * Note: if your changes affect both Bssentials and CraftBssentials, it is highly suggested you use the same branch name on both repos.
     * To create a branch in Git;
         * `git branch relevantBranchName`
         * Then checkout the new branch with `git checkout relevantBranchName`
 * Check for unnecessary whitespace with `git diff --check` before committing.
 * Make sure your code meets [our requirements](#code-requirements).
-* If the work you want to do involves editing Minecraft classes, be sure to read over the [Using Minecraft Internals](#using-minecraft-internals) section.
 * Make sure your commit messages are in the [proper format](#commit-message-example).
 * Test your changes to make sure it actually addresses the issue it should.
-* --> Make sure your code compiles under Java 7, as that is what the project has to be built with. <--
+* --> Make sure your code compiles under Java 8, as that is what the project has to be built with. <--
 
 ### Code Requirements
 
-* Java 7
-* If your creating an new class, its best to put it at ml.bssentials
-* Explicitly state any changes to the connection (Such as server debugger and packer tampering modules)
-
-### Modules
-Modules are any kind of extension to the Bukkit environment. These include:
-* Commands
-* Listeners
-* Bukkit scheduled events
-* Modified implementations of Classes/Enumerations/Interfaces/Annotationsvfrom the orginal Bukkit API
+* Java 8
