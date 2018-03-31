@@ -1,0 +1,24 @@
+# The Bssentials main config!
+
+#Enable the update check?
+checkForUpdate: true
+
+# Your server's Staff members
+staff:
+  - 'This is the staff command!'
+  - 'Edit this in your Bssentials config.yml'
+
+# Ranks are Now in ranks.yml !
+
+# Disable any command on your server
+commandBlackList:
+    - 'cmd1'
+    - 'cmd2'
+
+# Block swearing in the chat
+antiswear:
+    - 'word1'
+    - 'word2'
+
+# Here is player's data, ex: nicknames and ranks!
+playerdata:

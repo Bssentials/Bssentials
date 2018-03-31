@@ -57,6 +57,13 @@ public class BssUtils {
     public static String getServerMod() {
         if (!servermod.equalsIgnoreCase("unknown")) { return servermod; }
         try {
+            Class.forName("PluginBukkitBridge.MyPlugin"); // Rainbow using
+                                                          // Bukkit bridge
+        } catch (ClassNotFoundException notRainbow) {
+            servermod = "RAINBOW";
+            return "RAINBOW";
+        }
+        try {
             Class.forName("net.md_5.bungee.api.ChatColor");// Spigot
             try {
                 Class.forName("com.destroystokyo.paper.PaperCommand");// Paper

@@ -25,7 +25,6 @@ public class UUIDCommand extends CommandBase {
                 } catch (NullPointerException e) {
                     sendMessage(sender, ChatColor.RED + "That player is not online right now!");
                 }
-                return true;
             }
             return true;
         }

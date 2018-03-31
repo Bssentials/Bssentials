@@ -6,6 +6,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 
 public class MobAPI {
+    public static void spawn(EntityType entity, Location loc) {
+        loc.getWorld().spawnEntity(loc, entity);
+    }
+
+    @Deprecated
     public static void spawnMob(EntityType entity, World world, Location TargetLocation) {
         world.spawnEntity(TargetLocation, entity);
     }

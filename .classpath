@@ -3,12 +3,12 @@
 	<classpathentry kind="src" path="bssentials/src/main/java"/>
 	<classpathentry kind="src" path="groupmanager/src/main/java"/>
 	<classpathentry kind="src" path="rainbow/src/main/java"/>
-    <classpathentry kind="src" path="BssentialsAntiBuild/src/main/java"/>
-    <classpathentry kind="src" path="BssentialsChat/src/main/java"/>
-    <classpathentry kind="src" path="BssentialsProtect/src/main/java"/>
-    <classpathentry kind="src" path="BssentialsSpawn/src/main/java"/>
+	<classpathentry kind="src" path="BssentialsAntiBuild/src/main/java"/>
+	<classpathentry kind="src" path="BssentialsChat/src/main/java"/>
+	<classpathentry kind="src" path="BssentialsProtect/src/main/java"/>
+	<classpathentry kind="src" path="BssentialsSpawn/src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/isaia/Desktop/Rails-1.12.2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/isaia/Desktop/Folders/server/BUKKIT/cache/patched_1.12.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/isaia/Desktop/Folders/server/Rails-1.12.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

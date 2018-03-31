@@ -144,6 +144,7 @@ public class Bssentials extends JavaPlugin implements Listener {
         pm.registerEvents(new PlayerJoinLis(this), this);
         pm.registerEvents(new PlayerLeave(), this);
         pm.registerEvents(this, this);
+        new Metrics(this);
     }
 
     public void register(String name, CommandExecutor base) {

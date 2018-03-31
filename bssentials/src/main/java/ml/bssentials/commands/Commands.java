@@ -3,6 +3,7 @@ package ml.bssentials.commands;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -43,7 +44,8 @@ public class Commands implements CommandExecutor {
 
         /* DAY COMMAND */
         if (cmd.getName().equalsIgnoreCase("day")) {
-            Bukkit.dispatchCommand(sender, "time set day");
+            World w = player.getWorld();
+            w.setTime(0);
             return true;
         }
 
