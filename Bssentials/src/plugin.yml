@@ -1,0 +1,18 @@
+name: Bssentials
+version: 3.0-pre
+authors: [IsaiahPatton]
+main: bssentials.Bssentials
+prefix: Bssentials3
+description: Essentials remake for 1.7, 1.8, 1.9, 1.10, 1.11, 1.12
+website: http://dev.bukkit.org/bukkit-plugins/bssentials/
+commands:
+    warp:
+    setwarp:
+    nuke:
+    broadcast:
+    setspawn:
+    spawn:
+    debug:
+    fly:
+    pm:
+    bssentials:

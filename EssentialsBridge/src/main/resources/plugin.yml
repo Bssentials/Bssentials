@@ -1,0 +1,6 @@
+name: Essentials
+version: 3.x
+authors: [view on bukkit dev]
+main: ml.bssentials.main.Bssentials
+prefix: Bssentials
+description: Full support of Essentials code for Bssentials

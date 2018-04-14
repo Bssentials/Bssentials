@@ -4,6 +4,7 @@ Bssentials 3.x
 
 ## Bssentials 3?
 Bssentials version 3.x is a rewrite of Bssentials made to be more optimized & fix alot of bugs.
+The "EssentialsBridge" module is a compatability layer between the Essentials API & Bssentials.
 
 ## What is Bssentials
 Bssentials is a total remake of Essentials from the ground up!

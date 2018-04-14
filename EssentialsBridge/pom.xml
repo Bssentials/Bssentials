@@ -9,21 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>Bssentials</artifactId>
-
-    <profiles>
-        <profile>
-            <id>jenkins</id>
-            <activation>
-                <property>
-                    <name>env.BUILD_NUMBER</name>
-                </property>
-            </activation>
-            <build>
-                <finalName>Bssentials3</finalName>
-            </build>
-        </profile>
-    </profiles>
+    <artifactId>EssentialsBridge</artifactId>
 
 
     <repositories>
@@ -43,7 +29,7 @@
    </dependencies>
 
     <build>
-        <finalName>Bssentials-3</finalName>
+        <finalName>Essentials</finalName>
         <resources>
             <resource>
                 <directory>${basedir}/src/main/resources</directory>
