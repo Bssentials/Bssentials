@@ -18,3 +18,5 @@ commands:
     bssentials:
     gamemode:
       aliases: [gm, gmc, gms, gmsp]
+    enderchest:
+      aliases: [echest, ender]

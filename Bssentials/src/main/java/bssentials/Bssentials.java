@@ -16,6 +16,7 @@ import bssentials.commands.BCommand;
 import bssentials.commands.Broadcast;
 import bssentials.commands.BssentialsCmd;
 import bssentials.commands.Debug;
+import bssentials.commands.Enderchest;
 import bssentials.commands.Fly;
 import bssentials.commands.Gamemode;
 import bssentials.commands.Nuke;
@@ -75,7 +76,7 @@ public class Bssentials extends JavaPlugin {
                 new Spawn(),
                 new Debug(),
                 new Fly(),
-                new Pm(), new Gamemode()
+                new Pm(), new Gamemode(), new Enderchest()
                 );
 
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
