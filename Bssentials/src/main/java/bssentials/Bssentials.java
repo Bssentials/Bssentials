@@ -17,6 +17,7 @@ import bssentials.commands.Broadcast;
 import bssentials.commands.BssentialsCmd;
 import bssentials.commands.Debug;
 import bssentials.commands.Enderchest;
+import bssentials.commands.Exp;
 import bssentials.commands.Fly;
 import bssentials.commands.Gamemode;
 import bssentials.commands.Heal;
@@ -69,15 +70,8 @@ public class Bssentials extends JavaPlugin {
         register("bssentials", new BssentialsCmd());
 
         register(
-                new Warp(),
-                new SetWarp(),
-                new Nuke(),
-                new Broadcast(),
-                new SetSpawn(),
-                new Spawn(),
-                new Debug(),
-                new Fly(),
-                new Pm(), new Gamemode(), new Enderchest(), new Heal()
+                new Warp(), new SetWarp(), new Nuke(), new Broadcast(), new SetSpawn(), new Spawn(), new Debug(),
+                new Fly(), new Pm(), new Gamemode(), new Enderchest(), new Heal(), new Exp()
                 );
         register("underheal", new Heal());
         register("feed", new Heal());
