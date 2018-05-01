@@ -25,18 +25,18 @@ public class Pm extends BCommand {
         } else message(sender, "That player is not currently online!");
         return false;
     }
-    
+
     public String join(String[] args) {
         String result = " ";
 
         int i = 0;
         for (String s : args) {
-            if (i > 1) result = result + " " + s;
+            if (i > 0) result = result + " " + s;
 
             i++;
         }
 
-        return result;
+        return result.trim();
     }
 
 }
