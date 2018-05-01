@@ -18,7 +18,7 @@ import net.ess3.nms.refl.ReflUtil;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
@@ -358,7 +358,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
         }
     }
 
-    public String getDisplayName() {
+    @Override public String getDisplayName() {
         return super.getBase().getDisplayName() == null ? super.getBase().getName() : super.getBase().getDisplayName();
     }
 

@@ -1,6 +1,7 @@
 name: Essentials
-version: 3.x
-authors: [view on bukkit dev]
-main: ml.bssentials.main.Bssentials
-prefix: Bssentials
-description: Full support of Essentials code for Bssentials
+main: com.earth2me.essentials.Essentials
+version: 2.0.1-Bssentials
+website: http://dev.bukkit.org/projects/Bssentials/
+description: Bridges the Essentials API to work with Bssentials.
+softdepend: [Vault]
+authors: [Zenexer, ementalo, Aelux, Brettflan, KimKandor, snowleo, ceulemans, Xeology, KHobbits, md_5, Iaccidentally, drtshock, vemacs, SupaHam, md678685, Bssentials Contributers]

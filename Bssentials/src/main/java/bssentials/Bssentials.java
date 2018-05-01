@@ -17,6 +17,7 @@ import bssentials.commands.Broadcast;
 import bssentials.commands.BssentialsCmd;
 import bssentials.commands.Debug;
 import bssentials.commands.Fly;
+import bssentials.commands.Gamemode;
 import bssentials.commands.Nuke;
 import bssentials.commands.Pm;
 import bssentials.commands.SetSpawn;
@@ -74,7 +75,7 @@ public class Bssentials extends JavaPlugin {
                 new Spawn(),
                 new Debug(),
                 new Fly(),
-                new Pm()
+                new Pm(), new Gamemode()
                 );
 
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
@@ -93,7 +94,7 @@ public class Bssentials extends JavaPlugin {
     }
 
     private void convertWarps(File oldwarps) {
-        // TODO Auto-generated method stub
+        System.out.println("[Bssentials3]: Method not implemented: convertWarps");
     }
 
     public void register(String name, BCommand base) {

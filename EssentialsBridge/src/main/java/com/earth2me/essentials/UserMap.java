@@ -1,11 +1,29 @@
 package com.earth2me.essentials;
 
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.ExecutionException;
+import java.util.regex.Pattern;
 
+import org.bukkit.entity.Player;
+
+import com.earth2me.essentials.utils.StringUtil;
+import com.google.common.base.Charsets;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.common.util.concurrent.UncheckedExecutionException;
+
+import net.ess3.api.IEssentials;
 
 public class UserMap extends CacheLoader<String, User> implements IConf {
     private final transient IEssentials ess;
@@ -123,7 +141,7 @@ public class UserMap extends CacheLoader<String, User> implements IConf {
                     } else {
                         if (ess.getSettings().isDebug()) {
                             ess.getLogger().info("Found old UUID for " + name + " (" + uuid.toString()
-                                    + "). Not adding to usermap.");
+                            + "). Not adding to usermap.");
                         }
                     }
                 }

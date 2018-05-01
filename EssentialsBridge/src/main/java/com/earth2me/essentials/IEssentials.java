@@ -3,6 +3,9 @@ package com.earth2me.essentials;
 import com.earth2me.essentials.api.IItemDb;
 import com.earth2me.essentials.api.IJails;
 import com.earth2me.essentials.api.IWarps;
+import com.earth2me.essentials.perm.PermissionsHandler;
+import com.earth2me.essentials.register.payment.Methods;
+
 // import com.earth2me.essentials.metrics.Metrics;
 //import ml.bssentials.main.Metrics;
 // import com.earth2me.essentials.perm.PermissionsHandler;
@@ -21,84 +24,86 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IEssentials extends Plugin {
-    void addReloadListener(IConf listener);
+	void addReloadListener(IConf listener);
 
-    void reload();
+	void reload();
 
-    List<String> onTabCompleteEssentials(CommandSender sender, Command command, String commandLabel, String[] args, ClassLoader classLoader, String commandPath, String permissionPrefix, IEssentialsModule module);
+	List<String> onTabCompleteEssentials(CommandSender sender, Command command, String commandLabel, String[] args, ClassLoader classLoader, String commandPath, String permissionPrefix, IEssentialsModule module);
 
-    boolean onCommandEssentials(CommandSender sender, Command command, String commandLabel, String[] args, ClassLoader classLoader, String commandPath, String permissionPrefix, IEssentialsModule module);
+	boolean onCommandEssentials(CommandSender sender, Command command, String commandLabel, String[] args, ClassLoader classLoader, String commandPath, String permissionPrefix, IEssentialsModule module);
 
-    @Deprecated
-    User getUser(Object base);
+	@Deprecated
+	User getUser(Object base);
 
-    User getUser(UUID base);
+	User getUser(UUID base);
 
-    User getUser(String base);
+	User getUser(String base);
 
-    User getUser(Player base);
+	User getUser(Player base);
 
-    I18n getI18n();
+	I18n getI18n();
 
-    User getOfflineUser(String name);
+	User getOfflineUser(String name);
 
-    World getWorld(String name);
+	World getWorld(String name);
 
-    int broadcastMessage(String message);
+	int broadcastMessage(String message);
 
-    int broadcastMessage(IUser sender, String message);
+	int broadcastMessage(IUser sender, String message);
 
-    int broadcastMessage(String permission, String message);
+	int broadcastMessage(String permission, String message);
 
-    ISettings getSettings();
+	ISettings getSettings();
 
-    BukkitScheduler getScheduler();
+	BukkitScheduler getScheduler();
 
-    IJails getJails();
+	IJails getJails();
 
-    IWarps getWarps();
+	IWarps getWarps();
 
-    // TODO: Worth getWorth();
+	// TODO: Worth getWorth();
 
-    // TODO: Backup getBackup();
+	// TODO: Backup getBackup();
 
-    // TODO: Methods getPaymentMethod();
+	Methods getPaymentMethod();
 
-    BukkitTask runTaskAsynchronously(Runnable run);
+	BukkitTask runTaskAsynchronously(Runnable run);
 
-    BukkitTask runTaskLaterAsynchronously(Runnable run, long delay);
+	BukkitTask runTaskLaterAsynchronously(Runnable run, long delay);
 
-    BukkitTask runTaskTimerAsynchronously(Runnable run, long delay, long period);
+	BukkitTask runTaskTimerAsynchronously(Runnable run, long delay, long period);
 
-    int scheduleSyncDelayedTask(Runnable run);
+	int scheduleSyncDelayedTask(Runnable run);
 
-    int scheduleSyncDelayedTask(Runnable run, long delay);
+	int scheduleSyncDelayedTask(Runnable run, long delay);
 
-    int scheduleSyncRepeatingTask(Runnable run, long delay, long period);
+	int scheduleSyncRepeatingTask(Runnable run, long delay, long period);
 
-    // TODO: TNTExplodeListener getTNTListener();
+	// TODO: TNTExplodeListener getTNTListener();
 
-    // TODO: PermissionsHandler getPermissionsHandler();
+	PermissionsHandler getPermissionsHandler();
 
-    // TODO: AlternativeCommandsHandler getAlternativeCommandsHandler();
+	// TODO: AlternativeCommandsHandler getAlternativeCommandsHandler();
 
-    void showError(CommandSource sender, Throwable exception, String commandLabel);
+	void showError(CommandSource sender, Throwable exception, String commandLabel);
 
-    IItemDb getItemDb();
+	IItemDb getItemDb();
 
-    UserMap getUserMap();
+	UserMap getUserMap();
 
-    // Metrics getMetrics();
+	Metrics getMetrics();
 
-    // void setMetrics(Metrics metrics);
+	void setMetrics(Metrics metrics);
 
-    // TODO: EssentialsTimer getTimer();
+	// TODO: EssentialsTimer getTimer();
 
-    List<String> getVanishedPlayers();
+	List<String> getVanishedPlayers();
 
-    Collection<Player> getOnlinePlayers();
+	Collection<Player> getOnlinePlayers();
 
-    Iterable<User> getOnlineUsers();
+	Iterable<User> getOnlineUsers();
 
-    SpawnerProvider getSpawnerProvider();
+	SpawnerProvider getSpawnerProvider();
+
+	Collection<String> getVanishedPlayersNew();
 }
