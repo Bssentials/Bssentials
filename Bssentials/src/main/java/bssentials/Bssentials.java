@@ -19,6 +19,7 @@ import bssentials.commands.Debug;
 import bssentials.commands.Enderchest;
 import bssentials.commands.Fly;
 import bssentials.commands.Gamemode;
+import bssentials.commands.Heal;
 import bssentials.commands.Nuke;
 import bssentials.commands.Pm;
 import bssentials.commands.SetSpawn;
@@ -76,9 +77,10 @@ public class Bssentials extends JavaPlugin {
                 new Spawn(),
                 new Debug(),
                 new Fly(),
-                new Pm(), new Gamemode(), new Enderchest()
+                new Pm(), new Gamemode(), new Enderchest(), new Heal()
                 );
-
+        register("underheal", new Heal());
+        register("feed", new Heal());
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
 
         getLogger().info("Registered " + registered + " commands");
