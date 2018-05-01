@@ -3,7 +3,7 @@ version: 3.0-pre
 authors: [IsaiahPatton]
 main: bssentials.Bssentials
 prefix: Bssentials3
-description: Essentials remake for 1.7, 1.8, 1.9, 1.10, 1.11, 1.12
+description: Essentials remake with support for EssAPI
 website: http://dev.bukkit.org/bukkit-plugins/bssentials/
 commands:
     warp:
@@ -25,3 +25,6 @@ commands:
     underheal:
     exp:
       aliases: xp
+    spawnmob:
+      aliases: [mob, spawn]
+    Uuid:
