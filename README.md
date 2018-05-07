@@ -14,9 +14,13 @@ We do our best to provide a great remake of Essentials.
 To Build with Maven, use the command ```mvn package```
 To build with Eclipce simply make sure you have the ```Bukkit.jar``` added to the classpath & export normaly.
 
+## Compatability
+The EssentialsBridge provides support for the Essentials API
+(note: ChestShop 3 does not work, please report to ChestShop and use the unoffical ChestShop 4.0-r5 or ChestShop 2)
+
 ## Licence
 
-Copyright (C) 2016 - 2018 Contributers
+Copyright (C) 2016 - 2018 Bssentials Contributers
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

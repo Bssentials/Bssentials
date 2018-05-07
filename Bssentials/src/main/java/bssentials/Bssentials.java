@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import bssentials.commands.BCommand;
+import bssentials.commands.Balance;
 import bssentials.commands.Broadcast;
 import bssentials.commands.BssentialsCmd;
 import bssentials.commands.Debug;
@@ -20,8 +21,10 @@ import bssentials.commands.Enderchest;
 import bssentials.commands.Exp;
 import bssentials.commands.Fly;
 import bssentials.commands.Gamemode;
+import bssentials.commands.Hat;
 import bssentials.commands.Heal;
 import bssentials.commands.Nuke;
+import bssentials.commands.Ping;
 import bssentials.commands.Pm;
 import bssentials.commands.SetSpawn;
 import bssentials.commands.SetWarp;
@@ -29,6 +32,7 @@ import bssentials.commands.Spawn;
 import bssentials.commands.SpawnMob;
 import bssentials.commands.Uuid;
 import bssentials.commands.Warp;
+import bssentials.commands.Weather;
 import bssentials.listeners.PlayerJoin;
 
 public class Bssentials extends JavaPlugin {
@@ -58,12 +62,21 @@ public class Bssentials extends JavaPlugin {
             getLogger().severe("Could not generate empty spawn.yml!");
         }
 
+        File esswarps = new File(getDataFolder().getAbsolutePath().replace("Bssentials", "Essentials"), "warps");
+        if (esswarps.exists()) {
+            getLogger().info("===========================");
+            getLogger().info("EssentialsX warps found!");
+            getLogger().info("Converting Essentials warps to new format!");
+            convertEssWarps(esswarps);
+            getLogger().info("===========================");
+        }
+
         File oldwarps = new File(getDataFolder(), "warps.yml");
         if (oldwarps.exists()) {
             getLogger().info("===========================");
             getLogger().info("Bssentials version 2.x warps found!");
             getLogger().info("Converting old warps to new format!");
-            convertWarps(oldwarps);
+            convertv2Warps(oldwarps);
             getLogger().info("===========================");
         }
 
@@ -74,7 +87,7 @@ public class Bssentials extends JavaPlugin {
         register(
                 new Warp(), new SetWarp(), new Nuke(), new Broadcast(), new SetSpawn(), new Spawn(), new Debug(),
                 new Fly(), new Pm(), new Gamemode(), new Enderchest(), new Heal(), new Exp(), new SpawnMob(),
-                new Uuid()
+                new Uuid(), new Hat(), new Weather(), new Balance(), new Ping()
                 );
         register("underheal", new Heal());
         register("feed", new Heal());
@@ -89,12 +102,21 @@ public class Bssentials extends JavaPlugin {
                 getLogger().info("|__) .__/ .__/ |___ | \\|  |  | /~~\\ |___ .__/ ");
                 getLogger().info("                                                ");
                 getLogger().info("Version " + getDescription().getVersion());
+
+                if (Bukkit.getPluginManager().getPlugin("Essentials") == null) {
+                    getLogger().warning("The EssentialsBridge plugin is not intstalled! "
+                            + "Plugins that requrire the EssAPI will not function with Bssentials without this bridge");
+                }
             }
         });
     }
 
-    private void convertWarps(File oldwarps) {
-        System.out.println("[Bssentials3]: Method not implemented: convertWarps");
+    private void convertv2Warps(File oldwarps) {
+        System.out.println("[Bssentials3]: Method not implemented: convertv2Warps");
+    }
+
+    private void convertEssWarps(File oldwarps) {
+        System.out.println("[Bssentials3]: Method not implemented: convertEssWarps");
     }
 
     public void register(String name, BCommand base) {

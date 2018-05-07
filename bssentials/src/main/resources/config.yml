@@ -8,8 +8,6 @@ staff:
   - 'This is the staff command!'
   - 'Edit this in your Bssentials config.yml'
 
-# Ranks are Now in ranks.yml !
-
 # Disable any command on your server
 commandBlackList:
     - 'cmd1'
@@ -19,6 +17,3 @@ commandBlackList:
 antiswear:
     - 'word1'
     - 'word2'
-
-# Here is player's data, ex: nicknames and ranks!
-playerdata:

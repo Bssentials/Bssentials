@@ -1,5 +1,6 @@
 package com.earth2me.essentials.api;
 
+import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.EssentialsUserConf;
 import com.earth2me.essentials.Trade;
 import com.earth2me.essentials.User;
@@ -15,6 +16,8 @@ import java.math.MathContext;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.bukkit.Bukkit;
 
 /**
  * Instead of using this api directly, we recommend to use the register plugin: http://bit.ly/RegisterMethod
@@ -36,24 +39,12 @@ public class Economy {
     }
 
     private static void createNPCFile(String name) {
-        File folder = new File(ess.getDataFolder(), "userdata");
-        name = StringUtil.safeString(name);
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
-        UUID npcUUID = UUID.nameUUIDFromBytes(("NPC:" + name).getBytes(Charsets.UTF_8));
-        EssentialsUserConf npcConfig = new EssentialsUserConf(name, npcUUID, new File(folder, npcUUID.toString() + ".yml"));
-        npcConfig.load();
-        npcConfig.setProperty("npc", true);
-        npcConfig.setProperty("lastAccountName", name);
-        npcConfig.setProperty("money", ess.getSettings().getStartingBalance());
-        npcConfig.forceSave();
-        ess.getUserMap().trackUUID(npcUUID, name, false);
+        // TODO: Bssentials does not have support for NPCs
+        Essentials.fixme("com.earth2me.essentials.api.Economy#createNPCFile");
     }
 
     private static void deleteNPC(String name) {
-        User user = ess.getUser(name);
-        user.reset();
+        Essentials.fixme("com.earth2me.essentials.api.Economy#createNPCFile");
     }
 
     private static User getUserByName(String name) {

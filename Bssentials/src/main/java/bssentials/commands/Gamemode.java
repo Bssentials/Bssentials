@@ -71,10 +71,11 @@ public class Gamemode extends BCommand {
             return false;
         }
 
-        boolean sh = (string.length() > 2);
+        boolean sh = (string.length() < 5);
         if (sh) {
             return onShortCommand((Player) sender, string);
         }
+
         return onCommand(sender, cmd, args);
     }
 

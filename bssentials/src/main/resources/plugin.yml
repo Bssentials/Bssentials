@@ -16,6 +16,7 @@ commands:
     fly:
     pm:
     bssentials:
+      aliases: [bss, ess, essentials]
     gamemode:
       aliases: [gm, gmc, gms, gmsp]
     enderchest:
@@ -27,4 +28,12 @@ commands:
       aliases: xp
     spawnmob:
       aliases: [mob, spawn]
-    Uuid:
+    uuid:
+    hat:
+    weather:
+      aliases: [sun, rain]
+    balance:
+      aliases: [bal, money]
+    pay:
+    ping:
+      aliases: pong

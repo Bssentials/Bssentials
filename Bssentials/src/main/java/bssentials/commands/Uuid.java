@@ -15,14 +15,14 @@ public class Uuid extends BCommand {
                 return false;
             }
             Player p = (Player) sender;
-            sender.sendMessage("Your uuid: " + p.getUniqueId().toString());
+            sender.sendMessage("Your UUID: " + p.getUniqueId().toString());
             return true;
         } else if (args.length == 1) {
             try {
                 String uuid = Bukkit.getPlayer(args[0]).getUniqueId().toString();
-                message(sender, ChatColor.GREEN + "The uuid of that player is: " + uuid);
+                message(sender, ChatColor.GREEN + "UUID of " + args[0] + ": " + uuid);
             } catch (NullPointerException e) {
-                message(sender, ChatColor.RED + "That player is not online right now!");
+                message(sender, ChatColor.RED + "Player not online.");
             }
         }
         return true;

@@ -32,13 +32,11 @@ public class Trade {
     private final transient Integer exp;
     private final transient IEssentials ess;
 
-
     public enum TradeType {
         MONEY,
         EXP,
         ITEM
     }
-
 
     public enum OverflowType {
         ABORT,

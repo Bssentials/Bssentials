@@ -13,9 +13,12 @@ import java.util.logging.Level;
 public class EssentialsUserConf extends EssentialsConf {
     public final String username;
     public final UUID uuid;
+    private final File bssdata;
 
     public EssentialsUserConf(final String username, final UUID uuid, final File configFile) {
-        super(configFile);
+        super(new File(Bukkit.getPluginManager().getPlugin("Bssentials").getDataFolder(), uuid + ".yml"));
+        // super(configFile);
+        this.bssdata = new File(Bukkit.getPluginManager().getPlugin("Bssentials").getDataFolder(), "userdata");
         this.username = username;
         this.uuid = uuid;
     }
@@ -30,7 +33,7 @@ public class EssentialsUserConf extends EssentialsConf {
     public void convertLegacyFile() {
         final File file = new File(configFile.getParentFile(), username + ".yml");
         try {
-            Files.move(file, new File(configFile.getParentFile(), uuid + ".yml"));
+            Files.move(file, new File(bssdata, uuid + ".yml"));
         } catch (IOException ex) {
             Bukkit.getLogger().log(Level.WARNING, "Failed to migrate user: " + username, ex);
         }
@@ -40,7 +43,7 @@ public class EssentialsUserConf extends EssentialsConf {
 
     private File getAltFile() {
         final UUID fn = UUID.nameUUIDFromBytes(("OfflinePlayer:" + username.toLowerCase(Locale.ENGLISH)).getBytes(Charsets.UTF_8));
-        return new File(configFile.getParentFile(), fn.toString() + ".yml");
+        return new File(bssdata, fn.toString() + ".yml");
     }
 
     @Override
@@ -54,7 +57,7 @@ public class EssentialsUserConf extends EssentialsConf {
     @Override
     public void convertAltFile() {
         try {
-            Files.move(getAltFile(), new File(configFile.getParentFile(), uuid + ".yml"));
+            Files.move(getAltFile(), new File(bssdata, uuid + ".yml"));
         } catch (IOException ex) {
             Bukkit.getLogger().log(Level.WARNING, "Failed to migrate user: " + username, ex);
         }

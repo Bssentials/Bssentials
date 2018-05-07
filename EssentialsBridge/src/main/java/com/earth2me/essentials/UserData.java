@@ -6,6 +6,8 @@ import com.google.common.collect.ImmutableMap;
 import net.ess3.api.IEssentials;
 import net.ess3.api.InvalidWorldException;
 import net.ess3.api.MaxMoneyException;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -27,7 +29,9 @@ public abstract class UserData extends PlayerExtension implements IConf {
     protected UserData(Player base, IEssentials ess) {
         super(base);
         this.ess = ess;
-        folder = new File(ess.getDataFolder(), "userdata");
+        /// folder = new File(ess.getDataFolder(), "userdata");
+        folder = new File(Bukkit.getPluginManager().getPlugin("Bssentials").getDataFolder(), "userdata");
+        // Bssentials: use "Bssentials" data folder
         if (!folder.exists()) {
             folder.mkdirs();
         }
@@ -619,7 +623,6 @@ public abstract class UserData extends PlayerExtension implements IConf {
         config.save();
     }
 
-    private boolean newplayer;
     private String geolocation;
 
     private String _getGeoLocation() {
@@ -819,7 +822,7 @@ public abstract class UserData extends PlayerExtension implements IConf {
 
     public boolean clearCommandCooldown(Pattern pattern) {
         if (this.commandCooldowns == null) { return false; // false for no
-                                                           // modification
+        // modification
         }
 
         if (this.commandCooldowns.remove(pattern) != null) {
