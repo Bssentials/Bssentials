@@ -1,4 +1,4 @@
-package bssentials.eco;
+package bssentials;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,14 +17,16 @@ public class User {
     private File folder;
     private File file;
 
-    public boolean npc;
+    public boolean npc = false;
     public String lastAccountName;
-    public BigDecimal money;
+    public BigDecimal money = new BigDecimal(100);
+    public String nick = "_null_";
 
     public User(Player base) {
         this.base = base;
         this.folder = new File(Bssentials.get().getDataFolder(), "userdata");
         this.file = new File(folder, base.getUniqueId().toString() + ".yml");
+        this.lastAccountName = base.getName();
         folder.mkdir();
         if (!file.exists()) {
             try {
@@ -46,10 +48,8 @@ public class User {
                     if (a.equalsIgnoreCase("npc")) npc = Boolean.valueOf(b);
                     if (a.equalsIgnoreCase("lastAccountName")) lastAccountName = b;
                     if (a.equalsIgnoreCase("money")) money = new BigDecimal(b);
+                    if (a.equalsIgnoreCase("nick")) nick = b;
                 }
-                // npc = Boolean.valueOf(list.get(0).split("[:]")[1].trim());
-                // lastAccountName = list.get(1).split("[:]")[1].trim();
-                // money = new BigDecimal(list.get(2).split("[:]")[1].trim());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -58,8 +58,10 @@ public class User {
 
     private void save() {
         try {
-            String content = String.format("npc: %s\nlastAccountName: %s\nmoney: %s", npc, lastAccountName, money);
-            Files.write(file.toPath(), content.getBytes(), StandardOpenOption.WRITE);
+            String content = String.format("npc: %s\nlastAccountName: %s\nmoney: %s\nnick: %s", npc, lastAccountName,
+                    money, nick);
+            Files.write(file.toPath(), content.getBytes(), StandardOpenOption.WRITE,
+                    StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Unable to write to file: " + folder.getAbsolutePath());
@@ -79,10 +81,16 @@ public class User {
         save();
     }
 
+    public void setNick(String n) {
+        nick = n;
+        save();
+    }
+
     public boolean isNPC() {
         return false; // TODO: should Bssentials have NPC support?
     }
 
+    @SuppressWarnings("deprecation")
     public static User getByName(String name) {
         return new User(Bukkit.getPlayerExact(name));
     }

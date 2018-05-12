@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import bssentials.Bssentials;
+import bssentials.User;
 
 /**
  * Instead of using this api directly, we recommend to use Vault.
@@ -17,14 +18,6 @@ public class Eco {
     private static final Logger logger = Logger.getLogger("Bssentials");
     private static final String noCallBeforeLoad = "Bssentials API is called before Bssentials is loaded.";
     public static final MathContext MATH_CONTEXT = MathContext.DECIMAL128;
-
-    private static void createNPCFile(String name) {
-        // TODO
-    }
-
-    private static void deleteNPC(String name) {
-        // TODO
-    }
 
     private static User getUserByName(String name) {
         if (name == null) {
@@ -40,8 +33,6 @@ public class Eco {
      *            Name of the user
      *
      * @return balance
-     *
-     * @throws UserDoesNotExistException
      */
     @Deprecated
     public static double getMoney(String name) throws Exception {
@@ -64,10 +55,9 @@ public class Eco {
      * @param balance
      *            The balance you want to set
      *
-     * @throws UserDoesNotExistException
-     *             If a user by that name does not exists
-     * @throws NoLoanPermittedException
-     *             If the user is not allowed to have a negative balance
+     * @throws Exception
+     *             If a user by that name does not exists or If the user is not
+     *             allowed to have a negative balance
      */
     @Deprecated
     public static void setMoney(String name, double balance) throws Exception {
@@ -195,11 +185,6 @@ public class Eco {
      *            Name of the user
      * @param value
      *            The balance is multiplied by this value
-     *
-     * @throws UserDoesNotExistException
-     *             If a user by that name does not exists
-     * @throws NoLoanPermittedException
-     *             If the user is not allowed to have a negative balance
      */
     @Deprecated
     public static void multiply(String name, double amount) throws Exception {
@@ -245,9 +230,6 @@ public class Eco {
      *            The amount of money the user should have
      *
      * @return true, if the user has more or an equal amount of money
-     *
-     * @throws UserDoesNotExistException
-     *             If a user by that name does not exists
      */
     @Deprecated
     public static boolean hasEnough(String name, double amount) throws Exception {
@@ -271,9 +253,6 @@ public class Eco {
      *            The amount of money the user should have
      *
      * @return true, if the user has more money
-     *
-     * @throws UserDoesNotExistException
-     *             If a user by that name does not exists
      */
     @Deprecated
     public static boolean hasMore(String name, double amount) throws Exception {
@@ -297,9 +276,6 @@ public class Eco {
      *            The amount of money the user should not have
      *
      * @return true, if the user has less money
-     *
-     * @throws UserDoesNotExistException
-     *             If a user by that name does not exists
      */
     @Deprecated
     public static boolean hasLess(String name, double amount) throws Exception {
@@ -312,8 +288,7 @@ public class Eco {
         }
     }
 
-    public static boolean hasLess(String name, BigDecimal amount)
-            throws Exception {
+    public static boolean hasLess(String name, BigDecimal amount) throws Exception {
         return amount.compareTo(getMoneyExact(name)) > 0;
     }
 
@@ -324,9 +299,6 @@ public class Eco {
      *            Name of the user
      *
      * @return true, if the user has a negative balance
-     *
-     * @throws UserDoesNotExistException
-     *             If a user by that name does not exists
      */
     public static boolean isNegative(String name) throws Exception {
         return getMoneyExact(name).signum() < 0;
@@ -335,9 +307,6 @@ public class Eco {
     /**
      * Formats the amount of money like all other Essentials functions. Example:
      * $100000 or $12345.67
-     *
-     * @param amount
-     *            The amount of money
      *
      * @return Formatted money
      */
@@ -352,8 +321,8 @@ public class Eco {
     }
 
     public static String format(BigDecimal amount) {
-        // TODO return NumberUtil.displayCurrency(amount, ess);
-        return "$" + amount;
+        return "$" + amount; // TODO return NumberUtil.displayCurrency(amount,
+        // ess);
     }
 
     /**
@@ -368,54 +337,7 @@ public class Eco {
         return getUserByName(name) != null;
     }
 
-    /**
-     * Test if a player is a npc
-     *
-     * @param name
-     *            Name of the player
-     *
-     * @return true, if it's a npc
-     *
-     * @throws UserDoesNotExistException
-     */
     public static boolean isNPC(String name) throws Exception {
-        User user = getUserByName(name);
-        if (user == null) {
-            throw new Exception(name);
-        }
-        return user.isNPC();
-    }
-
-    /**
-     * Creates dummy files for a npc, if there is no player yet with that name.
-     *
-     * @param name
-     *            Name of the player
-     *
-     * @return true, if a new npc was created
-     */
-    public static boolean createNPC(String name) {
-        User user = getUserByName(name);
-        if (user == null) {
-            createNPCFile(name);
-            return true;
-        }
         return false;
-    }
-
-    /**
-     * Deletes a user, if it is marked as npc.
-     *
-     * @param name
-     *            Name of the player
-     *
-     * @throws UserDoesNotExistException
-     */
-    public static void removeNPC(String name) throws Exception {
-        User user = getUserByName(name);
-        if (user == null) {
-            throw new Exception(name);
-        }
-        deleteNPC(name);
     }
 }

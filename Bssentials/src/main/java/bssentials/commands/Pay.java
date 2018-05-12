@@ -7,7 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-import bssentials.eco.User;
+import bssentials.User;
 
 public class Pay extends BCommand {
 

@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import bssentials.Bssentials;
+import bssentials.User;
 
 public class PlayerJoin implements Listener {
     @EventHandler
@@ -30,6 +31,12 @@ public class PlayerJoin implements Listener {
                 player.sendMessage(ChatColor.GREEN + "Warping to spawn");
             }
             Bukkit.broadcastMessage(ChatColor.GRAY + " Please welcome " + player.getName() + " to the server!");
+        }
+
+        User user = User.getByName(player.getName());
+        if (!user.nick.equalsIgnoreCase("_null_")) {
+            player.sendMessage(ChatColor.GRAY + "Nickname changed to: " + user.nick);
+            player.setDisplayName(user.nick);
         }
     }
 }
