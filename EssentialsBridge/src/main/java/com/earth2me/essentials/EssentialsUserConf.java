@@ -16,7 +16,8 @@ public class EssentialsUserConf extends EssentialsConf {
     private final File bssdata;
 
     public EssentialsUserConf(final String username, final UUID uuid, final File configFile) {
-        super(new File(Bukkit.getPluginManager().getPlugin("Bssentials").getDataFolder(), uuid + ".yml"));
+        super(new File(new File(Bukkit.getPluginManager().getPlugin("Bssentials").getDataFolder(), "userdata"),
+                uuid + ".yml"));
         // super(configFile);
         this.bssdata = new File(Bukkit.getPluginManager().getPlugin("Bssentials").getDataFolder(), "userdata");
         this.username = username;

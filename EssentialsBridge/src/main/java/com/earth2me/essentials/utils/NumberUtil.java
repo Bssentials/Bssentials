@@ -71,7 +71,9 @@ public class NumberUtil {
             currency = currency.substring(1);
             sign = "-";
         }
-        return sign + tl("currency", ess.getSettings().getCurrencySymbol(), currency);
+        // return sign + tl("currency", ess.getSettings().getCurrencySymbol(),
+        // currency);
+        return sign + currency; // Bssentials: fix label.
     }
 
     public static boolean isInt(final String sInt) {
