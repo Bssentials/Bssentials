@@ -27,9 +27,4 @@ public class DelWarp extends BCommand {
         }
         return new File(Bssentials.warpdir, warp + ".yml");
     }
-
-    @Override
-    public boolean onlyPlayer() {
-        return true;
-    }
 }

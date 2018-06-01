@@ -3,12 +3,7 @@ package bssentials;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -30,7 +25,6 @@ public class User {
     public BigDecimal money = new BigDecimal(100);
     public String nick = "_null_";
 
-    private Map<String, Object> homemap;
     public ArrayList<String> homes = new ArrayList<>();
 
     public static FileConfiguration user = new YamlConfiguration();
@@ -49,9 +43,9 @@ public class User {
                 System.out.println("Unable to create file: " + folder.getAbsolutePath());
                 e.printStackTrace();
             }
-            npc = false;
-            lastAccountName = base.getName();
-            money = BigDecimal.valueOf(100.0); // Default
+            user.set("npc", false);
+            user.set("lastAccountName", base.getName());
+            user.set("money", BigDecimal.valueOf(100.0)); // Default
             save();
         }
 
@@ -70,20 +64,9 @@ public class User {
                 money = BigDecimal.valueOf(Double.valueOf((int) user.get("money")));
             }
             nick = user.getString("nick");
-            homemap = _getHomes();
         }
     }
 
-    private Map<String, Object> _getHomes() {
-        if (user.isConfigurationSection("homes")) {
-            return user.getConfigurationSection("homes").getValues(false);
-        }
-        return new HashMap<>();
-    }
-
-    public List<String> getHomes() {
-        return new ArrayList<>(homemap.keySet());
-    }
 
     public Location getHome(String home) {
         if (user.getConfigurationSection("homes." + home) == null) {
@@ -107,7 +90,6 @@ public class User {
                 money = BigDecimal.valueOf(Double.valueOf((int) user.get("money")));
             }
             nick = user.getString("nick");
-            homemap = _getHomes();
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Unable to write to file: " + folder.getAbsolutePath());

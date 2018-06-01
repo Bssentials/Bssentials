@@ -73,8 +73,8 @@ public class Bssentials extends JavaPlugin {
         if (esswarps.exists()) {
             getLogger().info("===========================");
             getLogger().info("EssentialsX warps found!");
-            getLogger().info("Converting Essentials warps to new format!");
-            convertEssWarps(esswarps);
+            getLogger()
+                    .info("To use your old warps move them from the /Essentials/warps/ folder into /Bssentials/warps/");
             getLogger().info("===========================");
         }
 
@@ -123,15 +123,11 @@ public class Bssentials extends JavaPlugin {
         V2WarpConvert.convert(oldwarps);
     }
 
-    private void convertEssWarps(File oldwarps) {
-        System.out.println("[Bssentials3]: Method not implemented: convertEssWarps");
-    }
-
     public void register(String name, BCommand base) {
         getCommand(name).setExecutor(base);
-        if (debug) {
+        if (debug)
             getLogger().info("[DEBUG]: Registering command: /" + name);
-        }
+
         registered++;
     }
 
@@ -145,9 +141,9 @@ public class Bssentials extends JavaPlugin {
 
     public boolean hasPerm(CommandSender p, Command cmd) {
         String c = cmd.getName();
-        return (p.isOp() | p.hasPermission("bssentials.command." + c) | p.hasPermission("essentials." + c)
-                | p.hasPermission("accentials.command." + c) | p.hasPermission("dssentials.command." + c)
-                | p.hasPermission("bssentials.command.*") | p.hasPermission("se." + c));
+        return (p.isOp() || p.hasPermission("bssentials.command." + c) || p.hasPermission("essentials." + c)
+                || p.hasPermission("accentials.command." + c) || p.hasPermission("dssentials.command." + c)
+                || p.hasPermission("bssentials.command.*") || p.hasPermission("se." + c));
     }
 
     public boolean teleportPlayerToWarp(Player sender, String warpname) throws NumberFormatException, IOException {
