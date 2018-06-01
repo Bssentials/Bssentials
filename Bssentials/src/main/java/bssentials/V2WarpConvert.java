@@ -14,7 +14,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import com.google.common.io.Files;
 
 public class V2WarpConvert {
-    public static File configf, warpsf, homesf, ranksf, userf;
+    public static File configf, warpsf, homesf, ranksf;
     public static FileConfiguration warps = new YamlConfiguration();
     public static FileConfiguration homes = new YamlConfiguration();
 

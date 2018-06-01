@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Instead of using this api directly, we recommend to use the register plugin: http://bit.ly/RegisterMethod
+ * Instead of using this api directly, we recommend to use Vault.
  */
 public class Economy {
     public Economy() {

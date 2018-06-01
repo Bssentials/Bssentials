@@ -16,13 +16,12 @@ public class Eco {
     }
 
     private static final Logger logger = Logger.getLogger("Bssentials");
-    private static final String noCallBeforeLoad = "Bssentials API is called before Bssentials is loaded.";
     public static final MathContext MATH_CONTEXT = MathContext.DECIMAL128;
 
     private static User getUserByName(String name) {
-        if (name == null) {
+        if (name == null)
             throw new RuntimeException("Economy username cannot be null");
-        }
+
         return User.getByName(name);
     }
 
@@ -85,8 +84,6 @@ public class Eco {
         } catch (Exception ex) {
             // TODO: Update API to show max balance errors
         }
-        // Trade.log("API", "Set", "API", name, new Trade(balance, ess), null,
-        // null, null, ess);
     }
 
     /**
@@ -114,8 +111,6 @@ public class Eco {
     public static void add(String name, BigDecimal amount) throws Exception {
         BigDecimal result = getMoneyExact(name).add(amount, MATH_CONTEXT);
         setMoney(name, result);
-        // Trade.log("API", "Add", "API", name, new Trade(amount, ess), null,
-        // null, null, ess);
     }
 
     /**
@@ -144,8 +139,6 @@ public class Eco {
     public static void substract(String name, BigDecimal amount) throws Exception {
         BigDecimal result = getMoneyExact(name).subtract(amount, MATH_CONTEXT);
         setMoney(name, result);
-        // Trade.log("API", "Subtract", "API", name, new Trade(amount, ess),
-        // null, null, null, ess);
     }
 
     /**
@@ -174,8 +167,6 @@ public class Eco {
     public static void divide(String name, BigDecimal amount) throws Exception {
         BigDecimal result = getMoneyExact(name).divide(amount, MATH_CONTEXT);
         setMoney(name, result);
-        // Trade.log("API", "Divide", "API", name, new Trade(amount, ess), null,
-        // null, null, ess);
     }
 
     /**
@@ -199,8 +190,6 @@ public class Eco {
     public static void multiply(String name, BigDecimal amount) throws Exception {
         BigDecimal result = getMoneyExact(name).multiply(amount, MATH_CONTEXT);
         setMoney(name, result);
-        // Trade.log("API", "Multiply", "API", name, new Trade(amount, ess),
-        // null, null, null, ess);
     }
 
     /**
@@ -216,11 +205,9 @@ public class Eco {
      */
     public static void resetBalance(String name) throws Exception {
         if (Bssentials.get() == null) {
-            throw new RuntimeException(noCallBeforeLoad);
+            throw new RuntimeException("Bssentials Eco is called before Bssentials is loaded.");
         }
         setMoney(name, 100); // TODO: configure
-        // Trade.log("API", "Reset", "API", name, new Trade(BigDecimal.ZERO,
-        // ess), null, null, null, ess);
     }
 
     /**
@@ -321,12 +308,11 @@ public class Eco {
     }
 
     public static String format(BigDecimal amount) {
-        return "$" + amount; // TODO return NumberUtil.displayCurrency(amount,
-        // ess);
+        return "$" + amount;
     }
 
     /**
-     * Test if a player exists to avoid the UserDoesNotExistException
+     * Test if a player exists
      *
      * @param name
      *            Name of the user
