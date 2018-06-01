@@ -24,11 +24,13 @@ import bssentials.commands.Fly;
 import bssentials.commands.Gamemode;
 import bssentials.commands.Hat;
 import bssentials.commands.Heal;
+import bssentials.commands.Home;
 import bssentials.commands.Nick;
 import bssentials.commands.Nuke;
 import bssentials.commands.Pay;
 import bssentials.commands.Ping;
 import bssentials.commands.Pm;
+import bssentials.commands.SetHome;
 import bssentials.commands.SetSpawn;
 import bssentials.commands.SetWarp;
 import bssentials.commands.Spawn;
@@ -90,7 +92,8 @@ public class Bssentials extends JavaPlugin {
         register(
                 new Warp(), new SetWarp(), new Nuke(), new Broadcast(), new SetSpawn(), new Spawn(), new Debug(),
                 new Fly(), new Pm(), new Gamemode(), new Enderchest(), new Heal(), new Exp(), new SpawnMob(),
-                new Uuid(), new Hat(), new Weather(), new Balance(), new Ping(), new Pay(), new Afk(), new Nick()
+                new Uuid(), new Hat(), new Weather(), new Balance(), new Ping(), new Pay(), new Afk(), new Nick(),
+                new Home(), new SetHome()
                 );
         register("underheal", new Heal());
         register("feed", new Heal());
@@ -116,8 +119,6 @@ public class Bssentials extends JavaPlugin {
 
     private void convertv2Warps(File oldwarps) {
         V2WarpConvert.convert(oldwarps);
-        // System.out.println("[Bssentials3]: Method not implemented:
-        // convertv2Warps");
     }
 
     private void convertEssWarps(File oldwarps) {

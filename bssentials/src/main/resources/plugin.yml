@@ -39,3 +39,6 @@ commands:
       aliases: pong
     nick:
     afk:
+    home:
+    sethome:
+    delhome:

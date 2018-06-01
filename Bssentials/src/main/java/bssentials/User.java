@@ -5,9 +5,17 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import bssentials.Bssentials;
@@ -22,12 +30,18 @@ public class User {
     public BigDecimal money = new BigDecimal(100);
     public String nick = "_null_";
 
+    private Map<String, Object> homemap;
+    public ArrayList<String> homes = new ArrayList<>();
+
+    public static FileConfiguration user = new YamlConfiguration();
+
     public User(Player base) {
         this.base = base;
         this.folder = new File(Bssentials.get().getDataFolder(), "userdata");
         this.file = new File(folder, base.getUniqueId().toString() + ".yml");
         this.lastAccountName = base.getName();
         folder.mkdir();
+
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -39,29 +53,61 @@ public class User {
             lastAccountName = base.getName();
             money = BigDecimal.valueOf(100.0); // Default
             save();
-        } else {
-            try {
-                List<String> list = Files.readAllLines(file.toPath());
-                for (String el : list) {
-                    String a = el.split("[:]")[0].trim();
-                    String b = el.split("[:]")[1].trim();
-                    if (a.equalsIgnoreCase("npc")) npc = Boolean.valueOf(b);
-                    if (a.equalsIgnoreCase("lastAccountName")) lastAccountName = b;
-                    if (a.equalsIgnoreCase("money")) money = new BigDecimal(b);
-                    if (a.equalsIgnoreCase("nick")) nick = b;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
+
+        try {
+            user.load(file);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        if (file.exists()) {
+            npc = user.getBoolean("npc", false);
+            lastAccountName = user.getString("lastAccountName");
+            try {
+                money = new BigDecimal((double) user.get("money"));
+            } catch (Exception e) {
+                money = BigDecimal.valueOf(Double.valueOf((int) user.get("money")));
+            }
+            nick = user.getString("nick");
+            homemap = _getHomes();
+        }
+    }
+
+    private Map<String, Object> _getHomes() {
+        if (user.isConfigurationSection("homes")) {
+            return user.getConfigurationSection("homes").getValues(false);
+        }
+        return new HashMap<>();
+    }
+
+    public List<String> getHomes() {
+        return new ArrayList<>(homemap.keySet());
+    }
+
+    public Location getHome(String home) {
+        if (user.getConfigurationSection("homes." + home) == null) {
+            return null;
+        }
+        World w = Bukkit.getServer().getWorld(user.getString("homes." + home + ".world"));
+        double x = user.getDouble("homes." + home + ".x");
+        double y = user.getDouble("homes." + home + ".y");
+        double z = user.getDouble("homes." + home + ".z");
+        return new Location(w, x, y, z);
     }
 
     private void save() {
         try {
-            String content = String.format("npc: %s\nlastAccountName: %s\nmoney: %s\nnick: %s", npc, lastAccountName,
-                    money, nick);
-            Files.write(file.toPath(), content.getBytes(), StandardOpenOption.WRITE,
-                    StandardOpenOption.TRUNCATE_EXISTING);
+            user.save(file);
+            npc = user.getBoolean("npc", false);
+            lastAccountName = user.getString("lastAccountName");
+            try {
+                money = new BigDecimal((double) user.get("money"));
+            } catch (Exception e) {
+                money = BigDecimal.valueOf(Double.valueOf((int) user.get("money")));
+            }
+            nick = user.getString("nick");
+            homemap = _getHomes();
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Unable to write to file: " + folder.getAbsolutePath());
@@ -77,12 +123,12 @@ public class User {
     }
 
     public void setMoney(BigDecimal balance) {
-        money = balance;
+        user.set("money", balance.doubleValue());
         save();
     }
 
     public void setNick(String n) {
-        nick = n;
+        user.set("nick", n);
         save();
     }
 
@@ -93,5 +139,13 @@ public class User {
     @SuppressWarnings("deprecation")
     public static User getByName(String name) {
         return new User(Bukkit.getPlayerExact(name));
+    }
+
+    public void setHome(String home, Location l) {
+        user.set("homes." + home + ".world", l.getWorld().getName());
+        user.set("homes." + home + ".x", l.getX());
+        user.set("homes." + home + ".y", l.getY());
+        user.set("homes." + home + ".z", l.getZ());
+        save();
     }
 }
