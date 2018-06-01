@@ -148,4 +148,13 @@ public class User {
         user.set("homes." + home + ".z", l.getZ());
         save();
     }
+
+    public void delHome(String home) {
+        user.set("homes." + home + ".world", null);
+        user.set("homes." + home + ".x", null);
+        user.set("homes." + home + ".y", null);
+        user.set("homes." + home + ".z", null);
+        user.set("homes." + home, null);
+        save();
+    }
 }
