@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import bssentials.Bssentials;
 
 public class Spawn extends Warp {
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
         if (args.length == 0) {
@@ -42,7 +43,7 @@ public class Spawn extends Warp {
                 message(sender, e.getMessage());
                 return true;
             }
-            
+
             return true;
         }
 
@@ -54,4 +55,5 @@ public class Spawn extends Warp {
     public File getFileForWarp(String name) {
         return Bssentials.spawn;
     }
+
 }

@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Uuid extends BCommand {
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
         if (args.length == 0) {
@@ -28,8 +29,4 @@ public class Uuid extends BCommand {
         return true;
     }
 
-    @Override
-    public boolean hasPerm(CommandSender sender, Command cmd) {
-        return sender.isOp();
-    }
 }

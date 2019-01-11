@@ -4,8 +4,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import bssentials.User;
+import bssentials.api.User;
 
+@CmdInfo(onlyPlayer = true)
 public class DelHome extends BCommand {
 
     @Override
@@ -20,8 +21,4 @@ public class DelHome extends BCommand {
         return false;
     }
 
-    @Override
-    public boolean onlyPlayer() {
-        return true;
-    }
 }

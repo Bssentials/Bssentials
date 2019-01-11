@@ -7,6 +7,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 
 import bssentials.Bssentials;
 
+@CmdInfo(aliases = {"bss", "ess", "essentials"})
 public class BssentialsCmd extends BCommand {
 
     @Override

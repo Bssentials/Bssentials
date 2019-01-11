@@ -63,6 +63,7 @@ public class V2WarpConvert {
             double y = homes.getDouble("homes." + plr + ".y");
             double z = homes.getDouble("homes." + plr + ".z");
 
+            @SuppressWarnings("deprecation")
             OfflinePlayer off = Bukkit.getOfflinePlayer(plr);
             if (off.hasPlayedBefore()) {
                 FileConfiguration user = new YamlConfiguration();
@@ -82,7 +83,7 @@ public class V2WarpConvert {
                     e.printStackTrace();
                 }
             } else {
-                System.out.println("Unable to convert home for: " + plr + ". Reason: Player hasnt played before.");
+                System.out.println("Unable to convert home for: " + plr + ". Reason: Player has not played before.");
             }
         }
 

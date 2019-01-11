@@ -5,17 +5,20 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import bssentials.eco.Eco;
+import bssentials.api.Econ;
 
+@CmdInfo(aliases = {"bal", "money"})
 public class Balance extends BCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
         if (!(sender instanceof Player)) {
             message(sender, "CONSOLE Balance: \u221E");
+            return true;
         }
+
         try {
-            message(sender, ChatColor.GREEN + "Balance: " + ChatColor.RED + Eco.getMoney(sender.getName()));
+            message(sender, ChatColor.GREEN + "Balance: " + ChatColor.RED + Econ.getMoney(sender.getName()));
         } catch (Exception e) {
             message(sender, ChatColor.DARK_RED + "Exception while getting balance: " + e.getMessage());
             e.printStackTrace();
@@ -24,8 +27,4 @@ public class Balance extends BCommand {
         return true;
     }
 
-    @Override
-    public boolean onlyPlayer() {
-        return false;
-    }
 }

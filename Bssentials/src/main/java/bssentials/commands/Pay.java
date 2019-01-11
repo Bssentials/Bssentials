@@ -7,14 +7,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-import bssentials.User;
+import bssentials.api.User;
 
 public class Pay extends BCommand {
 
     @SuppressWarnings("deprecation")
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
-
         if (args.length < 2) {
             message(sender, ChatColor.DARK_RED + "Usage: /pay <player> <amount>");
             return true;

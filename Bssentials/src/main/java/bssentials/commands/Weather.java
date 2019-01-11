@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+@CmdInfo(aliases = {"sun", "rain"})
 public class Weather extends BCommand {
 
     @Override
@@ -16,9 +17,8 @@ public class Weather extends BCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String l, String[] args) {
-        if (!(sender instanceof Player)) {
-            message(sender, "Player only command.");
-        }
+        if (!(sender instanceof Player)) message(sender, "Player only command.");
+
         if (!(hasPerm(sender, cmd))) {
             message(sender, ChatColor.RED + "No permission for command.");
             return false;
@@ -41,9 +41,7 @@ public class Weather extends BCommand {
             return true;
         }
         World w = p.getWorld();
-        if (args.length > 1) {
-            w = Bukkit.getWorld(args[1]);
-        }
+        if (args.length > 1) w = Bukkit.getWorld(args[1]);
 
         if (args[0].equalsIgnoreCase("sun")) {
             w.setStorm(false);
@@ -57,4 +55,5 @@ public class Weather extends BCommand {
         }
         return true;
     }
+
 }

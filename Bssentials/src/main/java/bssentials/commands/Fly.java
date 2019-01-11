@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Fly extends BCommand {
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
         if (args.length == 2 && sender.hasPermission("bssentials.command.fly.other")) {
@@ -28,4 +29,5 @@ public class Fly extends BCommand {
         }
         return false;
     }
+
 }

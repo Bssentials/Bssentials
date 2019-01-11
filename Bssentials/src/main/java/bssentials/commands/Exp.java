@@ -5,7 +5,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+@CmdInfo(onlyPlayer = true, aliases = {"xp"})
 public class Exp extends BCommand {
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
         if (sender instanceof Player && args.length == 1) {
@@ -18,8 +20,4 @@ public class Exp extends BCommand {
         return false;
     }
 
-    @Override
-    public boolean onlyPlayer() {
-        return true;
-    }
 }

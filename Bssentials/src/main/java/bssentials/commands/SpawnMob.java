@@ -11,14 +11,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
+@CmdInfo(aliases = {"mob"})
 public class SpawnMob extends BCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
         ArrayList<String> mobs = new ArrayList<>();
-        for (EntityType e : EntityType.values()) {
+        for (EntityType e : EntityType.values())
             if (e.isSpawnable()) mobs.add(String.valueOf(e).toLowerCase());
-        }
+
         if (args.length == 0) {
             message(sender, ChatColor.GREEN + join(mobs, ChatColor.GRAY + ", " + ChatColor.GREEN));
         } else {
@@ -42,9 +43,8 @@ public class SpawnMob extends BCommand {
 
     private String join(ArrayList<String> mobs, String string) {
         String s = "Mobs: ";
-        for (String sp : mobs) {
-            s += ChatColor.GREEN + sp + string;
-        }
+        for (String sp : mobs) s += ChatColor.GREEN + sp + string;
+
         return s;
     }
 

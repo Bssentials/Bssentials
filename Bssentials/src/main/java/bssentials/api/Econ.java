@@ -1,4 +1,4 @@
-package bssentials.eco;
+package bssentials.api;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -6,21 +6,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import bssentials.Bssentials;
-import bssentials.User;
 
 /**
  * Instead of using this api directly, we recommend to use Vault.
  */
-public class Eco {
-    public Eco() {
+public class Econ {
+
+    public Econ() {
     }
 
     private static final Logger logger = Logger.getLogger("Bssentials");
     public static final MathContext MATH_CONTEXT = MathContext.DECIMAL128;
 
     private static User getUserByName(String name) {
-        if (name == null)
-            throw new RuntimeException("Economy username cannot be null");
+        if (name == null) throw new RuntimeException("Economy username cannot be null");
 
         return User.getByName(name);
     }
@@ -40,9 +39,8 @@ public class Eco {
 
     public static BigDecimal getMoneyExact(String name) throws Exception {
         User user = getUserByName(name);
-        if (user == null) {
-            throw new Exception("User does not exist: " + name);
-        }
+        if (user == null) throw new Exception("User does not exist: " + name);
+
         return user.getMoney();
     }
 
@@ -69,12 +67,10 @@ public class Eco {
 
     public static void setMoney(String name, BigDecimal balance) throws Exception {
         User user = getUserByName(name);
-        if (user == null) {
-            throw new Exception(name);
-        }
-        if (balance.compareTo(new BigDecimal(0)) < 0) {
-            throw new Exception();
-        }
+
+        if (user == null) throw new Exception(name);
+        if (balance.compareTo(new BigDecimal(0)) < 0) throw new Exception();
+
         if (balance.signum() < 0
                 && !(user.isAuthorized("essentials.eco.loan") || user.isAuthorized("bssentials.eco.loan"))) {
             throw new Exception();
@@ -204,9 +200,9 @@ public class Eco {
      *             If the user is not allowed to have a negative balance
      */
     public static void resetBalance(String name) throws Exception {
-        if (Bssentials.get() == null) {
-            throw new RuntimeException("Bssentials Eco is called before Bssentials is loaded.");
-        }
+        if (Bssentials.get() == null)
+            throw new RuntimeException("Bssentials Econ is called before Bssentials is loaded.");
+
         setMoney(name, 100); // TODO: configure
     }
 
@@ -326,4 +322,5 @@ public class Eco {
     public static boolean isNPC(String name) throws Exception {
         return false;
     }
+
 }

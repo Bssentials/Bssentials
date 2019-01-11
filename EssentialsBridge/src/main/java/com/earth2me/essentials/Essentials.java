@@ -121,7 +121,6 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 		System.out.println("[BssentialsEssentialsBridge]: Method not implemented: " + s);
 	}
 
-	@SuppressWarnings("unused")
 	public void forceLoadClasses() {
 		try {
 			Class.forName(OfflinePlayer.class.getName());

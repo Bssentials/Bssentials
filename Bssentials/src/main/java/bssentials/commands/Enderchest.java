@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+@CmdInfo(onlyPlayer = true, aliases = {"echest", "ender"})
 public class Enderchest extends BCommand {
 
     @Override
@@ -13,7 +14,6 @@ public class Enderchest extends BCommand {
         if (cmd.getName().equalsIgnoreCase("enderchest")) {
             if (args.length == 0) {
                 Player p = (Player) sender;
-                p.sendMessage("Opening your enderchest");
                 p.openInventory(p.getEnderChest());
                 return true;
             } else if (args.length == 1) {
@@ -32,8 +32,4 @@ public class Enderchest extends BCommand {
         return false;
     }
 
-    @Override
-    public boolean onlyPlayer() {
-        return true;
-    }
 }

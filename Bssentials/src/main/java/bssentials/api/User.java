@@ -1,4 +1,4 @@
-package bssentials;
+package bssentials.api;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import bssentials.Bssentials;
 
 public class User {
+
     private Player base;
     private File folder;
     private File file;
@@ -40,12 +41,12 @@ public class User {
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                System.out.println("Unable to create file: " + folder.getAbsolutePath());
                 e.printStackTrace();
+                System.out.println("Unable to create file: " + folder.getAbsolutePath());
             }
             user.set("npc", false);
             user.set("lastAccountName", base.getName());
-            user.set("money", BigDecimal.valueOf(100.0)); // Default
+            user.set("money", 100.0); // Default
             save();
         }
 
@@ -69,9 +70,9 @@ public class User {
 
 
     public Location getHome(String home) {
-        if (user.getConfigurationSection("homes." + home) == null) {
+        if (user.getConfigurationSection("homes." + home) == null)
             return null;
-        }
+
         World w = Bukkit.getServer().getWorld(user.getString("homes." + home + ".world"));
         double x = user.getDouble("homes." + home + ".x");
         double y = user.getDouble("homes." + home + ".y");
@@ -87,7 +88,10 @@ public class User {
             try {
                 money = new BigDecimal((double) user.get("money"));
             } catch (Exception e) {
-                money = BigDecimal.valueOf(Double.valueOf((int) user.get("money")));
+                if (user.get("money") instanceof BigDecimal) {
+                    money = (BigDecimal) user.get("money");
+                } else
+                    money = BigDecimal.valueOf(Double.valueOf((int) user.get("money")));
             }
             nick = user.getString("nick");
         } catch (IOException e) {
@@ -139,4 +143,5 @@ public class User {
         user.set("homes." + home, null);
         save();
     }
+
 }

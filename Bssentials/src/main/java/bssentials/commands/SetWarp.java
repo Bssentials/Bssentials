@@ -13,6 +13,7 @@ import com.google.common.io.Files;
 
 import bssentials.Bssentials;
 
+@CmdInfo(onlyPlayer = true)
 public class SetWarp extends BCommand {
 
     @Override
@@ -45,8 +46,4 @@ public class SetWarp extends BCommand {
         return new File(Bssentials.warpdir, warp + ".yml");
     }
 
-    @Override
-    public boolean onlyPlayer() {
-        return true;
-    }
 }

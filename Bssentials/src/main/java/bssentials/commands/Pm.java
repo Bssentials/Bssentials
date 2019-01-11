@@ -20,9 +20,10 @@ public class Pm extends BCommand {
             String format = ChatColor.GOLD + "[%s" + ChatColor.GOLD + " -> %s" + ChatColor.GOLD + "]";
 
             message(target, String.format(format, sender.getName(), "me") + message);
-            message(sender, String.format(format, "me", target.getName()) +  message);
+            message(sender, String.format(format, "me", target.getName()) + message);
 
         } else message(sender, "That player is not currently online!");
+
         return false;
     }
 

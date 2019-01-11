@@ -12,6 +12,7 @@ import com.google.common.io.Files;
 
 import bssentials.Bssentials;
 
+@CmdInfo(onlyPlayer = true)
 public class SetSpawn extends BCommand {
 
     @Override
@@ -36,8 +37,4 @@ public class SetSpawn extends BCommand {
         return true;
     }
 
-    @Override
-    public boolean onlyPlayer() {
-        return true;
-    }
 }

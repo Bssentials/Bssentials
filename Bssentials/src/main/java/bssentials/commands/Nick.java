@@ -5,7 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import bssentials.User;
+import bssentials.api.User;
 
 public class Nick extends BCommand {
 

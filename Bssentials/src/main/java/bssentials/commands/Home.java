@@ -5,8 +5,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import bssentials.User;
+import bssentials.api.User;
 
+@CmdInfo(onlyPlayer = true)
 public class Home extends BCommand {
 
     @Override
@@ -14,14 +15,10 @@ public class Home extends BCommand {
         String home = "home";
         if (args.length > 0) home = args[0];
         Location l = User.getByName(sender.getName()).getHome(home);
-        if (null != l) {
+        if (null != l)
             ((Player) sender).teleport(l);
-        }
+
         return false;
     }
 
-    @Override
-    public boolean onlyPlayer() {
-        return true;
-    }
 }

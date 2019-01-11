@@ -6,11 +6,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+@CmdInfo(onlyPlayer = true)
 public class Heal extends BCommand {
-    @Override
-    public boolean onlyPlayer() {
-        return true;
-    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
@@ -81,4 +78,5 @@ public class Heal extends BCommand {
         }
         return false;
     }
+
 }

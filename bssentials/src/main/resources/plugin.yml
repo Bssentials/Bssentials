@@ -1,45 +1,6 @@
 name: Bssentials
 version: 3.0-pre
-authors: [IsaiahPatton]
+authors: [IsaiahPatton, Bssentials Contributors]
 main: bssentials.Bssentials
-prefix: Bssentials3
 description: Essentials remake with support for EssAPI
 website: http://dev.bukkit.org/bukkit-plugins/bssentials/
-commands:
-    warp:
-    setwarp:
-    nuke:
-    broadcast:
-    setspawn:
-    spawn:
-    debug:
-    fly:
-    pm:
-    bssentials:
-      aliases: [bss, ess, essentials]
-    gamemode:
-      aliases: [gm, gmc, gms, gmsp]
-    enderchest:
-      aliases: [echest, ender]
-    heal:
-    feed:
-    underheal:
-    exp:
-      aliases: xp
-    spawnmob:
-      aliases: [mob, spawn]
-    uuid:
-    hat:
-    weather:
-      aliases: [sun, rain]
-    balance:
-      aliases: [bal, money]
-    pay:
-    ping:
-      aliases: pong
-    nick:
-    afk:
-    home:
-    sethome:
-    delhome:
-    delwarp:

@@ -8,6 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+@CmdInfo(aliases = {"gm", "gmc", "gms", "gmsp"})
 public class Gamemode extends BCommand {
 
     @Override
@@ -60,7 +61,7 @@ public class Gamemode extends BCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String string, String[] args) {
-        if (onlyPlayer()) {
+        if (onlyPlayer) {
             if (!(sender instanceof Player)) {
                 sender.sendMessage("Player only command!");
                 return false;
@@ -80,15 +81,15 @@ public class Gamemode extends BCommand {
     }
 
     public boolean onShortCommand(Player sender, String g) {
-        if (g.equalsIgnoreCase("gmc")) {
+        if (g.equalsIgnoreCase("gmc"))
             sender.setGameMode(GameMode.CREATIVE);
-        }
-        if (g.equalsIgnoreCase("gms")) {
+
+        if (g.equalsIgnoreCase("gms"))
             sender.setGameMode(GameMode.SURVIVAL);
-        }
-        if (g.equalsIgnoreCase("gmsp")) {
+
+        if (g.equalsIgnoreCase("gmsp"))
             sender.setGameMode(GameMode.SPECTATOR);
-        }
+
         return true;
     }
 }

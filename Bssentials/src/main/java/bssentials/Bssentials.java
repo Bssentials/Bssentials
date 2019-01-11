@@ -2,12 +2,14 @@ package bssentials;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.util.Locale;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,7 +19,6 @@ import bssentials.commands.BCommand;
 import bssentials.commands.Balance;
 import bssentials.commands.Broadcast;
 import bssentials.commands.BssentialsCmd;
-import bssentials.commands.Debug;
 import bssentials.commands.DelHome;
 import bssentials.commands.DelWarp;
 import bssentials.commands.Enderchest;
@@ -43,11 +44,11 @@ import bssentials.commands.Weather;
 import bssentials.listeners.PlayerJoin;
 
 public class Bssentials extends JavaPlugin {
+
     private static Bssentials i;
     public static File warpdir;
     public static File spawn;
     private int registered = 0;
-    public boolean debug = false;
 
     @Override
     public void onEnable() {
@@ -58,10 +59,10 @@ public class Bssentials extends JavaPlugin {
         getLogger().info("===========================");
         i = this;
 
-        warpdir = new File(Bssentials.get().getDataFolder(), "warps");
+        warpdir = new File(getDataFolder(), "warps");
         warpdir.mkdirs();
 
-        spawn = new File(Bssentials.get().getDataFolder(), "spawn.yml");
+        spawn = new File(getDataFolder(), "spawn.yml");
         try {
             spawn.createNewFile();
         } catch (IOException e) {
@@ -83,7 +84,7 @@ public class Bssentials extends JavaPlugin {
             getLogger().info("===========================");
             getLogger().info("Bssentials version 2.x warps found!");
             getLogger().info("Converting old warps to new format!");
-            convertv2Warps(oldwarps);
+            V2WarpConvert.convert(oldwarps);
             getLogger().info("===========================");
         }
 
@@ -92,7 +93,7 @@ public class Bssentials extends JavaPlugin {
         register("bssentials", new BssentialsCmd());
 
         register(
-                new Warp(), new SetWarp(), new Nuke(), new Broadcast(), new SetSpawn(), new Spawn(), new Debug(),
+                new Warp(), new SetWarp(), new Nuke(), new Broadcast(), new SetSpawn(), new Spawn(),
                 new Fly(), new Pm(), new Gamemode(), new Enderchest(), new Heal(), new Exp(), new SpawnMob(),
                 new Uuid(), new Hat(), new Weather(), new Balance(), new Ping(), new Pay(), new Afk(), new Nick(),
                 new Home(), new SetHome(), new DelHome(), new DelWarp()
@@ -119,20 +120,30 @@ public class Bssentials extends JavaPlugin {
         });
     }
 
-    private void convertv2Warps(File oldwarps) {
-        V2WarpConvert.convert(oldwarps);
-    }
-
-    public void register(String name, BCommand base) {
+    @Deprecated
+    public void legacy_register(String name, BCommand base) {
         getCommand(name).setExecutor(base);
-        if (debug)
-            getLogger().info("[DEBUG]: Registering command: /" + name);
+        getLogger().info("[Commands]: Registering: /" + name);
 
         registered++;
     }
 
+    public void register(String name, BCommand base) {
+        try {
+            final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+
+            bukkitCommandMap.setAccessible(true);
+            CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
+
+            getLogger().info("[Commands]: Registering: /" + name);
+            CommandWrapper wrap = new CommandWrapper(name, base);
+            commandMap.register(name, "bssentials", wrap);
+         } catch(Exception e) { e.printStackTrace(); }
+    }
+
     public void register(BCommand... bases) {
-        for (BCommand bcmd : bases) register(bcmd.getClass().getSimpleName().toLowerCase(Locale.ENGLISH), bcmd);
+        for (BCommand bcmd : bases)
+            register(bcmd.getClass().getSimpleName().toLowerCase(Locale.ENGLISH), bcmd);
     }
 
     public static Bssentials get() {
@@ -141,9 +152,8 @@ public class Bssentials extends JavaPlugin {
 
     public boolean hasPerm(CommandSender p, Command cmd) {
         String c = cmd.getName();
-        return (p.isOp() || p.hasPermission("bssentials.command." + c) || p.hasPermission("essentials." + c)
-                || p.hasPermission("accentials.command." + c) || p.hasPermission("dssentials.command." + c)
-                || p.hasPermission("bssentials.command.*") || p.hasPermission("se." + c));
+        return p.isOp() || p.hasPermission("bssentials.command." + c) || p.hasPermission("essentials." + c)
+                || p.hasPermission("accentials.command." + c) || p.hasPermission("bssentials.command.*");
     }
 
     public boolean teleportPlayerToWarp(Player sender, String warpname) throws NumberFormatException, IOException {
@@ -172,4 +182,5 @@ public class Bssentials extends JavaPlugin {
             return false;
         }
     }
+
 }

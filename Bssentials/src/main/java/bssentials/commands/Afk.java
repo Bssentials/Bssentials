@@ -9,7 +9,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+@CmdInfo(aliases = {"awayfromkeyboard", "away"})
 public class Afk extends BCommand {
+
     public static Collection<String> afkmap = new ArrayList<>();
     public static boolean displaynameafk;
 
@@ -39,25 +41,18 @@ public class Afk extends BCommand {
     }
 
     public static void setAFK(Player target, boolean status) {
-        setAFK(target, status, true);
-    }
-
-    public static void setAFK(Player target, boolean status, boolean broadcast) {
         String name = (displaynameafk ? target.getDisplayName() : target.getName());
         if (status) {
             if (!isAFK(target)) {
                 afkmap.add(target.getUniqueId().toString());
-                if (broadcast) {
-                    Bukkit.broadcastMessage(ChatColor.GRAY + "* " + name + ChatColor.GRAY + " is now AFK!");
-                }
+                Bukkit.broadcastMessage(ChatColor.GRAY + "* " + name + ChatColor.GRAY + " is now AFK!");
             }
         } else {
             if (isAFK(target)) {
                 afkmap.remove(target.getUniqueId().toString());
-                if (broadcast) {
-                    Bukkit.broadcastMessage(ChatColor.GRAY + "* " + name + ChatColor.GRAY + " is no longer AFK!");
-                }
+                Bukkit.broadcastMessage(ChatColor.GRAY + "* " + name + ChatColor.GRAY + " is no longer AFK!");
             }
         }
     }
+
 }

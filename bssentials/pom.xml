@@ -43,7 +43,7 @@
    </dependencies>
 
     <build>
-        <finalName>Bssentials-3</finalName>
+        <finalName>Bssentials3</finalName>
         <resources>
             <resource>
                 <directory>${basedir}/src/main/resources</directory>
