@@ -20,7 +20,7 @@ The EssentialsBridge provides support for the Essentials API
 
 ## Licence
 
-Copyright (C) 2016 - 2018 Bssentials Contributers
+Bssentials Copyright (C) 2016 - 2019 Bssentials Contributers
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
