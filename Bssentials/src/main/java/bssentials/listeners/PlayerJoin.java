@@ -18,23 +18,25 @@ public class PlayerJoin implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player plr = e.getPlayer();
         Bssentials bss = Bssentials.get();
+        User user = User.getByName(plr.getName());
+
         if (!plr.hasPlayedBefore()) {
-            bss.getConfig().set("playerdata." + plr.getName() + ".uuid", plr.getUniqueId().toString());
+            user.getConfig().set("uuid", plr.getUniqueId().toString());
+            user.save();
             if (!bss.isSpawnSet()) {
                 plr.sendMessage(ChatColor.RED + "Spawn has not been set!");
             } else {
                 try {
+                    plr.sendMessage(ChatColor.GREEN + "Warping to spawn");
                     bss.teleportPlayerToWarp(plr, "spawn");
-                } catch (NumberFormatException | IOException e1) {
-                    e1.printStackTrace();
-                    plr.sendMessage(ChatColor.RED + "Unable to find spawn.");
+                } catch (NumberFormatException | IOException ex) {
+                    ex.printStackTrace();
+                    plr.sendMessage(ChatColor.RED + "Unable to find spawn: " + ex.getMessage());
                 }
-                plr.sendMessage(ChatColor.GREEN + "Warping to spawn");
             }
             Bukkit.broadcastMessage(ChatColor.GRAY + " Please welcome " + plr.getName() + " to the server!");
         }
 
-        User user = User.getByName(plr.getName());
         if (!user.nick.equalsIgnoreCase("_null_")) {
             plr.sendMessage(ChatColor.GRAY + "Nickname changed to: " + user.nick);
             plr.setDisplayName(user.nick);

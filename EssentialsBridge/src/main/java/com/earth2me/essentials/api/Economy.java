@@ -16,6 +16,7 @@ import java.util.logging.Logger;
  * Instead of using this api directly, we recommend to use Vault.
  */
 public class Economy {
+
     public Economy() {
     }
 
@@ -41,12 +42,12 @@ public class Economy {
     }
 
     private static User getUserByName(String name) {
-        if (ess == null) {
+        if (ess == null)
             throw new RuntimeException(noCallBeforeLoad);
-        }
-        if (name == null) {
+
+        if (name == null)
             throw new RuntimeException("Economy username cannot be null");
-        }
+
         return ess.getUser(name);
     }
 
@@ -66,9 +67,9 @@ public class Economy {
 
     public static BigDecimal getMoneyExact(String name) throws UserDoesNotExistException {
         User user = getUserByName(name);
-        if (user == null) {
+        if (user == null)
             throw new UserDoesNotExistException(name);
-        }
+
         return user.getMoney();
     }
 
@@ -92,19 +93,19 @@ public class Economy {
 
     public static void setMoney(String name, BigDecimal balance) throws UserDoesNotExistException, NoLoanPermittedException {
         User user = getUserByName(name);
-        if (user == null) {
+        if (user == null)
             throw new UserDoesNotExistException(name);
-        }
-        if (balance.compareTo(ess.getSettings().getMinMoney()) < 0) {
+
+        if (balance.compareTo(ess.getSettings().getMinMoney()) < 0)
             throw new NoLoanPermittedException();
-        }
-        if (balance.signum() < 0 && !user.isAuthorized("essentials.eco.loan")) {
+
+        if (balance.signum() < 0 && !user.isAuthorized("essentials.eco.loan"))
             throw new NoLoanPermittedException();
-        }
+
         try {
             user.setMoney(balance);
         } catch (MaxMoneyException ex) {
-            //TODO: Update API to show max balance errors
+            // TODO: Update API to show max balance errors
         }
         Trade.log("API", "Set", "API", name, new Trade(balance, ess), null, null, null, ess);
     }
@@ -318,9 +319,9 @@ public class Economy {
     }
 
     public static String format(BigDecimal amount) {
-        if (ess == null) {
+        if (ess == null)
             throw new RuntimeException(noCallBeforeLoad);
-        }
+
         return NumberUtil.displayCurrency(amount, ess);
     }
 
@@ -346,9 +347,9 @@ public class Economy {
      */
     public static boolean isNPC(String name) throws UserDoesNotExistException {
         User user = getUserByName(name);
-        if (user == null) {
+        if (user == null)
             throw new UserDoesNotExistException(name);
-        }
+
         return user.isNPC();
     }
 
@@ -377,9 +378,10 @@ public class Economy {
      */
     public static void removeNPC(String name) throws UserDoesNotExistException {
         User user = getUserByName(name);
-        if (user == null) {
+        if (user == null)
             throw new UserDoesNotExistException(name);
-        }
+
         deleteNPC(name);
     }
+
 }

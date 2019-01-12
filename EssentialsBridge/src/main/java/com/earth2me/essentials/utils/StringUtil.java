@@ -52,13 +52,11 @@ public class StringUtil {
     public static String joinListSkip(String seperator, String skip, Object... list) {
         StringBuilder buf = new StringBuilder();
         for (Object each : list) {
-            if (each.toString().equalsIgnoreCase(skip)) {
+            if (each.toString().equalsIgnoreCase(skip))
                 continue;
-            }
 
-            if (buf.length() > 0) {
+            if (buf.length() > 0)
                 buf.append(seperator);
-            }
 
             if (each instanceof Collection) {
                 buf.append(joinListSkip(seperator, skip, ((Collection) each).toArray()));

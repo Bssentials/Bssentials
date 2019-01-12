@@ -27,9 +27,9 @@ public class DateUtil {
         int seconds = 0;
         boolean found = false;
         while (m.find()) {
-            if (m.group() == null || m.group().isEmpty()) {
+            if (m.group() == null || m.group().isEmpty())
                 continue;
-            }
+
             for (int i = 0; i < m.groupCount(); i++) {
                 if (m.group(i) != null && !m.group(i).isEmpty()) {
                     found = true;
@@ -37,27 +37,27 @@ public class DateUtil {
                 }
             }
             if (found) {
-                if (m.group(1) != null && !m.group(1).isEmpty()) {
+                if (m.group(1) != null && !m.group(1).isEmpty())
                     years = Integer.parseInt(m.group(1));
-                }
-                if (m.group(2) != null && !m.group(2).isEmpty()) {
+
+                if (m.group(2) != null && !m.group(2).isEmpty())
                     months = Integer.parseInt(m.group(2));
-                }
-                if (m.group(3) != null && !m.group(3).isEmpty()) {
+
+                if (m.group(3) != null && !m.group(3).isEmpty())
                     weeks = Integer.parseInt(m.group(3));
-                }
-                if (m.group(4) != null && !m.group(4).isEmpty()) {
+
+                if (m.group(4) != null && !m.group(4).isEmpty())
                     days = Integer.parseInt(m.group(4));
-                }
-                if (m.group(5) != null && !m.group(5).isEmpty()) {
+
+                if (m.group(5) != null && !m.group(5).isEmpty())
                     hours = Integer.parseInt(m.group(5));
-                }
-                if (m.group(6) != null && !m.group(6).isEmpty()) {
+
+                if (m.group(6) != null && !m.group(6).isEmpty())
                     minutes = Integer.parseInt(m.group(6));
-                }
-                if (m.group(7) != null && !m.group(7).isEmpty()) {
+
+                if (m.group(7) != null && !m.group(7).isEmpty())
                     seconds = Integer.parseInt(m.group(7));
-                }
+
                 break;
             }
         }
@@ -66,34 +66,34 @@ public class DateUtil {
         }
         Calendar c = new GregorianCalendar();
         if (years > 0) {
-            if (years > maxYears) {
+            if (years > maxYears)
                 years = maxYears;
-            }
+
             c.add(Calendar.YEAR, years * (future ? 1 : -1));
         }
-        if (months > 0) {
+        if (months > 0)
             c.add(Calendar.MONTH, months * (future ? 1 : -1));
-        }
-        if (weeks > 0) {
+
+        if (weeks > 0)
             c.add(Calendar.WEEK_OF_YEAR, weeks * (future ? 1 : -1));
-        }
-        if (days > 0) {
+
+        if (days > 0)
             c.add(Calendar.DAY_OF_MONTH, days * (future ? 1 : -1));
-        }
-        if (hours > 0) {
+
+        if (hours > 0)
             c.add(Calendar.HOUR_OF_DAY, hours * (future ? 1 : -1));
-        }
-        if (minutes > 0) {
+
+        if (minutes > 0)
             c.add(Calendar.MINUTE, minutes * (future ? 1 : -1));
-        }
-        if (seconds > 0) {
+
+        if (seconds > 0)
             c.add(Calendar.SECOND, seconds * (future ? 1 : -1));
-        }
+
         Calendar max = new GregorianCalendar();
         max.add(Calendar.YEAR, 10);
-        if (c.after(max)) {
+        if (c.after(max))
             return max.getTimeInMillis();
-        }
+
         return c.getTimeInMillis();
     }
 
@@ -128,29 +128,28 @@ public class DateUtil {
 
     public static String formatDateDiff(Calendar fromDate, Calendar toDate) {
         boolean future = false;
-        if (toDate.equals(fromDate)) {
+        if (toDate.equals(fromDate))
             return tl("now");
-        }
-        if (toDate.after(fromDate)) {
+
+        if (toDate.after(fromDate))
             future = true;
-        }
+
         StringBuilder sb = new StringBuilder();
         int[] types = new int[]{Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.SECOND};
         String[] names = new String[]{tl("year"), tl("years"), tl("month"), tl("months"), tl("day"), tl("days"), tl("hour"), tl("hours"), tl("minute"), tl("minutes"), tl("second"), tl("seconds")};
         int accuracy = 0;
         for (int i = 0; i < types.length; i++) {
-            if (accuracy > 2) {
-                break;
-            }
+            if (accuracy > 2) break;
+
             int diff = dateDiff(types[i], fromDate, toDate, future);
             if (diff > 0) {
                 accuracy++;
                 sb.append(" ").append(diff).append(" ").append(names[i * 2 + (diff > 1 ? 1 : 0)]);
             }
         }
-        if (sb.length() == 0) {
+        if (sb.length() == 0)
             return tl("now");
-        }
+
         return sb.toString().trim();
     }
 }

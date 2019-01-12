@@ -8,6 +8,8 @@ import com.earth2me.essentials.register.payment.Methods;
 import com.earth2me.essentials.utils.DateUtil;
 import com.earth2me.essentials.utils.FormatUtil;
 import com.earth2me.essentials.utils.NumberUtil;
+
+import bssentials.commands.Afk;
 import net.ess3.api.IEssentials;
 import net.ess3.api.MaxMoneyException;
 import net.ess3.api.events.AfkStatusChangeEvent;
@@ -39,6 +41,7 @@ import java.util.logging.Logger;
 import static com.earth2me.essentials.I18n.tl;
 
 public class User extends UserData implements Comparable<User>, IMessageRecipient, net.ess3.api.IUser {
+
     private static final Logger logger = Logger.getLogger("Essentials");
     private IMessageRecipient messageRecipient;
     private transient UUID teleportRequester;
@@ -66,12 +69,12 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
     public User(final Player base, final IEssentials ess) {
         super(base, ess);
         teleport = new Teleport(this, ess);
-        if (isAfk()) {
+        if (isAfk())
             afkPosition = base.getLocation();
-        }
-        if (this.getBase().isOnline()) {
+
+        if (this.getBase().isOnline())
             lastOnlineActivity = System.currentTimeMillis();
-        }
+
         this.messageRecipient = new SimpleMessageRecipient(ess, this);
     }
 
@@ -198,18 +201,13 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
     }
 
     public void dispose() {
-        ess.runTaskAsynchronously(new Runnable() {
-            @Override
-            public void run() {
-                _dispose();
-            }
-        });
+        ess.runTaskAsynchronously(() -> _dispose() );
     }
 
     private void _dispose() {
-        if (!base.isOnline()) {
+        if (!base.isOnline()) 
             this.base = new OfflinePlayer(getConfigUUID(), ess.getServer());
-        }
+
         cleanup();
     }
 
@@ -233,11 +231,10 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
         teleportRequestTime = System.currentTimeMillis();
         teleportRequester = player == null ? null : player.getBase().getUniqueId();
         teleportRequestHere = here;
-        if (player == null) {
+        if (player == null) 
             teleportLocation = null;
-        } else {
+        else
             teleportLocation = here ? player.getLocation() : this.getLocation();
-        }
     }
 
     @Override
@@ -247,9 +244,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
             long timeout = ess.getSettings().getTpaAcceptCancellation();
             if (timeout != 0) {
                 if ((System.currentTimeMillis() - getTeleportRequestTime()) / 1000 <= timeout) { // Player
-                    // has
-                    // outstanding
-                    // request
+                    // has outstanding request
                     return true;
                 } else { // outstanding request expired.
                     requestTeleport(null, false);
@@ -299,8 +294,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
                     prefix.insert(0, opPrefix.toString());
                     suffix = "§r";
                 }
-            } catch (Exception e) {
-            }
+            } catch (Exception e) {}
         }
 
         if (ess.getSettings().addPrefixSuffix()) {
@@ -319,27 +313,24 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
         }
         final String strPrefix = prefix.toString();
         String output = strPrefix + nickname + suffix;
-        if (!longnick && output.length() > 16) {
+        if (!longnick && output.length() > 16)
             output = strPrefix + nickname;
-        }
-        if (!longnick && output.length() > 16) {
+        if (!longnick && output.length() > 16)
             output = FormatUtil.lastCode(strPrefix) + nickname;
-        }
-        if (!longnick && output.length() > 16) {
+        if (!longnick && output.length() > 16)
             output = FormatUtil.lastCode(strPrefix) + nickname.substring(0, 14);
-        }
-        if (output.charAt(output.length() - 1) == '§') {
+        if (output.charAt(output.length() - 1) == '§')
             output = output.substring(0, output.length() - 1);
-        }
+
         return output;
     }
 
     public void setDisplayNick() {
         if (base.isOnline() && ess.getSettings().changeDisplayName()) {
             this.getBase().setDisplayName(getNick(true));
-            if (isAfk()) {
+            if (isAfk())
                 updateAfkListName();
-            } else if (ess.getSettings().changePlayerListName()) {
+            else if (ess.getSettings().changePlayerListName()) {
                 // 1.8 enabled player list-names longer than 16 characters.
                 // If the server is on 1.8 or higher, provide that
                 // functionality. Otherwise, keep prior functionality.
@@ -349,10 +340,9 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
                 try {
                     this.getBase().setPlayerListName(name);
                 } catch (IllegalArgumentException e) {
-                    if (ess.getSettings().isDebug()) {
-                        logger.log(Level.INFO, "Playerlist for " + name
+                    if (ess.getSettings().isDebug())
+                        logger.info("Playerlist for " + name
                                 + " was not updated. Name clashed with another online player.");
-                    }
                 }
             }
         }
@@ -380,18 +370,17 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
         final long start = System.nanoTime();
         final BigDecimal value = _getMoney();
         final long elapsed = System.nanoTime() - start;
-        if (elapsed > ess.getSettings().getEconomyLagWarning()) {
+        if (elapsed > ess.getSettings().getEconomyLagWarning())
             ess.getLogger().log(Level.INFO, "Lag Notice - Slow Economy Response - Request took over {0}ms!",
                     elapsed / 1000000.0);
-        }
+
         return value;
     }
 
     private BigDecimal _getMoney() {
         if (ess.getSettings().isEcoDisabled()) {
-            if (ess.getSettings().isDebug()) {
+            if (ess.getSettings().isDebug())
                 ess.getLogger().info("Internal economy functions disabled, aborting balance check.");
-            }
             return BigDecimal.ZERO;
         }
         if (Methods.hasMethod()) {
@@ -400,8 +389,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
                 if (!method.hasAccount(this.getName())) { throw new Exception(); }
                 final Method.MethodAccount account = Methods.getMethod().getAccount(this.getName());
                 return BigDecimal.valueOf(account.balance());
-            } catch (Exception ex) {
-            }
+            } catch (Exception ex) {}
         }
         return super.getMoney();
     }
@@ -409,9 +397,8 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
     @Override
     public void setMoney(final BigDecimal value) throws MaxMoneyException {
         if (ess.getSettings().isEcoDisabled()) {
-            if (ess.getSettings().isDebug()) {
+            if (ess.getSettings().isDebug())
                 ess.getLogger().info("Internal economy functions disabled, aborting balance change.");
-            }
             return;
         }
         final BigDecimal oldBalance = _getMoney();
@@ -426,8 +413,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
                 if (!method.hasAccount(this.getName())) { throw new Exception(); }
                 final Method.MethodAccount account = Methods.getMethod().getAccount(this.getName());
                 account.set(newBalance.doubleValue());
-            } catch (Exception ex) {
-            }
+            } catch (Exception ex) {}
         }
         super.setMoney(newBalance, true);
         Trade.log("Update", "Set", "API", getName(), new Trade(newBalance, ess), null, null, null, ess);
@@ -461,6 +447,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
         }
         _setAfk(set);
         updateAfkListName();
+        Afk.setAFK(this.base, set); // BSSENTIALS
     }
 
     private void updateAfkListName() {
@@ -469,9 +456,8 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
                 String afkName = ess.getSettings().getAfkListName().replace("{PLAYER}", getDisplayName())
                         .replace("{USERNAME}", getName());
                 getBase().setPlayerListName(afkName);
-            } else {
+            } else
                 getBase().setPlayerListName(null);
-            }
         }
     }
 
@@ -492,9 +478,8 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
     @Override
     public void setHidden(final boolean hidden) {
         this.hidden = hidden;
-        if (hidden == true) {
+        if (hidden)
             setLastLogout(getLastOnlineActivity());
-        }
     }
 
     // Returns true if status expired during this check
@@ -513,8 +498,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
                 } catch (Exception ex) {
                     try {
                         getTeleport().respawn(null, TeleportCause.PLUGIN);
-                    } catch (Exception ex1) {
-                    }
+                    } catch (Exception ex1) {}
                 }
                 return true;
             }
@@ -544,9 +528,8 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
             if (broadcast && !isHidden()) {
                 setDisplayNick();
                 final String msg = tl("userIsNotAway", getDisplayName());
-                if (!msg.isEmpty()) {
+                if (!msg.isEmpty())
                     ess.broadcastMessage(this, msg);
-                }
             }
         }
         lastActivity = System.currentTimeMillis();
@@ -564,9 +547,8 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
             this.getBase().kickPlayer(kickReason);
 
             for (User user : ess.getOnlineUsers()) {
-                if (user.isAuthorized("essentials.kick.notify")) {
+                if (user.isAuthorized("essentials.kick.notify"))
                     user.sendMessage(tl("playerKicked", Console.NAME, getName(), kickReason));
-                }
             }
         }
         final long autoafk = ess.getSettings().getAutoAfk();
@@ -576,9 +558,8 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
             if (!isHidden()) {
                 setDisplayNick();
                 final String msg = tl("userIsAway", getDisplayName());
-                if (!msg.isEmpty()) {
+                if (!msg.isEmpty())
                     ess.broadcastMessage(this, msg);
-                }
             }
         }
     }
@@ -657,16 +638,14 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
     @Override
     public void enableInvulnerabilityAfterTeleport() {
         final long time = ess.getSettings().getTeleportInvulnerability();
-        if (time > 0) {
+        if (time > 0)
             teleportInvulnerabilityTimestamp = System.currentTimeMillis() + time;
-        }
     }
 
     @Override
     public void resetInvulnerabilityAfterTeleport() {
-        if (teleportInvulnerabilityTimestamp != 0 && teleportInvulnerabilityTimestamp < System.currentTimeMillis()) {
+        if (teleportInvulnerabilityTimestamp != 0 && teleportInvulnerabilityTimestamp < System.currentTimeMillis())
             teleportInvulnerabilityTimestamp = 0;
-        }
     }
 
     @Override
@@ -698,9 +677,8 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
         vanished = set;
         if (set) {
             for (User user : ess.getOnlineUsers()) {
-                if (!user.isAuthorized("essentials.vanish.see")) {
+                if (!user.isAuthorized("essentials.vanish.see"))
                     user.getBase().hidePlayer(getBase());
-                }
             }
             setHidden(true);
             ess.getVanishedPlayers().add(getName());
@@ -709,14 +687,12 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
                 .addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false));
             }
         } else {
-            for (Player p : ess.getOnlinePlayers()) {
+            for (Player p : ess.getOnlinePlayers())
                 p.showPlayer(getBase());
-            }
             setHidden(false);
             ess.getVanishedPlayers().remove(getName());
-            if (isAuthorized("essentials.vanish.effect")) {
+            if (isAuthorized("essentials.vanish.effect"))
                 this.getBase().removePotionEffect(PotionEffectType.INVISIBILITY);
-            }
         }
     }
 
@@ -758,9 +734,8 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
 
     @Override
     public void sendMessage(String message) {
-        if (!message.isEmpty()) {
+        if (!message.isEmpty())
             base.sendMessage(message);
-        }
     }
 
     @Override
@@ -843,9 +818,9 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
      * hand is empty then the offhand item is returned - also nullable.
      */
     public ItemStack getItemInHand() {
-        if (ReflUtil.getNmsVersionObject().isLowerThan(ReflUtil.V1_9_R1)) {
+        if (ReflUtil.isLowerThan(ReflUtil.V1_9_R1))
             return getBase().getInventory().getItemInHand();
-        } else {
+        else {
             PlayerInventory inventory = getBase().getInventory();
             return inventory.getItemInMainHand() != null ? inventory.getItemInMainHand() : inventory.getItemInOffHand();
         }
@@ -861,4 +836,5 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
             }
         }
     }
+
 }

@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 public class Fly extends BCommand {
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
         if (args.length == 2 && sender.hasPermission("bssentials.command.fly.other")) {
@@ -24,9 +25,9 @@ public class Fly extends BCommand {
             plr.setAllowFlight(!b);
             plr.setFlying(!b);
             message(sender, ChatColor.DARK_AQUA + "Set flight " + !b);
-        } else {
+        } else
             message(sender, ChatColor.RED + "Usage: /fly OR /fly [player]");
-        }
+
         return false;
     }
 

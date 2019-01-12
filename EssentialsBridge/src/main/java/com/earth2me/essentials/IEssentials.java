@@ -3,6 +3,7 @@ package com.earth2me.essentials;
 import com.earth2me.essentials.api.IItemDb;
 import com.earth2me.essentials.api.IJails;
 import com.earth2me.essentials.api.IWarps;
+import com.earth2me.essentials.metrics.Metrics;
 import com.earth2me.essentials.perm.PermissionsHandler;
 import com.earth2me.essentials.register.payment.Methods;
 
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IEssentials extends Plugin {
+
 	void addReloadListener(IConf listener);
 
 	void reload();
@@ -106,4 +108,5 @@ public interface IEssentials extends Plugin {
 	SpawnerProvider getSpawnerProvider();
 
 	Collection<String> getVanishedPlayersNew();
+
 }

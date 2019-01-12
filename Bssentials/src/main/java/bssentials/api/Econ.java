@@ -12,10 +12,7 @@ import bssentials.Bssentials;
  */
 public class Econ {
 
-    public Econ() {
-    }
-
-    private static final Logger logger = Logger.getLogger("Bssentials");
+    private static final Logger logger = Bssentials.get().getLogger();
     public static final MathContext MATH_CONTEXT = MathContext.DECIMAL128;
 
     private static User getUserByName(String name) {
@@ -242,8 +239,7 @@ public class Econ {
         try {
             return hasMore(name, BigDecimal.valueOf(amount));
         } catch (ArithmeticException e) {
-            logger.log(Level.WARNING,
-                    "Failed to compare balance of " + name + " with " + amount + ": " + e.getMessage(), e);
+            logger.warning("Failed to compare balance of " + name + " with " + amount + ": " + e.getMessage());
             return false;
         }
     }

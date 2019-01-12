@@ -14,6 +14,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import com.google.common.io.Files;
 
 public class V2WarpConvert {
+
     public static File configf, warpsf, homesf, ranksf;
     public static FileConfiguration warps = new YamlConfiguration();
     public static FileConfiguration homes = new YamlConfiguration();
@@ -42,7 +43,7 @@ public class V2WarpConvert {
             double z = warps.getDouble("warps." + warp + ".z");
             float yaw = warps.getInt("warps." + warp + ".yaw");
             float pitch = warps.getInt("warps." + warp + ".pitch");
-            File file = getFileForWarp(warp);
+            File file = bss.getWarps().getWarpFile("");
 
             String content = "world: " + w.getName() + "\n" +
                     "x: " + x + "\n" + "y: " + y + "\n" + "z: " + z + "\n" +
@@ -94,10 +95,4 @@ public class V2WarpConvert {
         }
     }
 
-    public static File getFileForWarp(String warp) {
-        if (warp.equalsIgnoreCase("spawn")) {
-            return Bssentials.spawn;
-        }
-        return new File(Bssentials.warpdir, warp + ".yml");
-    }
 }

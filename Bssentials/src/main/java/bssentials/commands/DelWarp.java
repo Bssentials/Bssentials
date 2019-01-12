@@ -1,10 +1,8 @@
 package bssentials.commands;
 
-import java.io.File;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import bssentials.Bssentials;
 
 public class DelWarp extends BCommand {
 
@@ -15,16 +13,12 @@ public class DelWarp extends BCommand {
             return true;
         }
 
-        File file = getFileForWarp(args[0]);
-        file.delete();
-        message(sender, ChatColor.GREEN + "Warp removed!");
+        if (getPlugin().getWarps().removeWarp(args[0])) {
+            message(sender, ChatColor.GREEN + "Warp removed!");
+        } else {
+            message(sender, ChatColor.DARK_RED + "Unable to remove warp!");
+        }
         return true;
     }
 
-    public File getFileForWarp(String warp) {
-        if (warp.equalsIgnoreCase("spawn")) {
-            return Bssentials.spawn;
-        }
-        return new File(Bssentials.warpdir, warp + ".yml");
-    }
 }

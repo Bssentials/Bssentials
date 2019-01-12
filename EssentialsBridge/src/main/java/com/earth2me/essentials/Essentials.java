@@ -21,6 +21,7 @@ import com.earth2me.essentials.api.Economy;
 import com.earth2me.essentials.api.IItemDb;
 import com.earth2me.essentials.api.IJails;
 import com.earth2me.essentials.commands.*;
+import com.earth2me.essentials.metrics.Metrics;
 //import com.earth2me.essentials.metrics.Metrics;
 import com.earth2me.essentials.perm.PermissionsHandler;
 import com.earth2me.essentials.register.payment.Methods;
@@ -229,11 +230,7 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 				 */
 				reload();
 			} catch (YAMLException exception) {
-				if (pm.getPlugin("EssentialsUpdate") != null) {
-					LOGGER.log(Level.SEVERE, tl("essentialsHelp2"));
-				} else {
-					LOGGER.log(Level.SEVERE, tl("essentialsHelp1"));
-				}
+			    LOGGER.log(Level.SEVERE, tl(pm.getPlugin("EssentialsUpdate") != null ? "essentialsHelp2" : "essentialsHelp1"));
 				handleCrash(exception);
 				return;
 			}
@@ -248,11 +245,8 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 			// execTimer.mark("RegHandler");
 
 			metrics = new Metrics(this);
-			if (!metrics.isOptOut()) {
-				getLogger().info("Starting Metrics. Opt-out using the global bStats config.");
-			} else {
-				getLogger().info("Metrics disabled per bStats config.");
-			}
+		    getLogger().info(metrics.isOptOut() ? "Metrics disabled per bStats config."
+		            : "Starting Metrics. Opt-out using the global bStats config.");
 
 			// final String timeroutput = execTimer.end();
 			if (getSettings().isDebug()) {
@@ -322,12 +316,12 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 			user.stopTransaction();
 		}
 		cleanupOpenInventories();
-		if (i18n != null) {
+		if (i18n != null)
 			i18n.onDisable();
-		}
-		if (backup != null) {
+
+		if (backup != null)
 			backup.stopTask();
-		}
+
 		Economy.setEss(null);
 		Trade.closeLog();
 		getUserMap().getUUIDMap().shutdown();
@@ -376,9 +370,8 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 			// Note: The tab completer is always a player, even when
 			// tab-completing in a command block
 			User user = null;
-			if (cSender instanceof Player) {
+			if (cSender instanceof Player)
 				user = getUser((Player) cSender);
-			}
 
 			CommandSource sender = new CommandSource(cSender);
 
@@ -510,19 +503,18 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 				if (user.getJailTimeout() > 0) {
 					user.sendMessage(
 							tl("playerJailedFor", user.getName(), DateUtil.formatDateDiff(user.getJailTimeout())));
-				} else {
+				} else
 					user.sendMessage(tl("jailMessage"));
-				}
 				return true;
 			}
 
 			// Run the command
 			try {
-				if (user == null) {
+				if (user == null)
 					cmd.run(getServer(), sender, commandLabel, command, args);
-				} else {
+				else
 					cmd.run(getServer(), user, commandLabel, command, args);
-				}
+
 				return true;
 				// } catch (NoChargeException ex) {
 				// return true;
@@ -537,9 +529,8 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 				 */
 			} catch (Exception ex) {
 				showError(sender, ex, commandLabel);
-				if (settings.isDebug()) {
+				if (settings.isDebug())
 					ex.printStackTrace();
-				}
 				return true;
 			}
 		} catch (Throwable ex) {
@@ -566,9 +557,8 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 	@Override
 	public void showError(final CommandSource sender, final Throwable exception, final String commandLabel) {
 		sender.sendMessage(tl("errorWithMessage", exception.getMessage()));
-		if (getSettings().isDebug()) {
+		if (getSettings().isDebug())
 			LOGGER.log(Level.INFO, tl("errorCallingCommand", commandLabel), exception);
-		}
 	}
 
 	@Override
@@ -600,20 +590,18 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 
 	@Override
 	public Metrics getMetrics() {
-		fixme("com.earth2me.essentials.Essentials#getMetrics");
-		return null;
+		return this.metrics;
 	}
 
 	@Override
 	public void setMetrics(Metrics metrics) {
-		fixme("com.earth2me.essentials.Essentials#setMetrics");
-		// this.metrics = metrics;
+		this.metrics = metrics;
 	}
 
 	@Deprecated
 	@Override
 	public User getUser(final Object base) {
-		if (base instanceof Player) { return getUser((Player) base); }
+		if (base instanceof Player) return getUser((Player) base);
 		if (base instanceof org.bukkit.OfflinePlayer) { return getUser(
 				((org.bukkit.OfflinePlayer) base).getUniqueId()); }
 		if (base instanceof UUID) { return getUser((UUID) base); }
@@ -643,9 +631,7 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 			final String lastName = user.getLastAccountName();
 			if (lastName != null) {
 				((OfflinePlayer) user.getBase()).setName(lastName);
-			} else {
-				((OfflinePlayer) user.getBase()).setName(name);
-			}
+			} else ((OfflinePlayer) user.getBase()).setName(name);
 		}
 		return user;
 	}
@@ -663,13 +649,12 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 		User user = userMap.getUser(base.getUniqueId());
 
 		if (user == null) {
-			if (getSettings().isDebug()) {
+			if (getSettings().isDebug())
 				LOGGER.log(Level.INFO, "Constructing new userfile from base player {0}", base.getName());
-			}
+
 			user = new User(base, this);
-		} else {
-			user.update(base);
-		}
+		} else user.update(base);
+
 		return user;
 	}
 
@@ -683,9 +668,9 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 				event.getPlayer().sendMessage("Essentials failed to load, read the log file.");
 			}
 		}, this);
-		for (Player player : getOnlinePlayers()) {
+		for (Player player : getOnlinePlayers())
 			player.sendMessage("Essentials failed to load, read the log file.");
-		}
+
 		this.setEnabled(false);
 	}
 
@@ -693,7 +678,7 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 	public World getWorld(final String name) {
 		if (name.matches("[0-9]+")) {
 			final int worldId = Integer.parseInt(name);
-			if (worldId < getServer().getWorlds().size()) { return getServer().getWorlds().get(worldId); }
+			if (worldId < getServer().getWorlds().size()) return getServer().getWorlds().get(worldId);
 		}
 		return getServer().getWorld(name);
 	}
@@ -826,7 +811,6 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 	@Override
 	public Iterable<User> getOnlineUsers() {
 		return Iterables.transform(getOnlinePlayers(), new Function<Player, User>() {
-
 			@Override
 			public User apply(Player player) {
 				return getUser(player);
@@ -848,4 +832,5 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 	public PotionMetaProvider getPotionMetaProvider() {
 		return potionMetaProvider;
 	}
+
 }

@@ -14,7 +14,8 @@ public class Broadcast extends BCommand {
             sender.sendMessage("/broadcast <message>");
         } else {
             String message = StringUtils.join(args, " ");
-            Bukkit.broadcastMessage("[Broadcast] " + ChatColor.translateAlternateColorCodes('&', message));
+            Bukkit.broadcastMessage(ChatColor.DARK_RED + "[Broadcast] " + ChatColor.RESET +
+                    ChatColor.translateAlternateColorCodes('&', message));
         }
         return true;
     }

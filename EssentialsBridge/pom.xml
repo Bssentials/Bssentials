@@ -11,7 +11,6 @@
 
     <artifactId>EssentialsBridge</artifactId>
 
-
     <repositories>
         <repository>
 			<id>spigot-api</id>
@@ -50,6 +49,11 @@
             <groupId>ru.tehkode</groupId>
             <artifactId>PermissionsEx</artifactId>
             <version>1.23.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+        	<artifactId>Bssentials</artifactId>
+	        <groupId>bssentials</groupId>
+	        <version>3.x</version>
         </dependency>
    </dependencies>
 

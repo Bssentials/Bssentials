@@ -10,6 +10,7 @@ import bssentials.api.Econ;
 @CmdInfo(aliases = {"bal", "money"})
 public class Balance extends BCommand {
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
         if (!(sender instanceof Player)) {

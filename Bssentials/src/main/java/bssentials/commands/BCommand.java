@@ -8,24 +8,28 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+
+import bssentials.Bssentials;
 
 public abstract class BCommand implements CommandExecutor {
 
     public boolean onlyPlayer;
     public CmdInfo i;
+    private Bssentials bss;
 
     public List<String> aliases = new ArrayList<String>();
 
     public BCommand() {
+        this.bss = Bssentials.get();
         CmdInfo i = this.getClass().getAnnotation(CmdInfo.class);
         onlyPlayer = false;
         if (null != i) {
             onlyPlayer = i.onlyPlayer();
             this.i = i;
-            for (String s : i.aliases()) {
+            for (String s : i.aliases())
                 aliases.add(s);
-            }
         }
     }
 
@@ -64,9 +68,22 @@ public abstract class BCommand implements CommandExecutor {
                 || s.hasPermission("accentials.command." + c) || s.hasPermission("bssentials.command.*"));
     }
 
-    public void message(CommandSender cs, String message) {
-        if (cs instanceof Player) cs.sendMessage(message);
-        else cs.sendMessage(ChatColor.stripColor(message));
+    public boolean message(CommandSender cs, String message) {
+        if (cs instanceof Player) {
+            cs.sendMessage(message);
+            return true;
+        } else {
+            cs.sendMessage(ChatColor.stripColor(message));
+            return false;
+        }
+    }
+
+    public FileConfiguration getConfig() {
+        return bss.getConfig();
+    }
+
+    public Bssentials getPlugin() {
+        return bss;
     }
 
     public abstract boolean onCommand(CommandSender sender, Command cmd, String[] args);

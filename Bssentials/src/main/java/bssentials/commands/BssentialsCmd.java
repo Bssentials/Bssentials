@@ -14,6 +14,9 @@ public class BssentialsCmd extends BCommand {
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
         PluginDescriptionFile des = Bssentials.get().getDescription();
         message(sender, ChatColor.GREEN + "Running Bssentials " + des.getVersion());
+        message(sender, ChatColor.GREEN + "Authors: " + des.getVersion());
+
+        for (String p : des.getAuthors()) message(sender, ChatColor.GREEN + "  - " + p);
 
         return true;
     }

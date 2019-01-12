@@ -4,6 +4,7 @@ package com.earth2me.essentials;
  * TODO: Add language support. ~ Bssentials
  */
 public class I18n {
+
     public I18n(Essentials essentials) {
         // TODO Auto-generated constructor stub
     }
@@ -26,4 +27,5 @@ public class I18n {
     public void updateLocale(String s) {
         Essentials.fixme("com.earth2me.essentials.I18n#updateLocale");
     }
+
 }

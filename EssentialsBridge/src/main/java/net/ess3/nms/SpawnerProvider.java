@@ -10,4 +10,5 @@ public class SpawnerProvider {
         Bukkit.getLogger().warning("Unimplmented method: setEntityType");
         return null;
     }
+
 }

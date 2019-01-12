@@ -29,12 +29,8 @@ public abstract class UserData extends PlayerExtension implements IConf {
     protected UserData(Player base, IEssentials ess) {
         super(base);
         this.ess = ess;
-        /// folder = new File(ess.getDataFolder(), "userdata");
         folder = new File(Bukkit.getPluginManager().getPlugin("Bssentials").getDataFolder(), "userdata");
-        // Bssentials: use "Bssentials" data folder
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
+        folder.mkdirs();
 
         String filename;
         try {
@@ -51,9 +47,8 @@ public abstract class UserData extends PlayerExtension implements IConf {
     public final void reset() {
         config.forceSave();
         config.getFile().delete();
-        if (config.username != null) {
+        if (config.username != null)
             ess.getUserMap().removeUser(config.username);
-        }
     }
 
     public final void cleanup() {
@@ -105,19 +100,18 @@ public abstract class UserData extends PlayerExtension implements IConf {
 
         // NPC banks are not actual player banks, as such they do not have
         // player starting balance.
-        if (isNPC()) {
+        if (isNPC())
             result = BigDecimal.ZERO;
-        }
 
-        if (config.hasProperty("money")) {
+        if (config.hasProperty("money"))
             result = config.getBigDecimal("money", result);
-        }
-        if (result.compareTo(maxMoney) > 0) {
+
+        if (result.compareTo(maxMoney) > 0)
             result = maxMoney;
-        }
-        if (result.compareTo(minMoney) < 0) {
+
+        if (result.compareTo(minMoney) < 0)
             result = minMoney;
-        }
+
         return result;
     }
 
@@ -131,12 +125,11 @@ public abstract class UserData extends PlayerExtension implements IConf {
         if (value.compareTo(maxMoney) > 0) {
             if (throwError) { throw new MaxMoneyException(); }
             money = maxMoney;
-        } else {
-            money = value;
-        }
-        if (money.compareTo(minMoney) < 0) {
+        } else money = value;
+
+        if (money.compareTo(minMoney) < 0)
             money = minMoney;
-        }
+
         config.setProperty("money", money);
         stopTransaction();
     }
@@ -152,9 +145,7 @@ public abstract class UserData extends PlayerExtension implements IConf {
         if (NumberUtil.isInt(search)) {
             try {
                 search = getHomes().get(Integer.parseInt(search) - 1);
-            } catch (NumberFormatException e) {
-            } catch (IndexOutOfBoundsException e) {
-            }
+            } catch (NumberFormatException | IndexOutOfBoundsException e) {}
         }
         return search;
     }
@@ -171,7 +162,6 @@ public abstract class UserData extends PlayerExtension implements IConf {
             for (String home : getHomes()) {
                 loc = config.getLocation("homes." + home, this.getBase().getServer());
                 if (world.getWorld() == loc.getWorld()) { return loc; }
-
             }
             loc = config.getLocation("homes." + getHomes().get(0), this.getBase().getServer());
             return loc;
@@ -201,9 +191,8 @@ public abstract class UserData extends PlayerExtension implements IConf {
             homes.remove(search);
             config.removeProperty("homes." + search);
             config.save();
-        } else {
+        } else
             throw new Exception(tl("invalidHome", search));
-        }
     }
 
     public boolean hasHome() {
@@ -241,12 +230,10 @@ public abstract class UserData extends PlayerExtension implements IConf {
     }
 
     public void setUnlimited(ItemStack stack, boolean state) {
-        if (unlimited.contains(stack.getTypeId())) {
+        if (unlimited.contains(stack.getTypeId()))
             unlimited.remove(Integer.valueOf(stack.getTypeId()));
-        }
-        if (state) {
+        if (state)
             unlimited.add(stack.getTypeId());
-        }
         config.setProperty("unlimited", unlimited);
         config.save();
     }
@@ -276,11 +263,11 @@ public abstract class UserData extends PlayerExtension implements IConf {
     }
 
     public void setPowertool(ItemStack stack, List<String> commandList) {
-        if (commandList == null || commandList.isEmpty()) {
+        if (commandList == null || commandList.isEmpty())
             powertools.remove("" + stack.getTypeId());
-        } else {
+        else
             powertools.put("" + stack.getTypeId(), commandList);
-        }
+
         config.setProperty("powertools", powertools);
         config.save();
     }
@@ -294,9 +281,7 @@ public abstract class UserData extends PlayerExtension implements IConf {
     private Location _getLastLocation() {
         try {
             return config.getLocation("lastlocation", this.getBase().getServer());
-        } catch (InvalidWorldException e) {
-            return null;
-        }
+        } catch (InvalidWorldException e) { return null; }
     }
 
     public Location getLastLocation() {
@@ -315,9 +300,7 @@ public abstract class UserData extends PlayerExtension implements IConf {
     private Location _getLogoutLocation() {
         try {
             return config.getLocation("logoutlocation", this.getBase().getServer());
-        } catch (InvalidWorldException e) {
-            return null;
-        }
+        } catch (InvalidWorldException e) { return null; }
     }
 
     public Location getLogoutLocation() {
@@ -398,9 +381,9 @@ public abstract class UserData extends PlayerExtension implements IConf {
         if (mails == null) {
             config.removeProperty("mail");
             mails = _getMails();
-        } else {
+        } else 
             config.setProperty("mail", mails);
-        }
+
         this.mails = mails;
         config.save();
     }
@@ -446,7 +429,7 @@ public abstract class UserData extends PlayerExtension implements IConf {
     @Deprecated
     public boolean isIgnoredPlayer(final String userName) {
         final IUser user = ess.getUser(userName);
-        if (user == null || !user.getBase().isOnline()) { return false; }
+        if (user == null || !user.getBase().isOnline()) return false;
         return isIgnoredPlayer(user);
     }
 
@@ -455,11 +438,11 @@ public abstract class UserData extends PlayerExtension implements IConf {
     }
 
     public void setIgnoredPlayer(IUser user, boolean set) {
-        if (set) {
+        if (set)
             ignoredPlayers.add(user.getName().toLowerCase(Locale.ENGLISH));
-        } else {
+        else
             ignoredPlayers.remove(user.getName().toLowerCase(Locale.ENGLISH));
-        }
+
         setIgnoredPlayers(ignoredPlayers);
     }
 
@@ -570,9 +553,9 @@ public abstract class UserData extends PlayerExtension implements IConf {
 
     public void setLastLogin(long time) {
         _setLastLogin(time);
-        if (base.getAddress() != null && base.getAddress().getAddress() != null) {
+        if (base.getAddress() != null && base.getAddress().getAddress() != null)
             _setLastLoginAddress(base.getAddress().getAddress().getHostAddress());
-        }
+
         config.save();
     }
 
@@ -725,9 +708,8 @@ public abstract class UserData extends PlayerExtension implements IConf {
             for (String command : section.getKeys(false)) {
                 if (section.isLong(command)) {
                     timestamps.put(command.toLowerCase(Locale.ENGLISH), section.getLong(command));
-                } else if (section.isInt(command)) {
+                } else if (section.isInt(command))
                     timestamps.put(command.toLowerCase(Locale.ENGLISH), (long) section.getInt(command));
-                }
             }
             return timestamps;
         }
@@ -757,9 +739,9 @@ public abstract class UserData extends PlayerExtension implements IConf {
             config.setProperty(node, (Location) object);
         } else if (object instanceof ItemStack) {
             config.setProperty(node, (ItemStack) object);
-        } else {
+        } else
             config.setProperty(node, object);
-        }
+
         config.save();
     }
 
@@ -797,7 +779,7 @@ public abstract class UserData extends PlayerExtension implements IConf {
     }
 
     public Map<Pattern, Long> getCommandCooldowns() {
-        if (this.commandCooldowns == null) { return Collections.emptyMap(); }
+        if (this.commandCooldowns == null) return Collections.emptyMap();
         return Collections.unmodifiableMap(this.commandCooldowns);
     }
 
@@ -811,19 +793,16 @@ public abstract class UserData extends PlayerExtension implements IConf {
     }
 
     public void addCommandCooldown(Pattern pattern, Date expiresAt, boolean save) {
-        if (this.commandCooldowns == null) {
+        if (this.commandCooldowns == null)
             this.commandCooldowns = new HashMap<>();
-        }
+
         this.commandCooldowns.put(pattern, expiresAt.getTime());
-        if (save) {
+        if (save)
             saveCommandCooldowns();
-        }
     }
 
     public boolean clearCommandCooldown(Pattern pattern) {
-        if (this.commandCooldowns == null) { return false; // false for no
-        // modification
-        }
+        if (this.commandCooldowns == null) return false; // false for no modification
 
         if (this.commandCooldowns.remove(pattern) != null) {
             saveCommandCooldowns();
@@ -846,9 +825,8 @@ public abstract class UserData extends PlayerExtension implements IConf {
         List<Object> serialized = new ArrayList<>();
         for (Entry<Pattern, Long> entry : this.commandCooldowns.entrySet()) {
             // Don't save expired cooldowns
-            if (entry.getValue() < System.currentTimeMillis()) {
+            if (entry.getValue() < System.currentTimeMillis())
                 continue;
-            }
 
             Map<?, ?> map = ImmutableMap.builder().put("pattern", entry.getKey().pattern())
                     .put("expiry", entry.getValue()).build();
@@ -905,4 +883,5 @@ public abstract class UserData extends PlayerExtension implements IConf {
     public void stopTransaction() {
         config.stopTransaction();
     }
+
 }

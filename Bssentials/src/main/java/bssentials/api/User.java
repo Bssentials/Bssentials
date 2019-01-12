@@ -68,6 +68,9 @@ public class User {
         }
     }
 
+    public FileConfiguration getConfig() {
+        return user;
+    }
 
     public Location getHome(String home) {
         if (user.getConfigurationSection("homes." + home) == null)
@@ -80,7 +83,7 @@ public class User {
         return new Location(w, x, y, z);
     }
 
-    private void save() {
+    public void save() {
         try {
             user.save(file);
             npc = user.getBoolean("npc", false);

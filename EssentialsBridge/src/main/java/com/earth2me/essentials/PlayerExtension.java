@@ -5,7 +5,9 @@ import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+@Deprecated
 public class PlayerExtension {
+
     protected Player base;
 
     public PlayerExtension(final Player base) {
@@ -31,4 +33,5 @@ public class PlayerExtension {
     public Location getLocation() {
         return base.getLocation();
     }
+
 }

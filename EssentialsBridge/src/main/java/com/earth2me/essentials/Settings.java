@@ -63,16 +63,14 @@ public class Settings implements net.ess3.api.ISettings {
 	@Override
 	public int getHomeLimit(final User user) {
 		int limit = 1;
-		if (user.isAuthorized("essentials.sethome.multiple")) {
+		if (user.isAuthorized("essentials.sethome.multiple"))
 			limit = getHomeLimit("default");
-		}
 
 		final Set<String> homeList = getMultipleHomes();
 		if (homeList != null) {
 			for (String set : homeList) {
-				if (user.isAuthorized("essentials.sethome.multiple." + set) && (limit < getHomeLimit(set))) {
+				if (user.isAuthorized("essentials.sethome.multiple." + set) && (limit < getHomeLimit(set)))
 					limit = getHomeLimit(set);
-				}
 			}
 		}
 		return limit;
@@ -179,13 +177,12 @@ public class Settings implements net.ess3.api.ISettings {
 
 	private Set<String> getDisabledCommands() {
 		Set<String> disCommands = new HashSet<>();
-		for (String c : config.getStringList("disabled-commands")) {
+		for (String c : config.getStringList("disabled-commands"))
 			disCommands.add(c.toLowerCase(Locale.ENGLISH));
-		}
+
 		for (String c : config.getKeys(false)) {
-			if (c.startsWith("disable-")) {
+			if (c.startsWith("disable-"))
 				disCommands.add(c.substring(8).toLowerCase(Locale.ENGLISH));
-			}
 		}
 		return disCommands;
 	}
@@ -193,9 +190,9 @@ public class Settings implements net.ess3.api.ISettings {
 	@Override
 	public boolean isPlayerCommand(String label) {
 		for (String c : config.getStringList("player-commands")) {
-			if (!c.equalsIgnoreCase(label)) {
+			if (!c.equalsIgnoreCase(label))
 				continue;
-			}
+
 			return true;
 		}
 		return false;
@@ -204,9 +201,9 @@ public class Settings implements net.ess3.api.ISettings {
 	@Override
 	public boolean isCommandOverridden(String name) {
 		for (String c : config.getStringList("overridden-commands")) {
-			if (!c.equalsIgnoreCase(name)) {
+			if (!c.equalsIgnoreCase(name))
 				continue;
-			}
+
 			return true;
 		}
 		return config.getBoolean("override-" + name.toLowerCase(Locale.ENGLISH), false);
@@ -224,9 +221,9 @@ public class Settings implements net.ess3.api.ISettings {
 			final ConfigurationSection section = config.getConfigurationSection("command-costs");
 			final ConfigurationSection newSection = new MemoryConfiguration();
 			for (String command : section.getKeys(false)) {
-				if (command.charAt(0) == '/') {
+				if (command.charAt(0) == '/')
 					ess.getLogger().warning("Invalid command cost. '" + command + "' should not start with '/'.");
-				}
+
 				if (section.isDouble(command)) {
 					newSection.set(command.toLowerCase(Locale.ENGLISH), section.getDouble(command));
 				} else if (section.isInt(command)) {
@@ -241,9 +238,8 @@ public class Settings implements net.ess3.api.ISettings {
 						ess.getLogger().warning("Invalid command cost for: " + command + " (" + costString + ")");
 					}
 
-				} else {
+				} else
 					ess.getLogger().warning("Invalid command cost for: " + command);
-				}
 			}
 			return newSection;
 		}
@@ -253,9 +249,9 @@ public class Settings implements net.ess3.api.ISettings {
 	@Override
 	public BigDecimal getCommandCost(String name) {
 		name = name.replace('.', '_').replace('/', '_');
-		if (commandCosts != null) {
+		if (commandCosts != null)
 			return EssentialsConf.toBigDecimal(commandCosts.getString(name), BigDecimal.ZERO);
-		}
+
 		return BigDecimal.ZERO;
 	}
 
@@ -265,14 +261,12 @@ public class Settings implements net.ess3.api.ISettings {
 		Set<String> socialspyCommands = new HashSet<>();
 
 		if (config.isList("socialspy-commands")) {
-			for (String c : config.getStringList("socialspy-commands")) {
+			for (String c : config.getStringList("socialspy-commands"))
 				socialspyCommands.add(c.toLowerCase(Locale.ENGLISH));
-			}
-		} else {
+		} else
 			socialspyCommands.addAll(
 					Arrays.asList("msg", "r", "mail", "m", "whisper", "emsg", "t", "tell", "er", "reply", "ereply",
 							"email", "action", "describe", "eme", "eaction", "edescribe", "etell", "ewhisper", "pm"));
-		}
 
 		return socialspyCommands;
 	}
@@ -292,9 +286,8 @@ public class Settings implements net.ess3.api.ISettings {
 	private Set<String> _getMuteCommands() {
 		Set<String> muteCommands = new HashSet<>();
 		if (config.isList("mute-commands")) {
-			for (String s : config.getStringList("mute-commands")) {
+			for (String s : config.getStringList("mute-commands"))
 				muteCommands.add(s.toLowerCase(Locale.ENGLISH));
-			}
 		}
 
 		return muteCommands;
@@ -366,17 +359,15 @@ public class Settings implements net.ess3.api.ISettings {
 	private ChatColor _getOperatorColor() {
 		String colorName = config.getString("ops-name-color", null);
 
-		if (colorName == null) {
+		if (colorName == null)
 			return ChatColor.DARK_RED;
-		}
-		if ("none".equalsIgnoreCase(colorName) || colorName.isEmpty()) {
+
+		if ("none".equalsIgnoreCase(colorName) || colorName.isEmpty())
 			return null;
-		}
 
 		try {
 			return ChatColor.valueOf(colorName.toUpperCase(Locale.ENGLISH));
-		} catch (IllegalArgumentException ex) {
-		}
+		} catch (IllegalArgumentException ex) {}
 
 		return ChatColor.getByChar(colorName);
 	}
@@ -473,16 +464,15 @@ public class Settings implements net.ess3.api.ISettings {
 	public Map<String, Object> getListGroupConfig() {
 		if (config.isConfigurationSection("list")) {
 			Map<String, Object> values = config.getConfigurationSection("list").getValues(false);
-			if (!values.isEmpty()) {
+			if (!values.isEmpty())
 				return values;
-			}
 		}
 		Map<String, Object> defaultMap = new HashMap<>();
-		if (config.getBoolean("sort-list-by-groups", false)) {
+		if (config.getBoolean("sort-list-by-groups", false))
 			defaultMap.put("ListByGroup", "ListByGroup");
-		} else {
+		else
 			defaultMap.put("Players", "*");
-		}
+
 		return defaultMap;
 	}
 
@@ -559,9 +549,8 @@ public class Settings implements net.ess3.api.ISettings {
 		}
 		for (String itemName : config.getString("item-spawn-blacklist", "").split(",")) {
 			itemName = itemName.trim();
-			if (itemName.isEmpty()) {
-				continue;
-			}
+			if (itemName.isEmpty()) continue;
+
 			try {
 				final ItemStack iStack = ess.getItemDb().get(itemName);
 				epItemSpwn.add(iStack.getTypeId());
@@ -657,9 +646,8 @@ public class Settings implements net.ess3.api.ISettings {
 		final List<Integer> list = new ArrayList<>();
 		for (String itemName : config.getString(configName, "").split(",")) {
 			itemName = itemName.trim();
-			if (itemName.isEmpty()) {
-				continue;
-			}
+			if (itemName.isEmpty()) continue;
+
 			ItemStack itemStack;
 			try {
 				itemStack = ess.getItemDb().get(itemName);
@@ -698,9 +686,9 @@ public class Settings implements net.ess3.api.ISettings {
 
 	private BigDecimal _getMinMoney() {
 		BigDecimal min = config.getBigDecimal("min-money", MINMONEY);
-		if (min.signum() > 0) {
+		if (min.signum() > 0)
 			min = min.negate();
-		}
+
 		return min;
 	}
 
@@ -930,24 +918,14 @@ public class Settings implements net.ess3.api.ISettings {
 	}
 
 	private EventPriority getPriority(String priority) {
-		if ("none".equals(priority)) {
-			return null;
-		}
-		if ("lowest".equals(priority)) {
-			return EventPriority.LOWEST;
-		}
-		if ("low".equals(priority)) {
-			return EventPriority.LOW;
-		}
-		if ("normal".equals(priority)) {
-			return EventPriority.NORMAL;
-		}
-		if ("high".equals(priority)) {
-			return EventPriority.HIGH;
-		}
-		if ("highest".equals(priority)) {
-			return EventPriority.HIGHEST;
-		}
+		if ("none".equals(priority)) return null;
+
+		if ("lowest".equals(priority)) return EventPriority.LOWEST;
+		if ("low".equals(priority)) return EventPriority.LOW;
+		if ("normal".equals(priority)) return EventPriority.NORMAL;
+		if ("high".equals(priority)) return EventPriority.HIGH;
+		if ("highest".equals(priority)) return EventPriority.HIGHEST;
+
 		return EventPriority.NORMAL;
 	}
 
@@ -1205,9 +1183,8 @@ public class Settings implements net.ess3.api.ISettings {
 	@Override
 	public boolean isUserInSpawnOnJoinGroup(IUser user) {
 		for (String group : this.spawnOnJoinGroups) {
-			if (group.equals("*") || user.inGroup(group)) {
+			if (group.equals("*") || user.inGroup(group))
 				return true;
-			}
 		}
 		return false;
 	}
@@ -1220,9 +1197,9 @@ public class Settings implements net.ess3.api.ISettings {
 	private Map<Pattern, Long> commandCooldowns;
 
 	private Map<Pattern, Long> _getCommandCooldowns() {
-		if (!config.isConfigurationSection("command-cooldowns")) {
+		if (!config.isConfigurationSection("command-cooldowns"))
 			return null;
-		}
+
 		ConfigurationSection section = config.getConfigurationSection("command-cooldowns");
 		Map<Pattern, Long> result = new LinkedHashMap<>();
 		for (String cmdEntry : section.getKeys(false)) {
@@ -1249,8 +1226,7 @@ public class Settings implements net.ess3.api.ISettings {
 			}
 
 			/*
-			 * ================================ >> Process cooldown value
-			 * ================================
+			 * >> Process cooldown value
 			 */
 			Object value = section.get(cmdEntry);
 			if (!(value instanceof Number) && value instanceof String) {
@@ -1264,9 +1240,8 @@ public class Settings implements net.ess3.api.ISettings {
 				continue;
 			}
 			double cooldown = ((Number) value).doubleValue();
-			if (cooldown < 1) {
+			if (cooldown < 1)
 				ess.getLogger().warning("Command cooldown with very short " + cooldown + " cooldown.");
-			}
 
 			result.put(pattern, (long) cooldown * 1000); // convert to milliseconds
 		}
@@ -1289,9 +1264,8 @@ public class Settings implements net.ess3.api.ISettings {
 		if (isCommandCooldownsEnabled()) {
 			for (Entry<Pattern, Long> entry : this.commandCooldowns.entrySet()) {
 				// Check if label matches current pattern (command-cooldown in config)
-				if (entry.getKey().matcher(label).matches()) {
+				if (entry.getKey().matcher(label).matches())
 					return entry;
-				}
 			}
 		}
 		return null;
@@ -1344,9 +1318,8 @@ public class Settings implements net.ess3.api.ISettings {
 			field.setAccessible(false);
 		} catch (NoSuchFieldException | IllegalAccessException e) {
 			ess.getLogger().severe("Failed to apply custom currency format: " + e.getMessage());
-			if (isDebug()) {
+			if (isDebug())
 				e.printStackTrace();
-			}
 		}
 
 		return currencyFormat;
@@ -1418,4 +1391,5 @@ public class Settings implements net.ess3.api.ISettings {
 	public boolean isConfirmCommandEnabledByDefault(String commandName) {
 		return getDefaultEnabledConfirmCommands().contains(commandName.toLowerCase());
 	}
+
 }
