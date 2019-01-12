@@ -76,7 +76,7 @@ public class Bssentials extends JavaPlugin {
                 new Fly(), new Pm(), new Gamemode(), new Enderchest(), new Heal(), new Exp(), new SpawnMob(),
                 new Uuid(), new Hat(), new Weather(), new Balance(), new Ping(), new Pay(), new Afk(), new Nick(),
                 new Home(), new SetHome(), new DelHome(), new DelWarp(), new Staff(), new BigTree()
-                );
+                ); 
         register("underheal", new Heal());
         register("feed", new Heal());
 
