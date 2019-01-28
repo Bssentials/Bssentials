@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractVaultHandler extends SuperpermsHandler {
+
     protected static Permission perms = null;
     protected static Chat chat = null;
 
@@ -49,9 +50,8 @@ public abstract class AbstractVaultHandler extends SuperpermsHandler {
         if (playerPrefix == null) {
             String playerGroup = perms.getPrimaryGroup(base);
             return chat.getGroupPrefix(base.getWorld().getName(), playerGroup);
-        } else {
+        } else
             return playerPrefix;
-        }
     }
 
     @Override
@@ -60,9 +60,8 @@ public abstract class AbstractVaultHandler extends SuperpermsHandler {
         if (playerSuffix == null) {
             String playerGroup = perms.getPrimaryGroup(base);
             return chat.getGroupSuffix(base.getWorld().getName(), playerGroup);
-        } else {
+        } else
             return playerSuffix;
-        }
     }
 
     protected boolean canLoad() {
@@ -73,4 +72,5 @@ public abstract class AbstractVaultHandler extends SuperpermsHandler {
             return false;
         }
     }
+
 }

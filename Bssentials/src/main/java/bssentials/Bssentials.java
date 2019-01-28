@@ -1,7 +1,6 @@
 package bssentials;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Locale;
@@ -47,7 +46,7 @@ import bssentials.listeners.PlayerCommand;
 import bssentials.listeners.PlayerJoin;
 import bssentials.listeners.PlayerLeave;
 
-public class Bssentials extends JavaPlugin {
+public class Bssentials extends JavaPlugin implements IBssentials {
 
     private static Bssentials i;
     public static File warpdir;
@@ -138,23 +137,9 @@ public class Bssentials extends JavaPlugin {
         return sender.teleport(l == null ? sender.getLocation() : l);
     }
 
+    @Override
     public Warps getWarps() {
         return warpManager;
-    }
-
-    @Deprecated
-    public File getFileForWarp0(String warp) throws FileNotFoundException {
-        return warpManager.getWarpFile(warp);
-    }
-
-    @Deprecated
-    public Location getWarp0(String name) {
-        return warpManager.getWarp(name);
-    }
-
-    @Deprecated
-    public boolean isSpawnSet() {
-        return warpManager.isSpawnSet();
     }
 
 }

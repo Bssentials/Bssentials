@@ -18,6 +18,7 @@ import com.earth2me.essentials.IEssentials;
 
 
 public class LocationUtil {
+
     // The player can stand inside these materials
     public static final Set<Material> HOLLOW_MATERIALS = new HashSet<>();
     private static final Set<Material> TRANSPARENT_MATERIALS = new HashSet<>();
@@ -230,9 +231,9 @@ public class LocationUtil {
             return false;
         }
 
-        if (isBlockDamaging(world, x, y, z)) {
+        if (isBlockDamaging(world, x, y, z))
             return true;
-        }
+
         return isBlockAboveAir(world, x, y, z);
     }
 
@@ -245,18 +246,15 @@ public class LocationUtil {
 
     public static boolean isBlockDamaging(final World world, final int x, final int y, final int z) {
         final Block below = world.getBlockAt(x, y - 1, z);
-        if (below.getType() == Material.LAVA || below.getType() == Material.STATIONARY_LAVA) {
+        if (below.getType() == Material.LAVA || below.getType() == Material.STATIONARY_LAVA)
             return true;
-        }
-        if (below.getType() == Material.FIRE) {
+
+        if (below.getType() == Material.FIRE || below.getType() == Material.BED_BLOCK)
             return true;
-        }
-        if (below.getType() == Material.BED_BLOCK) {
+
+        if (world.getBlockAt(x, y, z).getType() == Material.PORTAL)
             return true;
-        }
-        if (world.getBlockAt(x, y, z).getType() == Material.PORTAL) {
-            return true;
-        }
+
         return (!HOLLOW_MATERIALS.contains(world.getBlockAt(x, y, z).getType())) || (!HOLLOW_MATERIALS.contains(world.getBlockAt(x, y + 1, z).getType()));
     }
 
@@ -286,17 +284,16 @@ public class LocationUtil {
             System.out.println((ess == null) + " " + ess.getSettings().isTeleportToCenterLocation());
             if (ess == null || ess.getSettings().isTeleportToCenterLocation()) {
                 return getRoundedDestination(loc);
-            } else {
+            } else
                 return loc;
-            }
         }
         return getSafeDestination(loc);
     }
 
     public static Location getSafeDestination(final Location loc) throws Exception {
-        if (loc == null || loc.getWorld() == null) {
+        if (loc == null || loc.getWorld() == null)
             throw new Exception(tl("destinationNotSet"));
-        }
+
         final World world = loc.getWorld();
         int x = loc.getBlockX();
         int y = (int) Math.round(loc.getY());
@@ -357,9 +354,8 @@ public class LocationUtil {
         while (LocationUtil.isBlockUnsafe(world, x, y, z) && y > -1) {
             y--;
             count++;
-            if (count > 2) {
+            if (count > 2)
                 return true;
-            }
         }
 
         return y < 0;

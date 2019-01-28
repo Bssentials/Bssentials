@@ -20,10 +20,6 @@
 	        <id>vault-repo</id>
 	        <url>http://nexus.hc.to/content/repositories/pub_releases</url>
         </repository>
-        <repository>
-            <id>pex-repo</id>
-            <url>http://pex-repo.aoeu.xyz</url>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -44,11 +40,6 @@
             <artifactId>Vault</artifactId>
             <version>1.6.6</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>ru.tehkode</groupId>
-            <artifactId>PermissionsEx</artifactId>
-            <version>1.23.2-SNAPSHOT</version>
         </dependency>
         <dependency>
         	<artifactId>Bssentials</artifactId>

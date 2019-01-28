@@ -23,7 +23,7 @@ public class PlayerJoin implements Listener {
         if (!plr.hasPlayedBefore()) {
             user.getConfig().set("uuid", plr.getUniqueId().toString());
             user.save();
-            if (!bss.isSpawnSet()) {
+            if (!bss.getWarps().isSpawnSet()) {
                 plr.sendMessage(ChatColor.RED + "Spawn has not been set!");
             } else {
                 try {
