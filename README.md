@@ -1,4 +1,4 @@
-# ![Bssentials](https://media-elerium.cursecdn.com/attachments/123/323/Bssentials2017.png) [![Build status](https://ci.appveyor.com/api/projects/status/1mpai28weyinpceu?svg=true)](https://ci.appveyor.com/project/IsaiahPatton/bssentials)
+# ![Bssentials](https://media-elerium.cursecdn.com/attachments/123/323/Bssentials2017.png) [![Build Status](https://ci.codemc.org/buildStatus/icon?job=Bssentials%2FBssentials)](https://ci.codemc.org/job/Bssentials/job/Bssentials/)
 
 Bssentials version 3.x is a rewrite of Bssentials made to be more optimized & fix alot of bugs.
 
@@ -7,7 +7,7 @@ Bssentials is a total remake of Essentials from the ground up!
 We do our best to provide a great remake of Essentials.
 
 ## Why use Bssentials instead of EssentialsX?
-Essentials was created 8 years old, and the codebase is a mess.
+Essentials was created 8 years ago, and the codebase is a mess.
 So such a mess with unnessary code, that it took EssentialsX a long time for the 1.13 changes.
 Essentials is also filled with proformance issues & bad practices.
 
@@ -23,8 +23,6 @@ The EssentialsBridge provides support for the Essentials API
 The "EssentialsBridge" module is a compatability layer between the Essentials API & Bssentials.
 Plugins like **Vault**, **ChestShop**, **GroupManager**, **EssentialsChat**, and others that depend on Essentials
 will work with Bssentials with out any modifications to them due to the [EssentialsBridge](https://dev.bukkit.org/projects/essentialsapibridge)
-
-*(note: ChestShop 3 has been known to not work, please report to ChestShop and use the unoffical ChestShop 4.0-r5 or ChestShop 2)*
 
 ## Licence
 
@@ -42,3 +40,6 @@ Bssentials Copyright (C) 2016 - 2019 Bssentials Contributers
     
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Backup CI
+[![Build status](https://ci.appveyor.com/api/projects/status/1mpai28weyinpceu?svg=true)](https://ci.appveyor.com/project/IsaiahPatton/bssentials)
