@@ -24,7 +24,7 @@ public class Pay extends BCommand {
 
         BigDecimal d = new BigDecimal(args[1]);
         u1.setMoney(u1.getMoney().subtract(d));
-        u2.setMoney(u1.getMoney().add(d));
+        u2.setMoney(u2.getMoney().add(d));
 
         message(sender, ChatColor.GREEN + "$" + args[1] + " sent to " + args[0]);
         message(Bukkit.getPlayer(args[0]), ChatColor.GREEN + args[0] + " has given you $" + args[1]);

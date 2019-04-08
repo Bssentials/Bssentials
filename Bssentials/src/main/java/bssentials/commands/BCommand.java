@@ -69,6 +69,7 @@ public abstract class BCommand implements CommandExecutor {
     }
 
     public boolean message(CommandSender cs, String message) {
+        message = ChatColor.translateAlternateColorCodes('&', message);
         if (cs instanceof Player) {
             cs.sendMessage(message);
             return true;

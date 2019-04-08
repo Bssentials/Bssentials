@@ -33,6 +33,7 @@ import java.net.InetSocketAddress;
 import java.util.*;
 
 public class OfflinePlayer implements Player {
+
     private final transient Server server;
     private transient Location location = new Location(null, 0, 0, 0, 0, 0);
     private transient World world;
@@ -1264,14 +1265,9 @@ public class OfflinePlayer implements Player {
     // Removed in 1.12, retain for backwards compatibility.
     @Deprecated
     public void setBanned(boolean banned) {
-        // if
-        // (ReflUtil.getNmsVersionObject().isHigherThanOrEqualTo(ReflUtil.V1_12_R1))
-        // {
-        // throw new UnsupportedOperationException("Cannot call setBanned on MC
-        // 1.12 and higher.");
-        // }
-        if (BssentialsNMSUtils.isHigherOrEqualTo()) { throw new UnsupportedOperationException(
-                "Cannot call setBanned on MC 1.12 and higher."); }
+        if (BssentialsNMSUtils.isHigherOrEqualTo())
+            throw new UnsupportedOperationException("Cannot call setBanned on MC 1.12 and higher."); 
+
         if (base.getName() == null && getName() != null) {
             if (banned) {
                 server.getBanList(BanList.Type.NAME).addBan(getName(), null, null, null);
@@ -1334,85 +1330,69 @@ public class OfflinePlayer implements Player {
 
     @Override
     public void spawnParticle(Particle particle, Location location, int i) {
-
     }
 
     @Override
     public void spawnParticle(Particle particle, double v, double v1, double v2, int i) {
-
     }
 
     @Override
     public <T> void spawnParticle(Particle particle, Location location, int i, T t) {
-
     }
 
     @Override
     public <T> void spawnParticle(Particle particle, double v, double v1, double v2, int i, T t) {
-
     }
 
     @Override
     public void spawnParticle(Particle particle, Location location, int i, double v, double v1, double v2) {
-
     }
 
     @Override
     public void spawnParticle(Particle particle, double v, double v1, double v2, int i, double v3, double v4,
             double v5) {
-
     }
 
     @Override
     public <T> void spawnParticle(Particle particle, Location location, int i, double v, double v1, double v2, T t) {
-
     }
 
     @Override
     public <T> void spawnParticle(Particle particle, double v, double v1, double v2, int i, double v3, double v4,
             double v5, T t) {
-
     }
 
     @Override
     public void spawnParticle(Particle particle, Location location, int i, double v, double v1, double v2, double v3) {
-
     }
 
     @Override
     public void spawnParticle(Particle particle, double v, double v1, double v2, int i, double v3, double v4, double v5,
             double v6) {
-
     }
 
     @Override
     public <T> void spawnParticle(Particle particle, Location location, int i, double v, double v1, double v2,
             double v3, T t) {
-
     }
 
     @Override
     public <T> void spawnParticle(Particle particle, double v, double v1, double v2, int i, double v3, double v4,
             double v5, double v6, T t) {
-
     }
 
     @Override
     public void sendTitle(String title, String subtitle) {
-
     }
 
     @Override
     public void sendTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut) {
-
     }
 
     @Override
     public AttributeInstance getAttribute(Attribute attribute) {
-        // GetAttribute is nullable as per CraftAttributeMap. This might need to
-        // be
-        // improved to support cases where dummy null instances should be
-        // returned.
+        // GetAttribute is nullable as per CraftAttributeMap. This might need to be
+        // improved to support cases where dummy null instances should be returned.
         return null;
     }
 
@@ -1492,13 +1472,16 @@ public class OfflinePlayer implements Player {
         return null;
     }
 
-    // @Override
-    @Override public void hidePlayer(Plugin arg0, Player arg1) {
-        // TODO Auto-generated method stub
+    @Override 
+    public void hidePlayer(Plugin arg0, Player arg1) {
     }
 
-    // @Override
-    @Override public void showPlayer(Plugin arg0, Player arg1) {
-        // TODO Auto-generated method stub
+    @Override 
+    public void showPlayer(Plugin arg0, Player arg1) {
     }
+
+    public Spigot spigot() {
+        return null;
+    }
+
 }

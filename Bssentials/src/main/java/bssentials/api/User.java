@@ -125,7 +125,6 @@ public class User {
         return false; // TODO: should Bssentials have NPC support?
     }
 
-    @SuppressWarnings("deprecation")
     public static User getByName(String name) {
         return new User(Bukkit.getPlayerExact(name));
     }
