@@ -31,7 +31,7 @@
 
         <release.version>3.0</release.version>
 
-        <build.version>${BUILD_NUMBER}-${buildNumber}-${build.number}</build.version>
+        <build.version>${BUILD_NUMBER}</build.version>
 
         <full.version>${release.version}-b${build.version}</full.version>
 	</properties>
@@ -110,55 +110,6 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>com.google.code.maven-replacer-plugin</groupId>
-                <artifactId>replacer</artifactId>
-                <version>1.5.3</version>
-                <executions>
-                    <execution>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>replace</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <basedir>${project.basedir}/src/main/resources/</basedir>
-        			<includes>
-          				<include>plugin.yml</include>
-        			</includes>
-                    <replacements>
-                        <replacement>
-                            <token>{CIVersion}</token>
-                            <value>${full.version}</value>
-                        </replacement>
-                        <replacement>
-                            <token>$${release.version}</token>
-                            <value>${full.version}</value>
-                        </replacement>
-                    </replacements>
-                </configuration>
-                <inherited>false</inherited>
-			</plugin>
-            <plugin>
-                <groupId>me.isaiah.maven</groupId>
-                <artifactId>replace-plugin</artifactId>
-                <version>0.1-SNAPSHOT</version>
-                <executions>
-                    <execution>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>ResourceReplacer</goal>
-                        </goals>
-                    </execution>
-                </executions>
-
-                <configuration>
-                    <file>${project.basedir}/src/main/resources/plugin.yml</file>
-                    <toReplace>3.0-bBUILDNUMBER</toReplace>
-                    <replaceWith>${full.version}</replaceWith>
-                </configuration>
-            </plugin>
 			<plugin>
                 <groupId>pl.project13.maven</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>
@@ -183,19 +134,6 @@
                     </gitDescribe>
                 </configuration>
 			</plugin>
-			<plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>templating-maven-plugin</artifactId>
-        <version>1.0.0</version>
-        <executions>
-            <execution>
-                <id>filter-src</id>
-                <goals>
-                    <goal>filter-sources</goal>
-                </goals>
-            </execution>
-        </executions>
-    </plugin>
         </plugins>
     </build>
 </project>
