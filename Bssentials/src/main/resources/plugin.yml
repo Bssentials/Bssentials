@@ -1,6 +1,6 @@
 name: Bssentials
-version: CIVersion
-authors: [IsaiahPatton, Bssentials Contributors]
+version: 3.0-b${git.total.commit.count}
+authors: [bit.ly/bssentialscontributors]
 main: bssentials.Bssentials
 description: Essentials remake with support for EssAPI
 website: http://dev.bukkit.org/bukkit-plugins/bssentials/

@@ -1,6 +1,9 @@
-# The Bssentials main config!
+# 
+# The Bssentials main configuration
+# DO NOT CHANGE CONFIG VERSION BELOW
+configVersion: 1
 
-#Enable the update check?
+# enable the update check?
 checkForUpdate: true
 
 # Your server's Staff members

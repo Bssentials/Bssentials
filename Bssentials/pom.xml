@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>Bssentials</artifactId> <!--Name-->
-    <version>3.0-b${build.version}</version>
+    <artifactId>Bssentials</artifactId>
+    <version>3.x</version>
 
     <profiles>
         <profile>
@@ -31,7 +31,7 @@
 
         <release.version>3.0</release.version>
 
-        <build.version>${git.closest.tag.commit.count}</build.version>
+        <build.version>${BUILD_NUMBER}-${buildNumber}</build.version>
 
         <full.version>${release.version}-b${build.version}</full.version>
 	</properties>
@@ -42,6 +42,19 @@
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 		</repository>
     </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>maven-repo-master</id>
+			<url>https://raw.githubusercontent.com/isaiahpatton/maven-repo/master/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 
     <dependencies>
         <dependency>
@@ -110,19 +123,65 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <filesToInclude>**/src/*</filesToInclude>
+                    <basedir>${project.basedir}/src/main/resources/</basedir>
+        			<includes>
+          				<include>plugin.yml</include>
+        			</includes>
                     <replacements>
                         <replacement>
-                            <token>CIVersion</token>
+                            <token>{CIVersion}</token>
                             <value>${full.version}</value>
                         </replacement>
                         <replacement>
-                            <token>$${build.number}</token>
+                            <token>$${release.version}</token>
                             <value>${full.version}</value>
                         </replacement>
                     </replacements>
                 </configuration>
                 <inherited>false</inherited>
+			</plugin>
+            <plugin>
+                <groupId>me.isaiah.maven</groupId>
+                <artifactId>replace-plugin</artifactId>
+                <version>0.1-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>ResourceReplacer</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+                    <file>${project.basedir}/src/main/resources/plugin.yml</file>
+                    <toReplace>3.0-bBUILDNUMBER</toReplace>
+                    <replaceWith>${full.version}</replaceWith>
+                </configuration>
+            </plugin>
+			<plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>2.2.5</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+                    <skipPoms>false</skipPoms>
+
+                    <runOnlyOnce>true</runOnlyOnce>
+                    <injectAllReactorProjects>true</injectAllReactorProjects>
+                    <failOnNoGitDirectory>false</failOnNoGitDirectory>
+
+                    <gitDescribe>
+                        <tags>true</tags>
+                    </gitDescribe>
+                </configuration>
 			</plugin>
         </plugins>
     </build>
