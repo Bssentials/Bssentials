@@ -1,5 +1,5 @@
 name: Bssentials
-version: 3.0-b${git.total.commit.count}
+version: ${full.version}
 authors: [bit.ly/bssentialscontributors]
 main: bssentials.Bssentials
 description: Essentials remake with support for EssAPI
