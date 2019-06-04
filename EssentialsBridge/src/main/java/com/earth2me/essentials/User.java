@@ -307,7 +307,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
             }
             if (withSuffix || !ess.getSettings().disableSuffix()) {
                 final String stext = ess.getPermissionsHandler().getSuffix(base).replace('&', ChatColor.COLOR_CHAR);
-                suffix = stext + "§r";
+                suffix = stext + ChatColor.COLOR_CHAR + "r";
                 suffix = suffix.replace(ChatColor.COLOR_CHAR + "f" + ChatColor.COLOR_CHAR + "f", ChatColor.COLOR_CHAR + "f")
                         .replace(ChatColor.COLOR_CHAR + "f" + ChatColor.COLOR_CHAR + "r", ChatColor.COLOR_CHAR + "r")
                         .replace(ChatColor.COLOR_CHAR + "r" + ChatColor.COLOR_CHAR +"r", ChatColor.COLOR_CHAR + "r");

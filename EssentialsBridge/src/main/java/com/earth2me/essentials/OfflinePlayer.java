@@ -1,7 +1,5 @@
 package com.earth2me.essentials;
 
-//import net.ess3.nms.refl.ReflUtil;
-
 import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.advancement.AdvancementProgress;
@@ -1474,10 +1472,6 @@ public class OfflinePlayer implements Player {
 
     @Override 
     public void showPlayer(Plugin arg0, Player arg1) {
-    }
-
-    public Spigot spigot() {
-        return null;
     }
 
 }
