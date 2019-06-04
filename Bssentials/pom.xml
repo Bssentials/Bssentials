@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>Bssentials</artifactId> <!--Name-->
+    <version>3.0-b${build.version}</version>
 
     <profiles>
         <profile>
@@ -24,7 +25,16 @@
             </build>
         </profile>
     </profiles>
+    
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <release.version>3.0</release.version>
+
+        <build.version>${git.closest.tag.commit.count}</build.version>
+
+        <full.version>${release.version}-b${build.version}</full.version>
+	</properties>
 
     <repositories>
         <repository>
@@ -87,6 +97,33 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.google.code.maven-replacer-plugin</groupId>
+                <artifactId>replacer</artifactId>
+                <version>1.5.3</version>
+                <executions>
+                    <execution>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <filesToInclude>**/src/*</filesToInclude>
+                    <replacements>
+                        <replacement>
+                            <token>CIVersion</token>
+                            <value>${full.version}</value>
+                        </replacement>
+                        <replacement>
+                            <token>$${build.number}</token>
+                            <value>${full.version}</value>
+                        </replacement>
+                    </replacements>
+                </configuration>
+                <inherited>false</inherited>
+			</plugin>
         </plugins>
     </build>
 </project>
