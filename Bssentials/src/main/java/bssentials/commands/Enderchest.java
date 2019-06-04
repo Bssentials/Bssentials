@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 @CmdInfo(onlyPlayer = true, aliases = {"echest", "ender"})
 public class Enderchest extends BCommand {
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
         Player p = (Player) sender;

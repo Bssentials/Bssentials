@@ -18,7 +18,7 @@ import bssentials.Bssentials;
 public class User {
 
     private Player base;
-    private File folder;
+    private static File folder;
     private File file;
 
     public boolean npc = false;
@@ -28,13 +28,16 @@ public class User {
 
     public ArrayList<String> homes = new ArrayList<>();
 
-    public static FileConfiguration user = new YamlConfiguration();
+    public FileConfiguration user = new YamlConfiguration();
 
     public User(Player base) {
         this.base = base;
-        this.folder = new File(Bssentials.get().getDataFolder(), "userdata");
+        if (null == folder)
+            folder = new File(Bssentials.get().getDataFolder(), "userdata");
+
         this.file = new File(folder, base.getUniqueId().toString() + ".yml");
         this.lastAccountName = base.getName();
+        this.user = new YamlConfiguration();
         folder.mkdir();
 
         if (!file.exists()) {
@@ -91,10 +94,9 @@ public class User {
             try {
                 money = new BigDecimal((double) user.get("money"));
             } catch (Exception e) {
-                if (user.get("money") instanceof BigDecimal) {
-                    money = (BigDecimal) user.get("money");
-                } else
-                    money = BigDecimal.valueOf(Double.valueOf((int) user.get("money")));
+                Object mon = user.get("money");
+                money = mon instanceof BigDecimal ?
+                        (BigDecimal) mon : BigDecimal.valueOf(Double.valueOf((int) mon));
             }
             nick = user.getString("nick");
         } catch (IOException e) {
@@ -126,6 +128,8 @@ public class User {
     }
 
     public static User getByName(String name) {
+        if (name == null) 
+            throw new RuntimeException("Economy username cannot be null");
         return new User(Bukkit.getPlayerExact(name));
     }
 

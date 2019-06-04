@@ -15,12 +15,6 @@ public class Econ {
     private static final Logger logger = Bssentials.get().getLogger();
     public static final MathContext MATH_CONTEXT = MathContext.DECIMAL128;
 
-    private static User getUserByName(String name) {
-        if (name == null) throw new RuntimeException("Economy username cannot be null");
-
-        return User.getByName(name);
-    }
-
     /**
      * Returns the balance of a user
      *
@@ -35,7 +29,7 @@ public class Econ {
     }
 
     public static BigDecimal getMoneyExact(String name) throws Exception {
-        User user = getUserByName(name);
+        User user = User.getByName(name);
         if (user == null) throw new Exception("User does not exist: " + name);
 
         return user.getMoney();
@@ -63,7 +57,7 @@ public class Econ {
     }
 
     public static void setMoney(String name, BigDecimal balance) throws Exception {
-        User user = getUserByName(name);
+        User user = User.getByName(name);
 
         if (user == null) throw new Exception(name);
         if (balance.compareTo(new BigDecimal(0)) < 0) throw new Exception();
@@ -283,12 +277,6 @@ public class Econ {
         return getMoneyExact(name).signum() < 0;
     }
 
-    /**
-     * Formats the amount of money like all other Essentials functions. Example:
-     * $100000 or $12345.67
-     *
-     * @return Formatted money
-     */
     @Deprecated
     public static String format(double amount) {
         try {
@@ -312,7 +300,7 @@ public class Econ {
      * @return true, if the user exists
      */
     public static boolean playerExists(String name) {
-        return getUserByName(name) != null;
+        return User.getByName(name) != null;
     }
 
     public static boolean isNPC(String name) throws Exception {

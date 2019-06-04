@@ -14,10 +14,13 @@ import bssentials.api.User;
 
 public class PlayerJoin implements Listener {
 
+    private Bssentials bss;
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player plr = e.getPlayer();
-        Bssentials bss = Bssentials.get();
+        if (null == bss) 
+            bss = Bssentials.get();
         User user = User.getByName(plr.getName());
 
         if (!plr.hasPlayedBefore()) {

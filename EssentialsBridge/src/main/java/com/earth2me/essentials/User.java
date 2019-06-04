@@ -284,7 +284,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
             nickname = nick;
         } else {
             nickname = FormatUtil.replaceFormat(ess.getSettings().getNicknamePrefix()) + nick;
-            suffix = "§r";
+            suffix = ChatColor.COLOR_CHAR + "r";
         }
 
         if (this.getBase().isOp()) {
@@ -292,7 +292,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
                 final ChatColor opPrefix = ess.getSettings().getOperatorColor();
                 if (opPrefix != null && opPrefix.toString().length() > 0) {
                     prefix.insert(0, opPrefix.toString());
-                    suffix = "§r";
+                    suffix = ChatColor.COLOR_CHAR + "r";
                 }
             } catch (Exception e) {}
         }
@@ -301,14 +301,16 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
             // These two extra toggles are not documented, because they are
             // mostly redundant #EasterEgg
             if (withPrefix || !ess.getSettings().disablePrefix()) {
-                final String ptext = ess.getPermissionsHandler().getPrefix(base).replace('&', '§');
+                final String ptext = ess.getPermissionsHandler().getPrefix(base).replace('&', ChatColor.COLOR_CHAR);
                 prefix.insert(0, ptext);
-                suffix = "§r";
+                suffix = ChatColor.COLOR_CHAR + "r";
             }
             if (withSuffix || !ess.getSettings().disableSuffix()) {
-                final String stext = ess.getPermissionsHandler().getSuffix(base).replace('&', '§');
+                final String stext = ess.getPermissionsHandler().getSuffix(base).replace('&', ChatColor.COLOR_CHAR);
                 suffix = stext + "§r";
-                suffix = suffix.replace("§f§f", "§f").replace("§f§r", "§r").replace("§r§r", "§r");
+                suffix = suffix.replace(ChatColor.COLOR_CHAR + "f" + ChatColor.COLOR_CHAR + "f", ChatColor.COLOR_CHAR + "f")
+                        .replace(ChatColor.COLOR_CHAR + "f" + ChatColor.COLOR_CHAR + "r", ChatColor.COLOR_CHAR + "r")
+                        .replace(ChatColor.COLOR_CHAR + "r" + ChatColor.COLOR_CHAR +"r", ChatColor.COLOR_CHAR + "r");
             }
         }
         final String strPrefix = prefix.toString();
@@ -319,7 +321,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
             output = FormatUtil.lastCode(strPrefix) + nickname;
         if (!longnick && output.length() > 16)
             output = FormatUtil.lastCode(strPrefix) + nickname.substring(0, 14);
-        if (output.charAt(output.length() - 1) == '§')
+        if (output.charAt(output.length() - 1) == ChatColor.COLOR_CHAR)
             output = output.substring(0, output.length() - 1);
 
         return output;
@@ -331,11 +333,8 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
             if (isAfk())
                 updateAfkListName();
             else if (ess.getSettings().changePlayerListName()) {
-                // 1.8 enabled player list-names longer than 16 characters.
-                // If the server is on 1.8 or higher, provide that
-                // functionality. Otherwise, keep prior functionality.
-                boolean higherOrEqualTo1_8 = ReflUtil.getNmsVersionObject().isHigherThanOrEqualTo(ReflUtil.V1_8_R1);
-                String name = getNick(higherOrEqualTo1_8, ess.getSettings().isAddingPrefixInPlayerlist(),
+
+                String name = getNick(true, ess.getSettings().isAddingPrefixInPlayerlist(),
                         ess.getSettings().isAddingSuffixInPlayerlist());
                 try {
                     this.getBase().setPlayerListName(name);
@@ -582,7 +581,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
         if (isAfk()) {
             // Protect AFK players by representing them in a god mode state to
             // render them invulnerable to damage.
-            if (ess.getSettings().getFreezeAfkPlayers()) { return true; }
+            if (ess.getSettings().getFreezeAfkPlayers()) return true;
         }
         return false;
     }
@@ -594,18 +593,18 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
     @Override
     public String getGroup() {
         final String result = ess.getPermissionsHandler().getGroup(base);
-        if (ess.getSettings().isDebug()) {
+        if (ess.getSettings().isDebug())
             ess.getLogger().log(Level.INFO, "looking up groupname of " + base.getName() + " - " + result);
-        }
+
         return result;
     }
 
     @Override
     public boolean inGroup(final String group) {
         final boolean result = ess.getPermissionsHandler().inGroup(base, group);
-        if (ess.getSettings().isDebug()) {
+        if (ess.getSettings().isDebug())
             ess.getLogger().log(Level.INFO, "checking if " + base.getName() + " is in group " + group + " - " + result);
-        }
+
         return result;
     }
 
@@ -676,16 +675,16 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
     public void setVanished(final boolean set) {
         vanished = set;
         if (set) {
-            for (User user : ess.getOnlineUsers()) {
+            for (User user : ess.getOnlineUsers())
                 if (!user.isAuthorized("essentials.vanish.see"))
                     user.getBase().hidePlayer(getBase());
-            }
+
             setHidden(true);
             ess.getVanishedPlayers().add(getName());
-            if (isAuthorized("essentials.vanish.effect")) {
+            if (isAuthorized("essentials.vanish.effect"))
                 this.getBase()
                 .addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false));
-            }
+
         } else {
             for (Player p : ess.getOnlinePlayers())
                 p.showPlayer(getBase());
@@ -798,9 +797,8 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
 
     @Override
     public void setAfkMessage(String message) {
-        if (isAfk()) {
+        if (isAfk())
             this.afkMessage = message;
-        }
     }
 
     @Override

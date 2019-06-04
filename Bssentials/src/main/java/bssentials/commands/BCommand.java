@@ -63,6 +63,7 @@ public abstract class BCommand implements CommandExecutor {
 
             return s.hasPermission(ip);
         }
+
         String c = cmd.getName().toLowerCase(Locale.ENGLISH);
         return (s.isOp() || s.hasPermission("bssentials.command." + c) || s.hasPermission("essentials." + c)
                 || s.hasPermission("accentials.command." + c) || s.hasPermission("bssentials.command.*"));
@@ -70,13 +71,10 @@ public abstract class BCommand implements CommandExecutor {
 
     public boolean message(CommandSender cs, String message) {
         message = ChatColor.translateAlternateColorCodes('&', message);
-        if (cs instanceof Player) {
-            cs.sendMessage(message);
-            return true;
-        } else {
-            cs.sendMessage(ChatColor.stripColor(message));
-            return false;
-        }
+
+        boolean isPlr = cs instanceof Player;
+        cs.sendMessage(isPlr ? message : ChatColor.stripColor(message));
+        return isPlr;
     }
 
     public FileConfiguration getConfig() {

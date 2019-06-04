@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 
 public class Fly extends BCommand {
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
         if (args.length == 2 && sender.hasPermission("bssentials.command.fly.other")) {

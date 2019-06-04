@@ -705,9 +705,8 @@ public class OfflinePlayer implements Player {
 
     void setName(final String name) {
         this.name = base.getName();
-        if (this.name == null) {
+        if (this.name == null)
             this.name = name;
-        }
     }
 
     @Override
@@ -1143,12 +1142,10 @@ public class OfflinePlayer implements Player {
 
     @Override
     public void stopSound(Sound sound, SoundCategory soundCategory) {
-
     }
 
     @Override
     public void stopSound(String s, SoundCategory soundCategory) {
-
     }
 
     @Override
@@ -1266,14 +1263,13 @@ public class OfflinePlayer implements Player {
     @Deprecated
     public void setBanned(boolean banned) {
         if (BssentialsNMSUtils.isHigherOrEqualTo())
-            throw new UnsupportedOperationException("Cannot call setBanned on MC 1.12 and higher."); 
+            throw new UnsupportedOperationException("Cannot call setBanned on MC 1.12 and higher"); 
 
         if (base.getName() == null && getName() != null) {
-            if (banned) {
+            if (banned)
                 server.getBanList(BanList.Type.NAME).addBan(getName(), null, null, null);
-            } else {
+            else
                 server.getBanList(BanList.Type.NAME).pardon(getName());
-            }
         }
         try {
             Method method = base.getClass().getDeclaredMethod("setBanned", boolean.class);

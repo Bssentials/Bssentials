@@ -11,7 +11,6 @@ import bssentials.api.User;
 
 public class Pay extends BCommand {
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
         if (args.length < 2) {
