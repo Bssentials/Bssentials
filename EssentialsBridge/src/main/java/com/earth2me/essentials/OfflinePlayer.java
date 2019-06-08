@@ -25,6 +25,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
 
+import net.ess3.nms.refl.ReflUtil;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
@@ -1260,7 +1262,7 @@ public class OfflinePlayer implements Player {
     // Removed in 1.12, retain for backwards compatibility.
     @Deprecated
     public void setBanned(boolean banned) {
-        if (BssentialsNMSUtils.isHigherOrEqualTo())
+        if (ReflUtil.getNmsVersionObject().isHigherThanOrEqualTo(ReflUtil.V1_12_R1))
             throw new UnsupportedOperationException("Cannot call setBanned on MC 1.12 and higher"); 
 
         if (base.getName() == null && getName() != null) {

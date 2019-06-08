@@ -52,8 +52,6 @@ public class Warps implements IConf, net.ess3.api.IWarps {
     public final void reloadConfig() {
     }
 
-    // This is here for future 3.x api support. Not implemented here because storage is handled differently
-    // BSSENTIALS: how is storage different? This should return the warpname.yml in warps dir.
     @Override
     public File getWarpFile(String name) throws InvalidNameException {
         return bss.getWarps().getWarpFile(name);
@@ -62,9 +60,6 @@ public class Warps implements IConf, net.ess3.api.IWarps {
     @Override
     public int getCount() {
         return bss.getWarps().getCount();
-    }
-
-    private static class StringIgnoreCase {
     }
 
 }

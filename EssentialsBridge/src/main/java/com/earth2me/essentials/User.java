@@ -65,9 +65,12 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
     private long afkSince;
     private Map<User, BigDecimal> confirmingPayments = new WeakHashMap<>();
     private long lastNotifiedAboutMailsMs;
+    
+    private bssentials.api.User bss;
 
     public User(final Player base, final IEssentials ess) {
         super(base, ess);
+        this.bss = new bssentials.api.User(base);
         teleport = new Teleport(this, ess);
         if (isAfk())
             afkPosition = base.getLocation();
@@ -96,9 +99,9 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
     @Override
     public boolean isAuthorized(final String node) {
         final boolean result = isAuthorizedCheck(node);
-        if (ess.getSettings().isDebug()) {
+        if (ess.getSettings().isDebug())
             ess.getLogger().log(Level.INFO, "checking if " + base.getName() + " has " + node + " - " + result);
-        }
+
         return result;
     }
 
@@ -274,57 +277,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
     }
 
     public String getNick(final boolean longnick, final boolean withPrefix, final boolean withSuffix) {
-        final StringBuilder prefix = new StringBuilder();
-        String nickname;
-        String suffix = "";
-        final String nick = getNickname();
-        if (ess.getSettings().isCommandDisabled("nick") || nick == null || nick.isEmpty() || nick.equals(getName())) {
-            nickname = getName();
-        } else if (nick.equalsIgnoreCase(getName())) {
-            nickname = nick;
-        } else {
-            nickname = FormatUtil.replaceFormat(ess.getSettings().getNicknamePrefix()) + nick;
-            suffix = ChatColor.COLOR_CHAR + "r";
-        }
-
-        if (this.getBase().isOp()) {
-            try {
-                final ChatColor opPrefix = ess.getSettings().getOperatorColor();
-                if (opPrefix != null && opPrefix.toString().length() > 0) {
-                    prefix.insert(0, opPrefix.toString());
-                    suffix = ChatColor.COLOR_CHAR + "r";
-                }
-            } catch (Exception e) {}
-        }
-
-        if (ess.getSettings().addPrefixSuffix()) {
-            // These two extra toggles are not documented, because they are
-            // mostly redundant #EasterEgg
-            if (withPrefix || !ess.getSettings().disablePrefix()) {
-                final String ptext = ess.getPermissionsHandler().getPrefix(base).replace('&', ChatColor.COLOR_CHAR);
-                prefix.insert(0, ptext);
-                suffix = ChatColor.COLOR_CHAR + "r";
-            }
-            if (withSuffix || !ess.getSettings().disableSuffix()) {
-                final String stext = ess.getPermissionsHandler().getSuffix(base).replace('&', ChatColor.COLOR_CHAR);
-                suffix = stext + ChatColor.COLOR_CHAR + "r";
-                suffix = suffix.replace(ChatColor.COLOR_CHAR + "f" + ChatColor.COLOR_CHAR + "f", ChatColor.COLOR_CHAR + "f")
-                        .replace(ChatColor.COLOR_CHAR + "f" + ChatColor.COLOR_CHAR + "r", ChatColor.COLOR_CHAR + "r")
-                        .replace(ChatColor.COLOR_CHAR + "r" + ChatColor.COLOR_CHAR +"r", ChatColor.COLOR_CHAR + "r");
-            }
-        }
-        final String strPrefix = prefix.toString();
-        String output = strPrefix + nickname + suffix;
-        if (!longnick && output.length() > 16)
-            output = strPrefix + nickname;
-        if (!longnick && output.length() > 16)
-            output = FormatUtil.lastCode(strPrefix) + nickname;
-        if (!longnick && output.length() > 16)
-            output = FormatUtil.lastCode(strPrefix) + nickname.substring(0, 14);
-        if (output.charAt(output.length() - 1) == ChatColor.COLOR_CHAR)
-            output = output.substring(0, output.length() - 1);
-
-        return output;
+        return bss.nick;
     }
 
     public void setDisplayNick() {
@@ -366,56 +319,16 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
 
     @Override
     public BigDecimal getMoney() {
-        final long start = System.nanoTime();
-        final BigDecimal value = _getMoney();
-        final long elapsed = System.nanoTime() - start;
-        if (elapsed > ess.getSettings().getEconomyLagWarning())
-            ess.getLogger().log(Level.INFO, "Lag Notice - Slow Economy Response - Request took over {0}ms!",
-                    elapsed / 1000000.0);
-
-        return value;
+        return bss.getMoney();
     }
 
     private BigDecimal _getMoney() {
-        if (ess.getSettings().isEcoDisabled()) {
-            if (ess.getSettings().isDebug())
-                ess.getLogger().info("Internal economy functions disabled, aborting balance check.");
-            return BigDecimal.ZERO;
-        }
-        if (Methods.hasMethod()) {
-            try {
-                final Method method = Methods.getMethod();
-                if (!method.hasAccount(this.getName())) { throw new Exception(); }
-                final Method.MethodAccount account = Methods.getMethod().getAccount(this.getName());
-                return BigDecimal.valueOf(account.balance());
-            } catch (Exception ex) {}
-        }
-        return super.getMoney();
+        return bss.getMoney();
     }
 
     @Override
     public void setMoney(final BigDecimal value) throws MaxMoneyException {
-        if (ess.getSettings().isEcoDisabled()) {
-            if (ess.getSettings().isDebug())
-                ess.getLogger().info("Internal economy functions disabled, aborting balance change.");
-            return;
-        }
-        final BigDecimal oldBalance = _getMoney();
-
-        UserBalanceUpdateEvent updateEvent = new UserBalanceUpdateEvent(this.getBase(), oldBalance, value);
-        ess.getServer().getPluginManager().callEvent(updateEvent);
-        BigDecimal newBalance = updateEvent.getNewBalance();
-
-        if (Methods.hasMethod()) {
-            try {
-                final Method method = Methods.getMethod();
-                if (!method.hasAccount(this.getName())) { throw new Exception(); }
-                final Method.MethodAccount account = Methods.getMethod().getAccount(this.getName());
-                account.set(newBalance.doubleValue());
-            } catch (Exception ex) {}
-        }
-        super.setMoney(newBalance, true);
-        Trade.log("Update", "Set", "API", getName(), new Trade(newBalance, ess), null, null, null, ess);
+        bss.setMoney(value);
     }
 
     public void updateMoneyCache(final BigDecimal value) {
@@ -431,21 +344,6 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
 
     @Override
     public void setAfk(final boolean set) {
-        final AfkStatusChangeEvent afkEvent = new AfkStatusChangeEvent(this, set);
-        ess.getServer().getPluginManager().callEvent(afkEvent);
-        if (afkEvent.isCancelled()) { return; }
-
-        this.getBase().setSleepingIgnored(this.isAuthorized("essentials.sleepingignored") ? true : set);
-        if (set && !isAfk()) {
-            afkPosition = this.getLocation();
-            this.afkSince = System.currentTimeMillis();
-        } else if (!set && isAfk()) {
-            afkPosition = null;
-            this.afkMessage = null;
-            this.afkSince = 0;
-        }
-        _setAfk(set);
-        updateAfkListName();
         Afk.setAFK(this.base, set); // BSSENTIALS
     }
 
@@ -576,7 +474,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
             // In the case that the world has god-mode disabled then this method
             // will return false and the player will take damage, even though
             // they are in god mode (isGodModeEnabledRaw()).
-            if (!ess.getSettings().getNoGodWorlds().contains(this.getLocation().getWorld().getName())) { return true; }
+            if (!ess.getSettings().getNoGodWorlds().contains(this.getLocation().getWorld().getName())) return true;
         }
         if (isAfk()) {
             // Protect AFK players by representing them in a god mode state to
@@ -610,8 +508,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
 
     @Override
     public boolean canBuild() {
-        if (this.getBase().isOp()) { return true; }
-        return ess.getPermissionsHandler().canBuild(base, getGroup());
+        return this.getBase().isOp() || ess.getPermissionsHandler().canBuild(base, getGroup());
     }
 
     @Override public long getTeleportRequestTime() {

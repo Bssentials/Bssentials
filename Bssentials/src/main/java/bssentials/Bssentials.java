@@ -28,6 +28,7 @@ import bssentials.commands.Gamemode;
 import bssentials.commands.Hat;
 import bssentials.commands.Heal;
 import bssentials.commands.Home;
+import bssentials.commands.Lag;
 import bssentials.commands.Nick;
 import bssentials.commands.Nuke;
 import bssentials.commands.Pay;
@@ -74,7 +75,7 @@ public class Bssentials extends JavaPlugin implements IBssentials {
                 new Warp(), new SetWarp(), new Nuke(), new Broadcast(), new SetSpawn(), new Spawn(),
                 new Fly(), new Pm(), new Gamemode(), new Enderchest(), new Heal(), new Exp(), new SpawnMob(),
                 new Uuid(), new Hat(), new Weather(), new Balance(), new Ping(), new Pay(), new Afk(), new Nick(),
-                new Home(), new SetHome(), new DelHome(), new DelWarp(), new Staff(), new BigTree()
+                new Home(), new SetHome(), new DelHome(), new DelWarp(), new Staff(), new BigTree(), new Lag()
                 ); 
         register("underheal", new Heal());
         register("feed", new Heal());

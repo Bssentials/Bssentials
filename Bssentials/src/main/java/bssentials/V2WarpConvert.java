@@ -83,9 +83,8 @@ public class V2WarpConvert {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else {
+            } else
                 System.out.println("Unable to convert home for: " + plr + ". Reason: Player has not played before.");
-            }
         }
 
         try {
