@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 
 import bssentials.api.User;
 
+@CmdInfo
 public class Pay extends BCommand {
 
     @Override

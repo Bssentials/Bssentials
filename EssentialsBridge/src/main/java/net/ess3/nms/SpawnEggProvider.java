@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 public class SpawnEggProvider {
 
     public ItemStack createEggItem(EntityType type) {
-        // TODO Auto-generated method stub
         return null;
     }
+
 }

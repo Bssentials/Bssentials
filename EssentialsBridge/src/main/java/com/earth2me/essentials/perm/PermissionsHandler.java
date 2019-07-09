@@ -92,12 +92,7 @@ public class PermissionsHandler implements IPermissionsHandler {
     public void checkPermissions() {
         // load and assign a handler
         List<Class<? extends SuperpermsHandler>> providerClazz = Arrays.asList(
-                BPermissions2Handler.class,
-                PermissionsExHandler.class,
-                PrivilegesHandler.class,
-                SimplyPermsHandler.class,
-                GenericVaultHandler.class,
-                SuperpermsHandler.class
+                PermissionsExHandler.class, GenericVaultHandler.class, SuperpermsHandler.class
         );
         for (Class<? extends IPermissionsHandler> providerClass : providerClazz) {
             try {
@@ -129,17 +124,6 @@ public class PermissionsHandler implements IPermissionsHandler {
             String enabledPermsPlugin = ((AbstractVaultHandler) handler).getEnabledPermsPlugin();
             if (enabledPermsPlugin == null) enabledPermsPlugin = "generic";
             ess.getLogger().info("Using Vault based permissions (" + enabledPermsPlugin + ")");
-        } else if (handler.getClass() == SuperpermsHandler.class) {
-            if (handler.tryProvider()) {
-                ess.getLogger().warning("Detected supported permissions plugin " +
-                        ((SuperpermsHandler) handler).getEnabledPermsPlugin() + " without Vault installed.");
-                ess.getLogger().warning("Features such as chat prefixes/suffixes and group-related functionality will not " +
-                        "work until you install Vault.");
-            }
-            ess.getLogger().info("Using superperms-based permissions.");
-        } else if (handler.getClass() == ConfigPermissionsHandler.class) {
-            ess.getLogger().info("Using config file enhanced permissions.");
-            ess.getLogger().info("Permissions listed in as player-commands will be given to all users.");
         }
     }
 
@@ -152,10 +136,6 @@ public class PermissionsHandler implements IPermissionsHandler {
     }
 
     private void checkPermLag(long start, String summary) {
-        final long elapsed = System.nanoTime() - start;
-        if (elapsed > ess.getSettings().getPermissionsLagWarning()) {
-            ess.getLogger().log(Level.WARNING, String.format("Permissions lag notice with (%s). Response took %fms. Summary: %s", getName(), elapsed / 1000000.0, summary));
-        }
     }
 
     private void checkPermLag(long start) {

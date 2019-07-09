@@ -52,11 +52,7 @@ public class UserMap extends CacheLoader<String, User> implements IConf {
             legacyMaximumSize(cacheBuilder, maxCount);
         }
         cacheBuilder.softValues();
-        if (!legacy) {
-            users = cacheBuilder.build(this);
-        } else {
-            users = legacyBuild(cacheBuilder);
-        }
+        users = !legacy ? cacheBuilder.build(this) : legacyBuild(cacheBuilder);
     }
 
     private void loadAllUsersAsync(final IEssentials ess) {
@@ -69,9 +65,8 @@ public class UserMap extends CacheLoader<String, User> implements IConf {
                     keys.clear();
                     users.invalidateAll();
                     for (String string : userdir.list()) {
-                        if (!string.endsWith(".yml")) {
+                        if (!string.endsWith(".yml"))
                             continue;
-                        }
                         final String name = string.substring(0, string.length() - 4);
                         try {
                             keys.add(UUID.fromString(name));
@@ -117,9 +112,7 @@ public class UserMap extends CacheLoader<String, User> implements IConf {
             } else {
                 return legacyCacheGet(uuid);
             }
-        } catch (ExecutionException ex) {
-            return null;
-        } catch (UncheckedExecutionException ex) {
+        } catch (ExecutionException | UncheckedExecutionException ex) {
             return null;
         }
     }
@@ -139,10 +132,9 @@ public class UserMap extends CacheLoader<String, User> implements IConf {
                         names.put(keyName, uuid);
                         uuidMap.writeUUIDMap();
                     } else {
-                        if (ess.getSettings().isDebug()) {
+                        if (ess.getSettings().isDebug())
                             ess.getLogger().info("Found old UUID for " + name + " (" + uuid.toString()
                             + "). Not adding to usermap.");
-                        }
                     }
                 }
             }

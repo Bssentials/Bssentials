@@ -66,7 +66,7 @@ public abstract class BCommand implements CommandExecutor {
 
         String c = cmd.getName().toLowerCase(Locale.ENGLISH);
         return (s.isOp() || s.hasPermission("bssentials.command." + c) || s.hasPermission("essentials." + c)
-                || s.hasPermission("accentials.command." + c) || s.hasPermission("bssentials.command.*"));
+                || s.hasPermission("bssentials.command.*"));
     }
 
     public boolean message(CommandSender cs, String message) {

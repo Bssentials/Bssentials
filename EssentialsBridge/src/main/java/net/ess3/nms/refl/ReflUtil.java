@@ -4,8 +4,6 @@ import org.bukkit.Bukkit;
 
 public class ReflUtil {
 
-    public static final NMSVersion V1_8_R1 = NMSVersion.fromString("v1_8_R1");
-    public static final NMSVersion V1_8_R2 = NMSVersion.fromString("v1_8_R2");
     public static final NMSVersion V1_8_R3 = NMSVersion.fromString("v1_8_R3");
     public static final NMSVersion V1_9_R1 = NMSVersion.fromString("v1_9_R1");
     public static final NMSVersion V1_10_R1 = NMSVersion.fromString("v1_10_R1");

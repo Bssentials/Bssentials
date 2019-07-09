@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import bssentials.api.User;
 
+@CmdInfo
 public class Nick extends BCommand {
 
     @Override

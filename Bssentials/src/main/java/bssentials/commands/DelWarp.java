@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
+@CmdInfo
 public class DelWarp extends BCommand {
 
     @Override

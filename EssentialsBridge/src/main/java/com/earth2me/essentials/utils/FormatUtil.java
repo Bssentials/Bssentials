@@ -5,7 +5,6 @@ import org.bukkit.ChatColor;
 
 import java.util.regex.Pattern;
 
-
 public class FormatUtil {
     //Vanilla patterns used to strip existing formats
     static final transient Pattern VANILLA_COLOR_PATTERN = Pattern.compile("\u00a7+[0-9A-Fa-f]");
@@ -24,29 +23,26 @@ public class FormatUtil {
 
     //This method is used to simply strip the native minecraft colour codes
     public static String stripFormat(final String input) {
-        if (input == null) {
+        if (input == null)
             return null;
-        }
         return ChatColor.stripColor(input);
     }
 
     //This method is used to simply strip the & convention colour codes
     public static String stripEssentialsFormat(final String input) {
-        if (input == null) {
+        if (input == null)
             return null;
-        }
         return stripColor(input, REPLACE_ALL_PATTERN);
     }
 
     //This is the general permission sensitive message format function, checks for urls.
     public static String formatMessage(final IUser user, final String permBase, final String input) {
-        if (input == null) {
+        if (input == null)
             return null;
-        }
         String message = formatString(user, permBase, input);
-        if (!user.isAuthorized(permBase + ".url")) {
+        if (!user.isAuthorized(permBase + ".url"))
             message = FormatUtil.blockURL(message);
-        }
+
         return message;
     }
 

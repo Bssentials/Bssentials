@@ -321,22 +321,19 @@ public class Settings implements net.ess3.api.ISettings {
 
 	@Override
 	public ConfigurationSection getKits() {
-		// return ess.getKits().getKits();
-		Essentials.fixme("com.earth2me.essentials.Settings#getKits");
+		Essentials.fixme(Settings.class, "getKits");
 		return null;
 	}
 
 	@Override
 	public Map<String, Object> getKit(String name) {
-		// return ess.getKits().getKit(name);
-		Essentials.fixme("com.earth2me.essentials.Settings#getKit");
+		Essentials.fixme(Settings.class, "getKit");
 		return null;
 	}
 
 	@Override
 	public void addKit(String name, List<String> lines, long delay) {
-		// ess.getKits().addKit(name, lines, delay);
-		Essentials.fixme("com.earth2me.essentials.Settings#addKit");
+		Essentials.fixme(Settings.class, "addKit");
 	}
 
 	// @Override
@@ -561,13 +558,9 @@ public class Settings implements net.ess3.api.ISettings {
 		return epItemSpwn;
 	}
 
-	// private List<EssentialsSign> enabledSigns = new ArrayList<EssentialsSign>();
-	// private boolean signsEnabled = false;
-
 	// @Override
 	public List<EssentialsSign> enabledSigns() {
-		// return enabledSigns;
-		Essentials.fixme("com.earth2me.essentials.Settings#enabledSigns");
+		Essentials.fixme(Settings.class, "enabledSigns");
 		return null;
 	}
 

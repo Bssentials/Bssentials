@@ -41,7 +41,7 @@ public class Warps {
             logger.info("===========================");
             logger.info("Bssentials version 2.x warps found!");
             logger.info("Converting old warps to new format!");
-            V2WarpConvert.convert(oldwarps);
+            V2WarpConvert.convert(oldwarps, this);
             logger.info("===========================");
         }
     }

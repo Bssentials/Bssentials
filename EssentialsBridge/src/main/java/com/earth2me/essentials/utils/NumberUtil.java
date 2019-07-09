@@ -48,9 +48,8 @@ public class NumberUtil {
 
     public static String formatAsPrettyCurrency(BigDecimal value) {
         String str = PRETTY_FORMAT.format(value);
-        if (str.endsWith(".00")) {
+        if (str.endsWith(".00"))
             str = str.substring(0, str.length() - 3);
-        }
         return str;
     }
 

@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 
 import bssentials.utils.StringUtils;
 
+@CmdInfo
 public class Broadcast extends BCommand {
 
     @Override

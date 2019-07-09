@@ -1,20 +1,3 @@
-/*
- * Essentials - a bukkit plugin
- * Copyright (C) 2011  Essentials Team
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package com.earth2me.essentials;
 
 import com.earth2me.essentials.api.Economy;
@@ -35,8 +18,6 @@ import com.earth2me.essentials.utils.DateUtil;
 import com.google.common.base.Function;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Iterables;
-import net.ess3.api.*;
-import net.ess3.api.IEssentials;
 import net.ess3.api.ISettings;
 import net.ess3.nms.PotionMetaProvider;
 import net.ess3.nms.SpawnEggProvider;
@@ -62,8 +43,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.world.WorldLoadEvent;
-import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -118,9 +97,13 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 				new PluginDescriptionFile("Essentials", "", "com.earth2me.essentials.Essentials"), null, null);
 	}
 
-	public static void fixme(String s) {
+	public static void fixme0(String s) {
 		System.out.println("[BssentialsEssentialsBridge]: Method not implemented: " + s);
 	}
+
+	public static void fixme(Class<?> c, String s) {
+        System.out.println("[BssentialsEssentialsBridge]: Method not implemented: " + c.getName() + "#" + s);
+    }
 
 	public void forceLoadClasses() {
 		try {
@@ -159,9 +142,8 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 	@Override
 	public void onEnable() {
 		try {
-			if (LOGGER != this.getLogger()) {
+			if (LOGGER != this.getLogger())
 				LOGGER.setParent(this.getLogger());
-			}
 			confList = new ArrayList<>();
 			// execTimer = new ExecuteTimer();
 			// execTimer.start();
@@ -245,13 +227,8 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 			// execTimer.mark("RegHandler");
 
 			metrics = new Metrics(this);
-		    getLogger().info(metrics.isOptOut() ? "Metrics disabled per bStats config."
-		            : "Starting Metrics. Opt-out using the global bStats config.");
 
 			// final String timeroutput = execTimer.end();
-			if (getSettings().isDebug()) {
-				//LOGGER.log(Level.INFO, "Essentials load {0}", timeroutput);
-			}
 		} catch (NumberFormatException ex) {
 			handleCrash(ex);
 		} catch (Error ex) {
@@ -262,48 +239,10 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 
 	@Override
 	public void saveConfig() {
-		// We don't use any of the bukkit config writing, as this breaks our
-		// config file formatting.
 	}
 
 	private void registerListeners(PluginManager pm) {
 		HandlerList.unregisterAll(this);
-
-		if (getSettings().isDebug()) {
-			LOGGER.log(Level.INFO, "Registering Listeners");
-		}
-
-		/*final EssentialsPluginListener pluginListener = new EssentialsPluginListener(this);
-		pm.registerEvents(pluginListener, this);
-		confList.add(pluginListener);
-
-		final EssentialsPlayerListener playerListener = new EssentialsPlayerListener(this);
-		playerListener.registerEvents();
-
-		final EssentialsBlockListener blockListener = new EssentialsBlockListener(this);
-		pm.registerEvents(blockListener, this);
-
-		final SignBlockListener signBlockListener = new SignBlockListener(this);
-		pm.registerEvents(signBlockListener, this);
-
-		final SignPlayerListener signPlayerListener = new SignPlayerListener(this);
-		pm.registerEvents(signPlayerListener, this);
-
-		final SignEntityListener signEntityListener = new SignEntityListener(this);
-		pm.registerEvents(signEntityListener, this);
-
-		final EssentialsEntityListener entityListener = new EssentialsEntityListener(this);
-		pm.registerEvents(entityListener, this);
-
-		final EssentialsWorldListener worldListener = new EssentialsWorldListener(this);
-		pm.registerEvents(worldListener, this);
-
-		final EssentialsServerListener serverListener = new EssentialsServerListener(this);
-		pm.registerEvents(serverListener, this);
-
-		pm.registerEvents(tntListener, this);*/
-
-		//jails.resetListener();
 	}
 
 	@Override
@@ -333,10 +272,8 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 	public void reload() {
 		Trade.closeLog();
 
-		for (IConf iConf : confList) {
+		for (IConf iConf : confList)
 			iConf.reloadConfig();
-			// execTimer.mark("Reload(" + iConf.getClass().getSimpleName() + ")");
-		}
 
 		i18n.updateLocale(settings.getLocale());
 
@@ -354,64 +291,7 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 	public List<String> onTabCompleteEssentials(final CommandSender cSender, final Command command,
 			final String commandLabel, final String[] args, final ClassLoader classLoader, final String commandPath,
 			final String permissionPrefix, final IEssentialsModule module) {
-		if (!getSettings().isCommandOverridden(command.getName())
-				&& (!commandLabel.startsWith("e") || commandLabel.equalsIgnoreCase(command.getName()))) {
-			/*
-			 * final PluginCommand pc =
-			 * alternativeCommandsHandler.getAlternative(commandLabel); if (pc != null) {
-			 * try { TabCompleter completer = pc.getTabCompleter(); if (completer != null) {
-			 * return completer.onTabComplete(cSender, command, commandLabel, args); } }
-			 * catch (final Exception ex) { Bukkit.getLogger().log(Level.SEVERE,
-			 * ex.getMessage(), ex); } }
-			 */
-		}
 
-		try {
-			// Note: The tab completer is always a player, even when
-			// tab-completing in a command block
-			User user = null;
-			if (cSender instanceof Player)
-				user = getUser((Player) cSender);
-
-			CommandSource sender = new CommandSource(cSender);
-
-			// Check for disabled commands
-			if (getSettings().isCommandDisabled(commandLabel)) { return Collections.emptyList(); }
-
-			IEssentialsCommand cmd;
-			try {
-				cmd = (IEssentialsCommand) classLoader.loadClass(commandPath + command.getName()).newInstance();
-				cmd.setEssentials(this);
-				cmd.setEssentialsModule(module);
-			} catch (Exception ex) {
-				sender.sendMessage(tl("commandNotLoaded", commandLabel));
-				LOGGER.log(Level.SEVERE, tl("commandNotLoaded", commandLabel), ex);
-				return Collections.emptyList();
-			}
-
-			// Check authorization
-			if (user != null && !user.isAuthorized(cmd, permissionPrefix)) { return Collections.emptyList(); }
-
-			if (user != null && user.isJailed()
-					&& !user.isAuthorized(cmd, "essentials.jail.allow.")) { return Collections.emptyList(); }
-
-			// Run the command
-			try {
-				if (user == null) {
-					// return cmd.tabComplete(getServer(), sender, commandLabel, command, args);
-				} else {
-					// return cmd.tabComplete(getServer(), user, commandLabel, command, args);
-				}
-			} catch (Exception ex) {
-				showError(sender, ex, commandLabel);
-				// Tab completion shouldn't fail
-				LOGGER.log(Level.SEVERE, tl("commandFailed", commandLabel), ex);
-				return Collections.emptyList();
-			}
-		} catch (Throwable ex) {
-			LOGGER.log(Level.SEVERE, tl("commandFailed", commandLabel), ex);
-			return Collections.emptyList();
-		}
 		return Collections.emptyList();
 	}
 
@@ -426,60 +306,19 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 	public boolean onCommandEssentials(final CommandSender cSender, final Command command, final String commandLabel,
 			final String[] args, final ClassLoader classLoader, final String commandPath, final String permissionPrefix,
 			final IEssentialsModule module) {
-		// Allow plugins to override the command via onCommand
-		/*if (!getSettings().isCommandOverridden(command.getName())
-                && (!commandLabel.startsWith("e") || commandLabel.equalsIgnoreCase(command.getName()))) {
-            final PluginCommand pc = alternativeCommandsHandler.getAlternative(commandLabel);
-            if (pc != null) {
-                alternativeCommandsHandler.executed(commandLabel, pc);
-                try {
-                    return pc.execute(cSender, commandLabel, args);
-                } catch (final Exception ex) {
-                    Bukkit.getLogger().log(Level.SEVERE, ex.getMessage(), ex);
-                    cSender.sendMessage(
-                            ChatColor.RED + "An internal error occurred while attempting to perform this command");
-                    return true;
-                }
-            }
-        }*/
 
 		try {
-
-			User user = null;
-			Block bSenderBlock = null;
-			if (cSender instanceof Player) {
-				user = getUser((Player) cSender);
-			} else if (cSender instanceof BlockCommandSender) {
-				BlockCommandSender bsender = (BlockCommandSender) cSender;
-				bSenderBlock = bsender.getBlock();
-			}
-
-			if (bSenderBlock != null) {
-				Bukkit.getLogger().log(Level.INFO, "CommandBlock at {0},{1},{2} issued server command: /{3} {4}",
-						new Object[] { bSenderBlock.getX(), bSenderBlock.getY(), bSenderBlock.getZ(), commandLabel,
-				/* EssentialsCommand.getFinalArg(args, 0) */"Bssentials: unsupported" }); // TODO
-			} else if (user == null) {
-				Bukkit.getLogger().log(Level.INFO, "{0} issued server command: /{1} {2}",
-						new Object[] { cSender.getName(), commandLabel,
-				/* EssentialsCommand.getFinalArg(args, 0) */"Bssentials: unsupported" });
-			}
+			User user = getUser((Player) cSender);
 
 			CommandSource sender = new CommandSource(cSender);
 
 			// New mail notification
 			if (user != null && !getSettings().isCommandDisabled("mail") && !command.getName().equals("mail")
-					&& user.isAuthorized("essentials.mail")) {
+					&& user.isAuthorized("essentials.mail"))
 				user.notifyOfMail();
-			}
-
-			// Print version even if admin command is not available #easteregg
-			if (commandLabel.equalsIgnoreCase("essversion")) {
-				sender.sendMessage("This server is running Essentials " + getDescription().getVersion());
-				return true;
-			}
 
 			// Check for disabled commands
-			if (getSettings().isCommandDisabled(commandLabel)) { return true; }
+			if (getSettings().isCommandDisabled(commandLabel)) return true;
 
 			IEssentialsCommand cmd;
 			try {
@@ -501,10 +340,8 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 
 			if (user != null && user.isJailed() && !user.isAuthorized(cmd, "essentials.jail.allow.")) {
 				if (user.getJailTimeout() > 0) {
-					user.sendMessage(
-							tl("playerJailedFor", user.getName(), DateUtil.formatDateDiff(user.getJailTimeout())));
-				} else
-					user.sendMessage(tl("jailMessage"));
+					user.sendMessage(tl("playerJailedFor", user.getName(), DateUtil.formatDateDiff(user.getJailTimeout())));
+				} else user.sendMessage(tl("jailMessage"));
 				return true;
 			}
 
@@ -516,17 +353,6 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 					cmd.run(getServer(), user, commandLabel, command, args);
 
 				return true;
-				// } catch (NoChargeException ex) {
-				// return true;
-				// } catch (QuietAbortException ex) {
-				// return true;
-				/*
-				 * } catch (NotEnoughArgumentsException ex) {
-				 * sender.sendMessage(command.getDescription());
-				 * sender.sendMessage(command.getUsage().replaceAll("<command>", commandLabel));
-				 * if (!ex.getMessage().isEmpty()) { sender.sendMessage(ex.getMessage()); }
-				 * return true;
-				 */
 			} catch (Exception ex) {
 				showError(sender, ex, commandLabel);
 				if (settings.isDebug())
@@ -568,7 +394,7 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 
 	@Override
 	public IJails getJails() {
-		fixme("com.earth2me.essentials.Essentials#getJails");
+		fixme(Essentials.class, "getJails");
 		return null;
 	}
 
@@ -602,32 +428,27 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 	@Override
 	public User getUser(final Object base) {
 		if (base instanceof Player) return getUser((Player) base);
-		if (base instanceof org.bukkit.OfflinePlayer) { return getUser(
-				((org.bukkit.OfflinePlayer) base).getUniqueId()); }
-		if (base instanceof UUID) { return getUser((UUID) base); }
-		if (base instanceof String) { return getOfflineUser((String) base); }
+		if (base instanceof org.bukkit.OfflinePlayer) return getUser(((org.bukkit.OfflinePlayer) base).getUniqueId());
+		if (base instanceof UUID) return getUser((UUID) base);
+		if (base instanceof String) return getOfflineUser((String) base);
 		return null;
 	}
 
-	// This will return null if there is not a match.
 	@Override
 	public User getUser(final String base) {
 		return getOfflineUser(base);
 	}
 
-	// This will return null if there is not a match.
 	@Override
 	public User getUser(final UUID base) {
 		return userMap.getUser(base);
 	}
 
-	// This will return null if there is not a match.
 	@Override
 	public User getOfflineUser(final String name) {
 		final User user = userMap.getUser(name);
 		if (user != null && user.getBase() instanceof OfflinePlayer) {
-			// This code should attempt to use the last known name of a user, if
-			// Bukkit returns name as null.
+			// This code should attempt to use the last known name of a user, if Bukkit returns name as null.
 			final String lastName = user.getLastAccountName();
 			if (lastName != null) {
 				((OfflinePlayer) user.getBase()).setName(lastName);
@@ -636,7 +457,6 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 		return user;
 	}
 
-	// This will create a new user if there is not a match.
 	@Override
 	public User getUser(final Player base) {
 		if (base == null) { return null; }
@@ -662,14 +482,6 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 		final PluginManager pm = getServer().getPluginManager();
 		LOGGER.log(Level.SEVERE, exception.toString());
 		exception.printStackTrace();
-		pm.registerEvents(new Listener() {
-			@EventHandler(priority = EventPriority.LOW)
-			public void onPlayerJoin(final PlayerJoinEvent event) {
-				event.getPlayer().sendMessage("Essentials failed to load, read the log file.");
-			}
-		}, this);
-		for (Player player : getOnlinePlayers())
-			player.sendMessage("Essentials failed to load, read the log file.");
 
 		this.setEnabled(false);
 	}
@@ -708,29 +520,12 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 		return broadcastMessage(null, permission, message, false);
 	}
 
-	private int broadcastMessage(final IUser sender, final String permission, final String message,
-			final boolean keywords) {
-		if (sender != null && sender.isHidden()) { return 0; }
+	private int broadcastMessage(final IUser sender, final String permission, final String message, final boolean keywords) {
+		if (sender != null && sender.isHidden()) return 0;
 
-		//IText broadcast = new SimpleTextInput(message);
-
-		final Collection<Player> players = getOnlinePlayers();
-
-		/*for (Player player : players) {
-			final User user = getUser(player);
-			if ((permission == null && (sender == null || !user.isIgnoredPlayer(sender)))
-					|| (permission != null && user.isAuthorized(permission))) {
-				if (keywords) {
-					broadcast = new KeywordReplacer(broadcast, new CommandSource(player), this, false);
-				}
-				for (String messageText : broadcast.getLines()) {
-					user.sendMessage(messageText);
-				}
-			}
-		}*/
 		Bukkit.broadcast(message, permission); // Bssentials: use bukkit api
 
-		return players.size();
+		return 0;
 	}
 
 	@Override

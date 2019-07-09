@@ -14,7 +14,7 @@ public class Balance extends BCommand {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
         if (!(sender instanceof Player)) {
-            message(sender, "CONSOLE Balance: \u221E");
+            message(sender, "Console is not a player");
             return true;
         }
 

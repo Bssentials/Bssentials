@@ -112,13 +112,12 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
         try {
             return ess.getPermissionsHandler().hasPermission(base, node);
         } catch (Exception ex) {
-            if (ess.getSettings().isDebug()) {
+            if (ess.getSettings().isDebug())
                 ess.getLogger().log(Level.SEVERE, "Permission System Error: " + ess.getPermissionsHandler().getName()
                         + " returned: " + ex.getMessage(), ex);
-            } else {
+            else
                 ess.getLogger().log(Level.SEVERE, "Permission System Error: " + ess.getPermissionsHandler().getName()
                         + " returned: " + ex.getMessage());
-            }
 
             return false;
         }
@@ -242,21 +241,6 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
 
     @Override
     public boolean hasOutstandingTeleportRequest() {
-        if (getTeleportRequest() != null) { // Player has outstanding teleport
-            // request.
-            long timeout = ess.getSettings().getTpaAcceptCancellation();
-            if (timeout != 0) {
-                if ((System.currentTimeMillis() - getTeleportRequestTime()) / 1000 <= timeout) { // Player
-                    // has outstanding request
-                    return true;
-                } else { // outstanding request expired.
-                    requestTeleport(null, false);
-                    return false;
-                }
-            } else { // outstanding request does not expire
-                return true;
-            }
-        }
         return false;
     }
 
@@ -287,14 +271,12 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
                 updateAfkListName();
             else if (ess.getSettings().changePlayerListName()) {
 
-                String name = getNick(true, ess.getSettings().isAddingPrefixInPlayerlist(),
-                        ess.getSettings().isAddingSuffixInPlayerlist());
+                String name = getNick(true, ess.getSettings().isAddingPrefixInPlayerlist(), ess.getSettings().isAddingSuffixInPlayerlist());
                 try {
                     this.getBase().setPlayerListName(name);
                 } catch (IllegalArgumentException e) {
                     if (ess.getSettings().isDebug())
-                        logger.info("Playerlist for " + name
-                                + " was not updated. Name clashed with another online player.");
+                        logger.info("Playerlist for " + name + " was not updated. Name clashed with another online player.");
                 }
             }
         }
@@ -467,21 +449,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
 
     @Override
     public boolean isGodModeEnabled() {
-        if (super.isGodModeEnabled()) {
-            // This enables the no-god-in-worlds functionality where the actual
-            // player god mode state is never modified in disabled worlds,
-            // but this method gets called every time the player takes damage.
-            // In the case that the world has god-mode disabled then this method
-            // will return false and the player will take damage, even though
-            // they are in god mode (isGodModeEnabledRaw()).
-            if (!ess.getSettings().getNoGodWorlds().contains(this.getLocation().getWorld().getName())) return true;
-        }
-        if (isAfk()) {
-            // Protect AFK players by representing them in a god mode state to
-            // render them invulnerable to damage.
-            if (ess.getSettings().getFreezeAfkPlayers()) return true;
-        }
-        return false;
+        return getBase().isInvulnerable();
     }
 
     public boolean isGodModeEnabledRaw() {
@@ -636,15 +604,13 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
 
     @Override
     public int compareTo(final User other) {
-        return FormatUtil.stripFormat(getDisplayName())
-                .compareToIgnoreCase(FormatUtil.stripFormat(other.getDisplayName()));
+        return FormatUtil.stripFormat(getDisplayName()).compareToIgnoreCase(FormatUtil.stripFormat(other.getDisplayName()));
     }
 
     @Override
     public boolean equals(final Object object) {
         if (!(object instanceof User)) { return false; }
         return this.getName().equalsIgnoreCase(((User) object).getName());
-
     }
 
     @Override

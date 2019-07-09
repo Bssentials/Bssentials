@@ -1,6 +1,5 @@
 package com.earth2me.essentials.api;
 
-import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.Trade;
 import com.earth2me.essentials.User;
 import com.earth2me.essentials.utils.NumberUtil;
@@ -32,22 +31,7 @@ public class Economy {
         ess = aEss;
     }
 
-    private static void createNPCFile(String name) {
-        // TODO: Bssentials does not have support for NPCs
-        Essentials.fixme("com.earth2me.essentials.api.Economy#createNPCFile");
-    }
-
-    private static void deleteNPC(String name) {
-        Essentials.fixme("com.earth2me.essentials.api.Economy#createNPCFile");
-    }
-
     private static User getUserByName(String name) {
-        if (ess == null)
-            throw new RuntimeException(noCallBeforeLoad);
-
-        if (name == null)
-            throw new RuntimeException("Economy username cannot be null");
-
         return ess.getUser(name);
     }
 
@@ -95,12 +79,6 @@ public class Economy {
         User user = getUserByName(name);
         if (user == null)
             throw new UserDoesNotExistException(name);
-
-        if (balance.compareTo(ess.getSettings().getMinMoney()) < 0)
-            throw new NoLoanPermittedException();
-
-        if (balance.signum() < 0 && !user.isAuthorized("essentials.eco.loan"))
-            throw new NoLoanPermittedException();
 
         try {
             user.setMoney(balance);
@@ -288,26 +266,10 @@ public class Economy {
         return amount.compareTo(getMoneyExact(name)) > 0;
     }
 
-    /**
-     * Test if the user has a negative balance
-     *
-     * @param name Name of the user
-     *
-     * @return true, if the user has a negative balance
-     *
-     * @throws UserDoesNotExistException If a user by that name does not exists
-     */
     public static boolean isNegative(String name) throws UserDoesNotExistException {
         return getMoneyExact(name).signum() < 0;
     }
 
-    /**
-     * Formats the amount of money like all other Essentials functions. Example: $100000 or $12345.67
-     *
-     * @param amount The amount of money
-     *
-     * @return Formatted money
-     */
     @Deprecated
     public static String format(double amount) {
         try {
@@ -325,63 +287,19 @@ public class Economy {
         return NumberUtil.displayCurrency(amount, ess);
     }
 
-    /**
-     * Test if a player exists to avoid the UserDoesNotExistException
-     *
-     * @param name Name of the user
-     *
-     * @return true, if the user exists
-     */
     public static boolean playerExists(String name) {
         return getUserByName(name) != null;
     }
 
-    /**
-     * Test if a player is a npc
-     *
-     * @param name Name of the player
-     *
-     * @return true, if it's a npc
-     *
-     * @throws UserDoesNotExistException
-     */
     public static boolean isNPC(String name) throws UserDoesNotExistException {
-        User user = getUserByName(name);
-        if (user == null)
-            throw new UserDoesNotExistException(name);
-
-        return user.isNPC();
-    }
-
-    /**
-     * Creates dummy files for a npc, if there is no player yet with that name.
-     *
-     * @param name Name of the player
-     *
-     * @return true, if a new npc was created
-     */
-    public static boolean createNPC(String name) {
-        User user = getUserByName(name);
-        if (user == null) {
-            createNPCFile(name);
-            return true;
-        }
         return false;
     }
 
-    /**
-     * Deletes a user, if it is marked as npc.
-     *
-     * @param name Name of the player
-     *
-     * @throws UserDoesNotExistException
-     */
-    public static void removeNPC(String name) throws UserDoesNotExistException {
-        User user = getUserByName(name);
-        if (user == null)
-            throw new UserDoesNotExistException(name);
+    public static boolean createNPC(String name) {
+        return false;
+    }
 
-        deleteNPC(name);
+    public static void removeNPC(String name) throws UserDoesNotExistException {
     }
 
 }

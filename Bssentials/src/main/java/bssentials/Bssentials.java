@@ -3,6 +3,9 @@ package bssentials;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import org.bukkit.Bukkit;
@@ -13,36 +16,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import bssentials.commands.Afk;
 import bssentials.commands.BCommand;
-import bssentials.commands.Balance;
-import bssentials.commands.BigTree;
-import bssentials.commands.Broadcast;
 import bssentials.commands.BssentialsCmd;
-import bssentials.commands.DelHome;
-import bssentials.commands.DelWarp;
-import bssentials.commands.Enderchest;
-import bssentials.commands.Exp;
-import bssentials.commands.Fly;
-import bssentials.commands.Gamemode;
-import bssentials.commands.Hat;
+import bssentials.commands.CmdInfo;
 import bssentials.commands.Heal;
-import bssentials.commands.Home;
-import bssentials.commands.Lag;
-import bssentials.commands.Nick;
-import bssentials.commands.Nuke;
-import bssentials.commands.Pay;
-import bssentials.commands.Ping;
-import bssentials.commands.Pm;
-import bssentials.commands.SetHome;
-import bssentials.commands.SetSpawn;
-import bssentials.commands.SetWarp;
-import bssentials.commands.Spawn;
-import bssentials.commands.SpawnMob;
-import bssentials.commands.Staff;
-import bssentials.commands.Uuid;
-import bssentials.commands.Warp;
-import bssentials.commands.Weather;
 import bssentials.listeners.PlayerCommand;
 import bssentials.listeners.PlayerJoin;
 import bssentials.listeners.PlayerLeave;
@@ -71,13 +48,13 @@ public class Bssentials extends JavaPlugin implements IBssentials {
 
         register("bssentials", new BssentialsCmd());
 
-        register(
-                new Warp(), new SetWarp(), new Nuke(), new Broadcast(), new SetSpawn(), new Spawn(),
-                new Fly(), new Pm(), new Gamemode(), new Enderchest(), new Heal(), new Exp(), new SpawnMob(),
-                new Uuid(), new Hat(), new Weather(), new Balance(), new Ping(), new Pay(), new Afk(), new Nick(),
-                new Home(), new SetHome(), new DelHome(), new DelWarp(), new Staff(), new BigTree(), new Lag()
-                ); 
-        register("underheal", new Heal());
+        for (Class<? extends BCommand> clazz : getCommandClasses()) {
+            try {
+                register(clazz.newInstance());
+            } catch (InstantiationException | IllegalAccessException e) {
+                getLogger().warning("Unable to register \"/" + clazz.getName() + "\" command.");
+            }
+        }
         register("feed", new Heal());
 
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
@@ -96,7 +73,7 @@ public class Bssentials extends JavaPlugin implements IBssentials {
 
                 if (Bukkit.getPluginManager().getPlugin("Essentials") == null) {
                     getLogger().warning("The EssentialsBridge plugin is not installed! "
-                            + "Plugins that requrire the EssAPI will not function with Bssentials without this bridge");
+                            + "Plugins that requrire the EssAPI will not function with Bssentials without this bridge, (ex ChestShop, Vault, etc)");
                     getLogger().info("https://dev.bukkit.org/projects/essentialsapibridge");
                 }
             }
@@ -120,6 +97,28 @@ public class Bssentials extends JavaPlugin implements IBssentials {
     public void register(BCommand... bases) {
         for (BCommand bcmd : bases)
             register(bcmd.getClass().getSimpleName().toLowerCase(Locale.ENGLISH), bcmd);
+    }
+
+    public List<Class<? extends BCommand>> getCommandClasses() {
+        String packagePath = "bssentials/commands";
+        URL urls = Testing.class.getClassLoader().getResource(packagePath);
+
+        File[] classes = new File(urls.getPath()).listFiles();
+
+        List<Class<? extends BCommand>> classList = new ArrayList<Class<? extends BCommand>>();
+        for(File classfile : classes){
+            String className = packagePath.replace("/", ".") + "." +
+                    classfile.getName().substring(0, classfile.getName().indexOf("."));
+            try {
+                Class<?> clazz = Class.forName(className);
+                if (!clazz.getSimpleName().equals("BssentialsCmd") && clazz.isAnnotationPresent(CmdInfo.class) &&
+                        BCommand.class.isAssignableFrom(clazz))
+                    classList.add(clazz.asSubclass(BCommand.class));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return classList;
     }
 
     @Deprecated

@@ -1,7 +1,5 @@
 package com.earth2me.essentials;
 
-import com.earth2me.essentials.utils.NumberUtil;
-import com.earth2me.essentials.utils.StringUtil;
 import com.google.common.collect.ImmutableMap;
 import net.ess3.api.IEssentials;
 import net.ess3.api.InvalidWorldException;
@@ -19,18 +17,19 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
-import static com.earth2me.essentials.I18n.tl;
-
 public abstract class UserData extends PlayerExtension implements IConf {
+
     protected final transient IEssentials ess;
     private final EssentialsUserConf config;
     private final File folder;
+    private bssentials.api.User bss;
 
     protected UserData(Player base, IEssentials ess) {
         super(base);
         this.ess = ess;
         folder = new File(Bukkit.getPluginManager().getPlugin("Bssentials").getDataFolder(), "userdata");
         folder.mkdirs();
+        this.bss = bssentials.api.User.getByName(base.getName());
 
         String filename;
         try {
@@ -58,17 +57,14 @@ public abstract class UserData extends PlayerExtension implements IConf {
     @Override
     public final void reloadConfig() {
         config.load();
-        money = _getMoney();
         unlimited = _getUnlimited();
         powertools = _getPowertools();
-        homes = _getHomes();
         lastLocation = _getLastLocation();
         lastTeleportTimestamp = _getLastTeleportTimestamp();
         lastHealTimestamp = _getLastHealTimestamp();
         jail = _getJail();
         mails = _getMails();
         teleportEnabled = _getTeleportEnabled();
-        godmode = _getGodModeEnabled();
         muted = _getMuted();
         muteTimeout = _getMuteTimeout();
         jailed = _getJailed();
@@ -76,13 +72,11 @@ public abstract class UserData extends PlayerExtension implements IConf {
         lastLogin = _getLastLogin();
         lastLogout = _getLastLogout();
         lastLoginAddress = _getLastLoginAddress();
-        afk = _getAfk();
         geolocation = _getGeoLocation();
         isSocialSpyEnabled = _isSocialSpyEnabled();
         isNPC = _isNPC();
         arePowerToolsEnabled = _arePowerToolsEnabled();
         kitTimestamps = _getKitTimestamps();
-        nickname = _getNickname();
         ignoredPlayers = _getIgnoredPlayers();
         logoutLocation = _getLogoutLocation();
         lastAccountName = _getLastAccountName();
@@ -91,73 +85,21 @@ public abstract class UserData extends PlayerExtension implements IConf {
         confirmPay = _getConfirmPay();
     }
 
-    private BigDecimal money;
-
-    private BigDecimal _getMoney() {
-        BigDecimal result = ess.getSettings().getStartingBalance();
-        BigDecimal maxMoney = ess.getSettings().getMaxMoney();
-        BigDecimal minMoney = ess.getSettings().getMinMoney();
-
-        // NPC banks are not actual player banks, as such they do not have
-        // player starting balance.
-        if (isNPC())
-            result = BigDecimal.ZERO;
-
-        if (config.hasProperty("money"))
-            result = config.getBigDecimal("money", result);
-
-        if (result.compareTo(maxMoney) > 0)
-            result = maxMoney;
-
-        if (result.compareTo(minMoney) < 0)
-            result = minMoney;
-
-        return result;
-    }
-
     public BigDecimal getMoney() {
-        return money;
+        return bss.getMoney();
     }
 
     public void setMoney(BigDecimal value, boolean throwError) throws MaxMoneyException {
-        BigDecimal maxMoney = ess.getSettings().getMaxMoney();
-        BigDecimal minMoney = ess.getSettings().getMinMoney();
-        if (value.compareTo(maxMoney) > 0) {
-            if (throwError) { throw new MaxMoneyException(); }
-            money = maxMoney;
-        } else money = value;
-
-        if (money.compareTo(minMoney) < 0)
-            money = minMoney;
-
-        config.setProperty("money", money);
-        stopTransaction();
-    }
-
-    private Map<String, Object> homes;
-
-    private Map<String, Object> _getHomes() {
-        if (config.isConfigurationSection("homes")) { return config.getConfigurationSection("homes").getValues(false); }
-        return new HashMap<>();
-    }
-
-    private String getHomeName(String search) {
-        if (NumberUtil.isInt(search)) {
-            try {
-                search = getHomes().get(Integer.parseInt(search) - 1);
-            } catch (NumberFormatException | IndexOutOfBoundsException e) {}
-        }
-        return search;
+        bss.setMoney(value);
     }
 
     public Location getHome(String name) throws Exception {
-        String search = getHomeName(name);
-        return config.getLocation("homes." + search, this.getBase().getServer());
+        return bss.getHome(name);
     }
 
     public Location getHome(final Location world) {
         try {
-            if (getHomes().isEmpty()) { return null; }
+            if (getHomes().isEmpty()) return null;
             Location loc;
             for (String home : getHomes()) {
                 loc = config.getLocation("homes." + home, this.getBase().getServer());
@@ -171,48 +113,27 @@ public abstract class UserData extends PlayerExtension implements IConf {
     }
 
     public List<String> getHomes() {
-        return new ArrayList<>(homes.keySet());
+        return bss.homes;
     }
 
     public void setHome(String name, Location loc) {
-        // Invalid names will corrupt the yaml
-        name = StringUtil.safeString(name);
-        homes.put(name, loc);
-        config.setProperty("homes." + name, loc);
-        config.save();
+        bss.setHome(name, loc);
     }
 
     public void delHome(String name) throws Exception {
-        String search = getHomeName(name);
-        if (!homes.containsKey(search)) {
-            search = StringUtil.safeString(search);
-        }
-        if (homes.containsKey(search)) {
-            homes.remove(search);
-            config.removeProperty("homes." + search);
-            config.save();
-        } else
-            throw new Exception(tl("invalidHome", search));
+        bss.delHome(name);
     }
 
     public boolean hasHome() {
-        return config.hasProperty("home");
-    }
-
-    private String nickname;
-
-    public String _getNickname() {
-        return config.getString("nickname");
+        return bss.homes.size() > 0;
     }
 
     public String getNickname() {
-        return nickname;
+        return bss.nick;
     }
 
     public void setNickname(String nick) {
-        nickname = nick;
-        config.setProperty("nickname", nick);
-        config.save();
+        bss.setNick(nick);
     }
 
     private List<Integer> unlimited;
@@ -241,8 +162,7 @@ public abstract class UserData extends PlayerExtension implements IConf {
     private Map<String, Object> powertools;
 
     private Map<String, Object> _getPowertools() {
-        if (config.isConfigurationSection(
-                "powertools")) { return config.getConfigurationSection("powertools").getValues(false); }
+        if (config.isConfigurationSection("powertools")) return config.getConfigurationSection("powertools").getValues(false);
         return new HashMap<>();
     }
 
@@ -453,13 +373,11 @@ public abstract class UserData extends PlayerExtension implements IConf {
     }
 
     public boolean isGodModeEnabled() {
-        return godmode;
+        return base.isInvulnerable();
     }
 
     public void setGodModeEnabled(boolean set) {
-        godmode = set;
-        config.setProperty("godmode", set);
-        config.save();
+        base.setInvulnerable(set);
     }
 
     private boolean muted;
@@ -739,8 +657,7 @@ public abstract class UserData extends PlayerExtension implements IConf {
             config.setProperty(node, (Location) object);
         } else if (object instanceof ItemStack) {
             config.setProperty(node, (ItemStack) object);
-        } else
-            config.setProperty(node, object);
+        } else config.setProperty(node, object);
 
         config.save();
     }

@@ -56,11 +56,9 @@ public class ManagedFile {
 					final char[] buffer = new char[BUFFERSIZE];
 					do {
 						final int length = reader.read(buffer);
-						if (length >= 0) {
+						if (length >= 0)
 							writer.write(buffer, 0, length);
-						} else {
-							break;
-						}
+						else break;
 					} while (true);
 					writer.write("\n");
 					writer.flush();
@@ -148,11 +146,9 @@ public class ManagedFile {
 				final List<String> lines = new ArrayList<>();
 				do {
 					final String line = reader.readLine();
-					if (line == null) {
+					if (line == null)
 						break;
-					} else {
-						lines.add(line);
-					}
+					else lines.add(line);
 				} while (true);
 				return lines;
 			} finally {

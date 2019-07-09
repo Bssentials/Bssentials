@@ -53,16 +53,10 @@ public class EssentialsConf extends YamlConfiguration {
             LOGGER.log(Level.INFO, "File {0} not read, because it''s not yet written to disk.", configFile);
             return;
         }
-        if (!configFile.getParentFile().exists()) {
-            if (!configFile.getParentFile().mkdirs()) {
-                // TODO
-                // LOGGER.log(Level.SEVERE, tl("failedToCreateConfig",
-                // configFile.toString()));
-                LOGGER.log(Level.SEVERE, "Failed to create config: " + configFile.toString());
-            }
-        }
-        // This will delete files where the first character is 0. In most cases
-        // they are broken.
+        if (!configFile.getParentFile().exists() && !configFile.getParentFile().mkdirs())
+            LOGGER.log(Level.SEVERE, "Failed to create config: " + configFile.toString());
+
+        // This will delete files where the first character is 0. In most cases they are broken.
         if (configFile.exists() && configFile.length() != 0) {
             try {
                 final InputStream input = new FileInputStream(configFile);
@@ -76,9 +70,7 @@ public class EssentialsConf extends YamlConfiguration {
                 } finally {
                     try {
                         input.close();
-                    } catch (IOException ex) {
-                        LOGGER.log(Level.SEVERE, null, ex);
-                    }
+                    } catch (IOException ex) { LOGGER.log(Level.SEVERE, null, ex);  }
                 }
             } catch (FileNotFoundException ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
@@ -86,18 +78,16 @@ public class EssentialsConf extends YamlConfiguration {
         }
 
         if (!configFile.exists()) {
-            if (legacyFileExists()) {
+            if (legacyFileExists())
                 convertLegacyFile();
-            } else if (altFileExists()) {
+            else if (altFileExists())
                 convertAltFile();
-            } else if (templateName != null) {
+            else if (templateName != null) {
                 // TODO: LOGGER.log(Level.INFO, tl("creatingConfigFromTemplate",
                 // configFile.toString()));
                 LOGGER.log(Level.INFO, "Creating config from template " + configFile.toString());
                 createFromTemplate();
-            } else {
-                return;
-            }
+            } else return;
         }
 
         try {
@@ -128,15 +118,11 @@ public class EssentialsConf extends YamlConfiguration {
                             + Charset.defaultCharset().displayName());
                     decoder = Charset.defaultCharset().newDecoder();
                     result = decoder.decode(buffer, data, true);
-                    if (result.isError()) {
-                        throw new InvalidConfigurationException(
-                                "Invalid Characters in file " + configFile.getAbsolutePath());
-                    } else {
-                        decoder.flush(data);
-                    }
-                } else {
-                    decoder.flush(data);
-                }
+                    if (result.isError())
+                        throw new InvalidConfigurationException("Invalid Characters in file " + configFile.getAbsolutePath());
+                    else decoder.flush(data);
+                } else decoder.flush(data);
+
                 final int end = data.position();
                 data.rewind();
                 super.loadFromString(data.subSequence(0, end).toString());
@@ -146,9 +132,6 @@ public class EssentialsConf extends YamlConfiguration {
         } catch (InvalidConfigurationException ex) {
             File broken = new File(configFile.getAbsolutePath() + ".broken." + System.currentTimeMillis());
             configFile.renameTo(broken);
-            LOGGER.log(Level.SEVERE,
-                    "The file " + configFile.toString() + " is broken, it has been renamed to " + broken.toString(),
-                    ex.getCause());
         }
     }
 
@@ -174,8 +157,6 @@ public class EssentialsConf extends YamlConfiguration {
         try {
             istr = resourceClass.getResourceAsStream(templateName);
             if (istr == null) {
-                // TODO LOGGER.log(Level.SEVERE, tl("couldNotFindTemplate",
-                // templateName));
                 LOGGER.log(Level.SEVERE, "Could not find template: " + templateName);
                 return;
             }
@@ -188,21 +169,16 @@ public class EssentialsConf extends YamlConfiguration {
                 length = istr.read(buffer);
             }
         } catch (IOException ex) {
-            // TODO LOGGER.log(Level.SEVERE, tl("failedToWriteConfig",
-            // configFile.toString()), ex);
-            LOGGER.log(Level.SEVERE, ex + ": Failed to write to config: " + configFile.toString());
         } finally {
             try {
-                if (istr != null) {
+                if (istr != null)
                     istr.close();
-                }
             } catch (IOException ex) {
                 Logger.getLogger(EssentialsConf.class.getName()).log(Level.SEVERE, null, ex);
             }
             try {
-                if (ostr != null) {
+                if (ostr != null)
                     ostr.close();
-                }
             } catch (IOException ex) {
                 // TODO LOGGER.log(Level.SEVERE, tl("failedToCloseConfig",
                 // configFile.toString()), ex);
@@ -252,8 +228,6 @@ public class EssentialsConf extends YamlConfiguration {
         }
     }
 
-    // This may be aborted if there are stagnant requests sitting in queue.
-    // This needs fixed to discard outstanding save requests.
     public synchronized void forceSave() {
         try {
             Future<?> future = delayedSave(configFile);
@@ -456,9 +430,7 @@ public class EssentialsConf extends YamlConfiguration {
         } else {
             try {
                 return new BigDecimal(input, MathContext.DECIMAL128);
-            } catch (NumberFormatException e) {
-                return def;
-            } catch (ArithmeticException e) {
+            } catch (NumberFormatException | ArithmeticException e) {
                 return def;
             }
         }
@@ -677,4 +649,5 @@ public class EssentialsConf extends YamlConfiguration {
     public synchronized void set(String path, Object value) {
         super.set(path, value);
     }
+
 }

@@ -63,9 +63,9 @@ public class Econ {
         if (balance.compareTo(new BigDecimal(0)) < 0) throw new Exception();
 
         if (balance.signum() < 0
-                && !(user.isAuthorized("essentials.eco.loan") || user.isAuthorized("bssentials.eco.loan"))) {
+                && !(user.isAuthorized("essentials.eco.loan") || user.isAuthorized("bssentials.eco.loan")))
             throw new Exception();
-        }
+
         try {
             user.setMoney(balance);
         } catch (Exception ex) {
@@ -96,8 +96,7 @@ public class Econ {
     }
 
     public static void add(String name, BigDecimal amount) throws Exception {
-        BigDecimal result = getMoneyExact(name).add(amount, MATH_CONTEXT);
-        setMoney(name, result);
+        setMoney(name, getMoneyExact(name).add(amount, MATH_CONTEXT));
     }
 
     /**
@@ -124,8 +123,7 @@ public class Econ {
     }
 
     public static void substract(String name, BigDecimal amount) throws Exception {
-        BigDecimal result = getMoneyExact(name).subtract(amount, MATH_CONTEXT);
-        setMoney(name, result);
+        setMoney(name, getMoneyExact(name).subtract(amount, MATH_CONTEXT));
     }
 
     /**
@@ -146,14 +144,12 @@ public class Econ {
         try {
             divide(name, BigDecimal.valueOf(amount));
         } catch (ArithmeticException e) {
-            logger.log(Level.WARNING, "Failed to divide balance of " + name + " by " + amount + ": " + e.getMessage(),
-                    e);
+            logger.log(Level.WARNING, "Failed to divide balance of " + name + " by " + amount + ": " + e.getMessage(), e);
         }
     }
 
     public static void divide(String name, BigDecimal amount) throws Exception {
-        BigDecimal result = getMoneyExact(name).divide(amount, MATH_CONTEXT);
-        setMoney(name, result);
+        setMoney(name, getMoneyExact(name).divide(amount, MATH_CONTEXT));
     }
 
     /**
@@ -169,14 +165,12 @@ public class Econ {
         try {
             multiply(name, BigDecimal.valueOf(amount));
         } catch (ArithmeticException e) {
-            logger.log(Level.WARNING, "Failed to multiply balance of " + name + " by " + amount + ": " + e.getMessage(),
-                    e);
+            logger.log(Level.WARNING, "Failed to multiply balance of " + name + " by " + amount + ": " + e.getMessage(), e);
         }
     }
 
     public static void multiply(String name, BigDecimal amount) throws Exception {
-        BigDecimal result = getMoneyExact(name).multiply(amount, MATH_CONTEXT);
-        setMoney(name, result);
+        setMoney(name, getMoneyExact(name).multiply(amount, MATH_CONTEXT));
     }
 
     /**
@@ -205,13 +199,11 @@ public class Econ {
      *
      * @return true, if the user has more or an equal amount of money
      */
-    @Deprecated
     public static boolean hasEnough(String name, double amount) throws Exception {
         try {
             return hasEnough(name, BigDecimal.valueOf(amount));
         } catch (ArithmeticException e) {
-            logger.log(Level.WARNING,
-                    "Failed to compare balance of " + name + " with " + amount + ": " + e.getMessage(), e);
+            logger.log(Level.WARNING, "Failed to compare balance of " + name + " with " + amount + ": " + e.getMessage(), e);
             return false;
         }
     }
@@ -228,7 +220,6 @@ public class Econ {
      *
      * @return true, if the user has more money
      */
-    @Deprecated
     public static boolean hasMore(String name, double amount) throws Exception {
         try {
             return hasMore(name, BigDecimal.valueOf(amount));
@@ -250,13 +241,11 @@ public class Econ {
      *
      * @return true, if the user has less money
      */
-    @Deprecated
     public static boolean hasLess(String name, double amount) throws Exception {
         try {
             return hasLess(name, BigDecimal.valueOf(amount));
         } catch (ArithmeticException e) {
-            logger.log(Level.WARNING,
-                    "Failed to compare balance of " + name + " with " + amount + ": " + e.getMessage(), e);
+            logger.log(Level.WARNING, "Failed to compare balance of " + name + " with " + amount + ": " + e.getMessage(), e);
             return false;
         }
     }

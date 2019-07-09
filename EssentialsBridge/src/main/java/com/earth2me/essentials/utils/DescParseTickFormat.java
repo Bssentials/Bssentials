@@ -5,7 +5,6 @@ import java.util.*;
 
 import static com.earth2me.essentials.I18n.tl;
 
-
 /**
  * This utility class is used for converting between the ingame time in ticks to ingame time as a friendly string. Note
  * that the time is INGAME.
@@ -104,15 +103,13 @@ public final class DescParseTickFormat {
     }
 
     public static long parse24(String desc) throws NumberFormatException {
-        if (!desc.matches("^[0-9]{2}[^0-9]?[0-9]{2}$")) {
+        if (!desc.matches("^[0-9]{2}[^0-9]?[0-9]{2}$"))
             throw new NumberFormatException();
-        }
 
         desc = desc.toLowerCase(Locale.ENGLISH).replaceAll("[^0-9]", "");
 
-        if (desc.length() != 4) {
+        if (desc.length() != 4)
             throw new NumberFormatException();
-        }
 
         final int hours = Integer.parseInt(desc.substring(0, 2));
         final int minutes = Integer.parseInt(desc.substring(2, 4));
@@ -121,9 +118,8 @@ public final class DescParseTickFormat {
     }
 
     public static long parse12(String desc) throws NumberFormatException {
-        if (!desc.matches("^[0-9]{1,2}([^0-9]?[0-9]{2})?(pm|am)$")) {
+        if (!desc.matches("^[0-9]{1,2}([^0-9]?[0-9]{2})?(pm|am)$"))
             throw new NumberFormatException();
-        }
 
         int hours = 0;
         int minutes = 0;
@@ -131,9 +127,8 @@ public final class DescParseTickFormat {
         desc = desc.toLowerCase(Locale.ENGLISH);
         String parsetime = desc.replaceAll("[^0-9]", "");
 
-        if (parsetime.length() > 4) {
+        if (parsetime.length() > 4)
             throw new NumberFormatException();
-        }
 
         if (parsetime.length() == 4) {
             hours += Integer.parseInt(parsetime.substring(0, 2));
@@ -145,17 +140,13 @@ public final class DescParseTickFormat {
             hours += Integer.parseInt(parsetime.substring(0, 2));
         } else if (parsetime.length() == 1) {
             hours += Integer.parseInt(parsetime.substring(0, 1));
-        } else {
-            throw new NumberFormatException();
-        }
+        } else throw new NumberFormatException();
 
-        if (desc.endsWith("pm") && hours != 12) {
+        if (desc.endsWith("pm") && hours != 12)
             hours += 12;
-        }
 
-        if (desc.endsWith("am") && hours == 12) {
+        if (desc.endsWith("am") && hours == 12)
             hours -= 12;
-        }
 
         return hoursMinutesToTicks(hours, minutes);
     }
@@ -172,9 +163,8 @@ public final class DescParseTickFormat {
 
     public static long parseAlias(final String desc) throws NumberFormatException {
         final Integer ret = nameToTicks.get(desc);
-        if (ret == null) {
+        if (ret == null)
             throw new NumberFormatException();
-        }
 
         return ret;
     }

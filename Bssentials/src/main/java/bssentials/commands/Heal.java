@@ -44,12 +44,6 @@ public class Heal extends BCommand {
             }
         }
 
-        if (cmd.getName().equalsIgnoreCase("underheal")) {
-            player.setHealth(1);
-            player.setFoodLevel(1);
-            return true;
-        }
-
         if (cmd.getName().equalsIgnoreCase("feed")) {
             if (args.length == 0) {
                 if (hasPerm(player, cmd)) {

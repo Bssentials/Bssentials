@@ -1387,8 +1387,6 @@ public class OfflinePlayer implements Player {
 
     @Override
     public AttributeInstance getAttribute(Attribute attribute) {
-        // GetAttribute is nullable as per CraftAttributeMap. This might need to be
-        // improved to support cases where dummy null instances should be returned.
         return null;
     }
 

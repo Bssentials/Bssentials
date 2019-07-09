@@ -27,45 +27,22 @@ import java.util.zip.GZIPOutputStream;
  */
 public class Metrics {
 
-    static {
-        // You can use the property to disable the check in your test environment
-        if (System.getProperty("bstats.relocatecheck") == null || !System.getProperty("bstats.relocatecheck").equals("false")) {
-            // Maven's Relocate is clever and changes strings, too. So we have to use this little "trick" ... :D
-            final String defaultPackage = new String(
-                    new byte[]{'o', 'r', 'g', '.', 'b', 's', 't', 'a', 't', 's', '.', 'b', 'u', 'k', 'k', 'i', 't'});
-            final String examplePackage = new String(new byte[]{'y', 'o', 'u', 'r', '.', 'p', 'a', 'c', 'k', 'a', 'g', 'e'});
-            // We want to make sure nobody just copy & pastes the example and use the wrong package names
-            if (Metrics.class.getPackage().getName().equals(defaultPackage) || Metrics.class.getPackage().getName().equals(examplePackage)) {
-                throw new IllegalStateException("bStats Metrics class has not been relocated correctly!");
-            }
-        }
-    }
-
-    // The version of this bStats class
     public static final int B_STATS_VERSION = 1;
 
-    // The url to which the data is sent
     private static final String URL = "https://bStats.org/submitData/bukkit";
 
-    // Is bStats enabled on this server?
     private boolean enabled;
 
-    // Should failed requests be logged?
     private static boolean logFailedRequests;
 
-    // Should the sent data be logged?
     private static boolean logSentData;
 
-    // Should the response text be logged?
     private static boolean logResponseStatusText;
 
-    // The uuid of the server
     private static String serverUUID;
 
-    // The plugin
     private final Plugin plugin;
 
-    // A list with all custom charts
     private final List<CustomChart> charts = new ArrayList<>();
 
     /**
@@ -129,10 +106,8 @@ public class Metrics {
             }
             // Register our service
             Bukkit.getServicesManager().register(Metrics.class, this, plugin, ServicePriority.Normal);
-            if (!found) {
-                // We are the first!
+            if (!found)
                 startSubmitting();
-            }
         }
     }
 
@@ -196,9 +171,8 @@ public class Metrics {
         for (CustomChart customChart : charts) {
             // Add the data of the custom charts
             JSONObject chart = customChart.getRequestJsonObject();
-            if (chart == null) { // If the chart is null, we skip it
+            if (chart == null)
                 continue;
-            }
             customCharts.add(chart);
         }
         data.put("customCharts", customCharts);

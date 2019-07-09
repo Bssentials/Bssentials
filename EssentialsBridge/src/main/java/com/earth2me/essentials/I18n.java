@@ -17,15 +17,15 @@ public class I18n {
     }
 
     public void onDisable() {
-        Essentials.fixme("com.earth2me.essentials.I18n#onDisable");
+        Essentials.fixme(I18n.class, "onDisable");
     }
 
     public void onEnable() {
-        Essentials.fixme("com.earth2me.essentials.I18n#onEnable");
+        Essentials.fixme(I18n.class, "onEnable");
     }
 
     public void updateLocale(String s) {
-        Essentials.fixme("com.earth2me.essentials.I18n#updateLocale");
+        Essentials.fixme(I18n.class, "updateLocale");
     }
 
 }

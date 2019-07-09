@@ -6,25 +6,6 @@ import org.bukkit.plugin.PluginManager;
 import java.util.HashSet;
 import java.util.Set;
 
-
-/**
- * The <code>Methods</code> initializes Methods that utilize the Method interface based on a "first come, first served"
- * basis.
- * <p/>
- * Allowing you to check whether a payment method exists or not.
- * <p/>
- * Methods also allows you to set a preferred method of payment before it captures payment plugins in the initialization
- * process.
- * <p/>
- * in
- * <code>bukkit.yml</code>: <blockquote><pre>
- *  economy:
- *      preferred: "iConomy"
- * </pre></blockquote>
- *
- * @author: Nijikokun <nijikokun@shortmail.com> (@nijikokun) @copyright: Copyright (C) 2011 @license: AOL license
- * <http://aol.nexua.org>
- */
 public class Methods {
     private static String version = null;
     private static boolean self = false;
@@ -42,13 +23,6 @@ public class Methods {
      * Implement all methods along with their respective name & class.
      */
     private static void _init() {
-        // addMethod("iConomy", new
-        // com.earth2me.essentials.register.payment.methods.iCo6());
-        // addMethod("iConomy", new
-        // com.earth2me.essentials.register.payment.methods.iCo5());
-        // addMethod("BOSEconomy", new
-        // com.earth2me.essentials.register.payment.methods.BOSE7());
-        addMethod("Currency", new com.earth2me.essentials.register.payment.methods.MCUR());
         Dependencies.add("MultiCurrency");
         addMethod("Vault", new com.earth2me.essentials.register.payment.methods.VaultEco());
     }
@@ -137,9 +111,8 @@ public class Methods {
      * @return <code>boolean</code> True on success, False on failure.
      */
     public static boolean setMethod(PluginManager manager) {
-        if (hasMethod()) {
+        if (hasMethod())
             return true;
-        }
 
         if (self) {
             self = false;
@@ -151,19 +124,16 @@ public class Methods {
         Plugin plugin = null;
 
         for (String name : getDependencies()) {
-            if (hasMethod()) {
+            if (hasMethod())
                 break;
-            }
 
             plugin = manager.getPlugin(name);
-            if (plugin == null || !plugin.isEnabled()) {
+            if (plugin == null || !plugin.isEnabled())
                 continue;
-            }
 
             Method current = createMethod(plugin);
-            if (current == null) {
+            if (current == null)
                 continue;
-            }
 
             if (preferred.isEmpty()) {
                 Method = current;
@@ -178,18 +148,16 @@ public class Methods {
                     match = true;
                 } else {
                     for (Method attached : Attachables) {
-                        if (attached == null) {
+                        if (attached == null)
                             continue;
-                        }
 
                         if (hasMethod()) {
                             match = true;
                             break;
                         }
 
-                        if (preferred.isEmpty()) {
+                        if (preferred.isEmpty())
                             Method = attached;
-                        }
 
                         if (count == 0) {
                             if (preferred.equalsIgnoreCase(attached.getName())) {
@@ -240,13 +208,11 @@ public class Methods {
      * @return <code>boolean</code>
      */
     public static boolean checkDisabled(Plugin method) {
-        if (!hasMethod()) {
+        if (!hasMethod())
             return true;
-        }
 
-        if (Method.isCompatible(method)) {
+        if (Method.isCompatible(method))
             Method = null;
-        }
 
         return (Method == null);
     }

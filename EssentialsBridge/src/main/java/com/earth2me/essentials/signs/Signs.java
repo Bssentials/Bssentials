@@ -5,7 +5,7 @@ import com.earth2me.essentials.Essentials;
 public class Signs {
 
 	public static Signs valueOf(String signName) {
-		Essentials.fixme("com.earth2me.essentials.signs.Signs#valueOf");
+		Essentials.fixme(Signs.class, "valueOf");
 		return null;
 	}
 

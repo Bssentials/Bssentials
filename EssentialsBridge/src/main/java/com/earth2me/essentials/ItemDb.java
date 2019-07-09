@@ -56,10 +56,8 @@ public class ItemDb implements IConf, /* net.ess3.api. */IItemDb {
 		primaryName.clear();
 
 		for (String line : lines) {
-			if (line.length() > 0 && line.charAt(0) == '#') {
+			if (line.length() > 0 && line.charAt(0) == '#')
 				continue;
-			}
-
 			String itemName = null;
 			int numeric = -1;
 			short data = 0;
@@ -118,7 +116,6 @@ public class ItemDb implements IConf, /* net.ess3.api. */IItemDb {
 		}
 	}
 
-	// TODO @Override
 	@Override
 	public ItemStack get(final String id, final int quantity) throws Exception {
 		final ItemStack retval = get(id.toLowerCase(Locale.ENGLISH));
@@ -126,7 +123,6 @@ public class ItemDb implements IConf, /* net.ess3.api. */IItemDb {
 		return retval;
 	}
 
-	// TODO @Override
 	@Override
 	public ItemStack get(final String id) throws Exception {
 		int itemid = 0;
@@ -200,22 +196,10 @@ public class ItemDb implements IConf, /* net.ess3.api. */IItemDb {
 				throw new Exception("Can't spawn entity ID " + metaData + " from spawn eggs.");
 			}
 			retval = ess.getSpawnEggProvider().createEggItem(type);
-		} else if (mat.name().endsWith("POTION") && ReflUtil.getNmsVersionObject().isLowerThan(ReflUtil.V1_11_R1)) { // Only
-																														// apply
-																														// this
-																														// to
-																														// pre-1.11
-																														// as
-																														// items.csv
-																														// might
-																														// only
-																														// work
-																														// in
-																														// 1.11
+		} else if (mat.name().endsWith("POTION") && ReflUtil.getNmsVersionObject().isLowerThan(ReflUtil.V1_11_R1))
 			retval = ess.getPotionMetaProvider().createPotionItem(mat, metaData);
-		} else {
+		else
 			retval.setDurability(metaData);
-		}
 		retval.setAmount(mat.getMaxStackSize());
 		return retval;
 	}
@@ -239,14 +223,11 @@ public class ItemDb implements IConf, /* net.ess3.api. */IItemDb {
 			}
 		} else if (args[0].equalsIgnoreCase("blocks")) {
 			for (ItemStack stack : user.getBase().getInventory().getContents()) {
-				if (stack == null || stack.getTypeId() > 255 || stack.getType() == Material.AIR) {
+				if (stack == null || stack.getTypeId() > 255 || stack.getType() == Material.AIR)
 					continue;
-				}
 				is.add(stack.clone());
 			}
-		} else {
-			is.add(get(args[0]));
-		}
+		} else is.add(get(args[0])); 
 
 		if (is.isEmpty() || is.get(0).getType() == Material.AIR) {
 			throw new Exception(tl("itemSellAir"));
@@ -263,14 +244,13 @@ public class ItemDb implements IConf, /* net.ess3.api. */IItemDb {
 		if (nameList == null) {
 			itemData = new ItemData(item.getTypeId(), (short) 0);
 			nameList = names.get(itemData);
-			if (nameList == null) {
+			if (nameList == null)
 				return null;
-			}
 		}
 
-		if (nameList.size() > 15) {
+		if (nameList.size() > 15)
 			nameList = nameList.subList(0, 14);
-		}
+
 		return StringUtil.joinList(", ", nameList);
 	}
 
@@ -282,9 +262,8 @@ public class ItemDb implements IConf, /* net.ess3.api. */IItemDb {
 		if (name == null) {
 			itemData = new ItemData(item.getTypeId(), (short) 0);
 			name = primaryName.get(itemData);
-			if (name == null) {
+			if (name == null)
 				return null;
-			}
 		}
 		return name;
 	}
@@ -303,9 +282,8 @@ public class ItemDb implements IConf, /* net.ess3.api. */IItemDb {
 		// ItemMeta applies to anything.
 		if (is.hasItemMeta()) {
 			ItemMeta meta = is.getItemMeta();
-			if (meta.hasDisplayName()) {
+			if (meta.hasDisplayName())
 				sb.append("name:").append(meta.getDisplayName().replaceAll(" ", "_")).append(" ");
-			}
 
 			if (meta.hasLore()) {
 				sb.append("lore:");
@@ -313,9 +291,9 @@ public class ItemDb implements IConf, /* net.ess3.api. */IItemDb {
 				for (String s : meta.getLore()) {
 					// Add | before the line if it's not the first one. Easy but weird way
 					// to do this since we need each line separated by |
-					if (!first) {
+					if (!first)
 						sb.append("|");
-					}
+
 					first = false;
 					sb.append(s.replaceAll(" ", "_"));
 				}
