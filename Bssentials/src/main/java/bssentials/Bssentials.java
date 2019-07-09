@@ -101,7 +101,7 @@ public class Bssentials extends JavaPlugin implements IBssentials {
 
     public List<Class<? extends BCommand>> getCommandClasses() {
         String packagePath = "bssentials/commands";
-        URL urls = Testing.class.getClassLoader().getResource(packagePath);
+        URL urls = getClass().getClassLoader().getResource(packagePath);
 
         File[] classes = new File(urls.getPath()).listFiles();
 
