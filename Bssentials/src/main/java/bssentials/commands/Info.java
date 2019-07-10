@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 
 import bssentials.Bssentials;
 
+@CmdInfo(aliases = {"about"}, permission = "NONE")
 public class Info extends BCommand {
     
     private File file = null;

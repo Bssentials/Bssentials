@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import bssentials.api.User;
 
-@CmdInfo(onlyPlayer = true)
+@CmdInfo(onlyPlayer = true, aliases = {"homes"})
 public class Home extends BCommand {
 
     @Override

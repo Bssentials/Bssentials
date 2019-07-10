@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 
 import bssentials.Bssentials;
 
+@CmdInfo(permission = "NONE")
 public class Rules extends BCommand {
 
     private File file = null;
