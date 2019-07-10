@@ -1,7 +1,5 @@
 package bssentials.listeners;
 
-import java.io.IOException;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -30,9 +28,8 @@ public class PlayerJoin implements Listener {
                 plr.sendMessage(ChatColor.RED + "Spawn has not been set!");
             } else {
                 try {
-                    plr.sendMessage(ChatColor.GREEN + "Warping to spawn");
                     bss.teleportPlayerToWarp(plr, "spawn");
-                } catch (NumberFormatException | IOException ex) {
+                } catch (Exception ex) {
                     ex.printStackTrace();
                     plr.sendMessage(ChatColor.RED + "Unable to find spawn: " + ex.getMessage());
                 }

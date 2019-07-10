@@ -3,16 +3,18 @@ package bssentials;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -100,23 +102,32 @@ public class Bssentials extends JavaPlugin implements IBssentials {
     }
 
     public List<Class<? extends BCommand>> getCommandClasses() {
-        String packagePath = "bssentials/commands";
-        URL urls = getClass().getClassLoader().getResource(packagePath);
-
-        File[] classes = new File(urls.getPath()).listFiles();
-
         List<Class<? extends BCommand>> classList = new ArrayList<Class<? extends BCommand>>();
-        for(File classfile : classes){
-            String className = packagePath.replace("/", ".") + "." +
-                    classfile.getName().substring(0, classfile.getName().indexOf("."));
-            try {
-                Class<?> clazz = Class.forName(className);
-                if (!clazz.getSimpleName().equals("BssentialsCmd") && clazz.isAnnotationPresent(CmdInfo.class) &&
-                        BCommand.class.isAssignableFrom(clazz))
-                    classList.add(clazz.asSubclass(BCommand.class));
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+        try {
+            Enumeration<URL> en = getClass().getClassLoader().getResources("bssentials");
+
+            if (en.hasMoreElements()) {
+                URL url = en.nextElement();
+                JarURLConnection urlcon = (JarURLConnection) url.openConnection();
+                try (JarFile jar = urlcon.getJarFile();) {
+                    Enumeration<JarEntry> entries = jar.entries();
+                    while (entries.hasMoreElements()) {
+                        String entry = entries.nextElement().getName().replaceAll("/", ".").replace(".class", "");
+                        if (!(entry.startsWith("bssentials.commands") && entry.length() > 20))
+                            continue;
+                        try {
+                            Class<?> clazz = Class.forName(entry);
+                            if (!clazz.getSimpleName().equals("BssentialsCmd") && clazz.isAnnotationPresent(CmdInfo.class) &&
+                                    BCommand.class.isAssignableFrom(clazz))
+                                classList.add(clazz.asSubclass(BCommand.class));
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
+        } catch (IOException e1) {
+            e1.printStackTrace();
         }
         return classList;
     }
@@ -126,13 +137,8 @@ public class Bssentials extends JavaPlugin implements IBssentials {
         return i;
     }
 
-    public boolean hasPerm(CommandSender p, Command cmd) {
-        String c = cmd.getName();
-        return p.isOp() || p.hasPermission("bssentials.command." + c) || p.hasPermission("essentials." + c)
-                || p.hasPermission("accentials.command." + c) || p.hasPermission("bssentials.command.*");
-    }
-
-    public boolean teleportPlayerToWarp(Player sender, String warpname) throws NumberFormatException, IOException {
+    @Override
+    public boolean teleportPlayerToWarp(Player sender, String warpname) {
         Location l = warpManager.getWarp(warpname);
         return sender.teleport(l == null ? sender.getLocation() : l);
     }
