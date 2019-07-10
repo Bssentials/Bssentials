@@ -32,19 +32,24 @@ public class Bssentials extends JavaPlugin implements IBssentials {
     public static File warpdir;
     private int registered = 0;
     private Warps warpManager;
+    
+    public static File DATA_FOLDER;
 
     @Override
     public void onEnable() {
         getLogger().info("===========================");
         getLogger().info("Bssentials 3");
-        getLogger().info("Authors: ");
-        for (String p : getDescription().getAuthors()) getLogger().info("  - " + p);
+        getLogger().info("Authors: http://bit.ly/bssentialscontributors");
         getLogger().info("===========================");
         i = this;
 
-        warpdir = new File(getDataFolder(), "warps");
+        warpdir = new File((DATA_FOLDER = getDataFolder()), "warps");
         warpdir.mkdirs();
         warpManager = new Warps(this, warpdir);
+
+        saveResource("info.txt", false);
+        saveResource("motd.txt", false);
+        saveResource("rules.txt", false);
 
         getLogger().info("Registering commands...");
 
