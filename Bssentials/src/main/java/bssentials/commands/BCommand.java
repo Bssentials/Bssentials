@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,14 +32,6 @@ public abstract class BCommand implements CommandExecutor {
             for (String s : i.aliases())
                 aliases.add(s);
         }
-    }
-
-    public boolean addAlias(String e) {
-        return aliases.add(e);
-    }
-
-    public boolean removeAlias(String e) {
-        return aliases.remove(e);
     }
 
     @Override
@@ -83,6 +76,10 @@ public abstract class BCommand implements CommandExecutor {
 
     public Bssentials getPlugin() {
         return bss;
+    }
+
+    public Player getPlayer(String name) {
+        return Bukkit.getPlayer(name);
     }
 
     public abstract boolean onCommand(CommandSender sender, Command cmd, String[] args);

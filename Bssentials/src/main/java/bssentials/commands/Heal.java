@@ -1,6 +1,5 @@
 package bssentials.commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -26,7 +25,7 @@ public class Heal extends BCommand {
                 }
             } else {
                 if (sender.hasPermission("bssentials.commands.heal.other")) {
-                    Player target = Bukkit.getServer().getPlayer(args[0]);
+                    Player target = getPlayer(args[0]);
                     if (target == null) {
                         player.sendMessage(ChatColor.RED + "Could not find player!");
                         return false;
@@ -54,7 +53,7 @@ public class Heal extends BCommand {
                 return true;
             } else {
                 if (sender.hasPermission("bssentials.commands.feed.other")) {
-                    Player target = Bukkit.getServer().getPlayer(args[0]);
+                    Player target = getPlayer(args[0]);
                     if (target == null) {
                         player.sendMessage(ChatColor.RED + "Could not find player!");
                         return false;

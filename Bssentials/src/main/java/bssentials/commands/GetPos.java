@@ -1,6 +1,5 @@
 package bssentials.commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -11,16 +10,11 @@ public class GetPos extends BCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
-        if (!(sender instanceof Player)) {
-            if (args.length <= 0)
-                return message(sender, "Usage: /getpos <player>");
-            Player p = Bukkit.getPlayer(args[0]);
-            return message(sender, "Pos: " + p.getLocation().toString());
-        }
+        boolean isPlr = sender instanceof Player;
+
         if (args.length <= 0)
-            return message(sender, ChatColor.GREEN + "Pos: " + ((Player)sender).getLocation().toString());
-        Player p = Bukkit.getPlayer(args[0]);
-        return message(sender, ChatColor.GREEN + "Pos: " + p.getLocation().toString());
+            return message(sender, isPlr ? ChatColor.GREEN + "Pos: " + ((Player)sender).getLocation().toString() : "Usage: /getpos <player>");
+        return message(sender, ChatColor.GREEN + "Pos: " + getPlayer(args[0]).getLocation().toString());
     }
 
 }

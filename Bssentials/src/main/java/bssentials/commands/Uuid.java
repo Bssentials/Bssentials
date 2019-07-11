@@ -1,6 +1,5 @@
 package bssentials.commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -21,7 +20,7 @@ public class Uuid extends BCommand {
             return true;
         } else if (args.length == 1) {
             try {
-                String uuid = Bukkit.getPlayer(args[0]).getUniqueId().toString();
+                String uuid = getPlayer(args[0]).getUniqueId().toString();
                 message(sender, ChatColor.GREEN + "UUID of " + args[0] + ": " + uuid);
             } catch (NullPointerException e) {
                 message(sender, ChatColor.RED + "Player not online.");

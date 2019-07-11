@@ -1,6 +1,5 @@
 package bssentials.commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,7 +14,7 @@ public class Nuke extends BCommand {
         if (cmd.getName().equalsIgnoreCase("nuke")) {
             if(args.length == 1) {
                 try {
-                    Player target = Bukkit.getPlayer(args[0]);
+                    Player target = getPlayer(args[0]);
                     nuke(target.getLocation());
                     message(sender, "Tnt rain!");
                     message(target, "Tnt rain!");

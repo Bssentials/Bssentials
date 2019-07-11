@@ -14,8 +14,3 @@ staff:
 commandBlackList:
     - 'cmd1'
     - 'cmd2'
-
-# Block swearing in the chat
-antiswear:
-    - 'word1'
-    - 'word2'

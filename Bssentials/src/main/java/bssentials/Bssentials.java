@@ -37,10 +37,7 @@ public class Bssentials extends JavaPlugin implements IBssentials {
 
     @Override
     public void onEnable() {
-        getLogger().info("===========================");
-        getLogger().info("Bssentials 3");
-        getLogger().info("Authors: http://bit.ly/bssentialscontributors");
-        getLogger().info("===========================");
+        getLogger().info("Bssentials " + getDescription().getVersion());
         i = this;
 
         warpdir = new File((DATA_FOLDER = getDataFolder()), "warps");
@@ -94,7 +91,8 @@ public class Bssentials extends JavaPlugin implements IBssentials {
             bukkitCommandMap.setAccessible(true);
             CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
 
-            getLogger().info("[Commands]: Registering: /" + name);
+            if (System.getProperty("bss.debug") != null)
+                getLogger().info("[Commands]: Registering: /" + name);
             CommandWrapper wrap = new CommandWrapper(name, base);
             if (commandMap.register(name, "bssentials", wrap))
                 registered++;

@@ -3,7 +3,7 @@ package bssentials.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-@CmdInfo(aliases = {"mods", "admins", "staffmembers"})
+@CmdInfo(aliases = {"mods", "admins"})
 public class Staff extends BCommand {
 
     @Override

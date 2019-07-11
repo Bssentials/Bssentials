@@ -1,7 +1,6 @@
 name: Essentials
 main: com.earth2me.essentials.Essentials
 version: 2.0.1-Bssentials
-website: http://dev.bukkit.org/projects/Bssentials/
 description: Bridges the Essentials API to work with Bssentials.
 softdepend: [Vault]
 authors: [Bssentials Contributers]

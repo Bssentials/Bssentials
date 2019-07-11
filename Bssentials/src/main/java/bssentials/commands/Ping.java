@@ -11,10 +11,10 @@ public class Ping extends BCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
-        if (sender instanceof Player) message(sender, ChatColor.GREEN + "Your ping: " + getPing((Player) sender) + " ms");
-        else message(sender, "Your Ping: 0ms");
+        message(sender, sender instanceof Player ?
+                ChatColor.GREEN + "Your Ping: " + getPing((Player) sender) + " ms" : "Your Ping: 0ms");
 
-        return false;
+        return true;
     }
 
     public int getPing(Player p) {

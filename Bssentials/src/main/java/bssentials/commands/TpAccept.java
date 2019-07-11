@@ -1,6 +1,5 @@
 package bssentials.commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,7 +12,7 @@ public class TpAccept extends BCommand {
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
         Player p = (Player) sender;
         if (Tpa.tpaMap.containsKey(p.getName())) {
-            Player from = Bukkit.getPlayer( Tpa.tpaMap.get(p.getName()) );
+            Player from = getPlayer( Tpa.tpaMap.get(p.getName()) );
             message(p, ChatColor.GREEN + "Teleport Request accepted.");
             message(from, ChatColor.GREEN + "Teleport Request accepted.");
             from.teleport(p);

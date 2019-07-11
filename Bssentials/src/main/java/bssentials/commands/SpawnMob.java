@@ -2,7 +2,6 @@ package bssentials.commands;
 
 import java.util.ArrayList;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -24,7 +23,7 @@ public class SpawnMob extends BCommand {
             message(sender, ChatColor.GREEN + join(mobs, ChatColor.GRAY + ", " + ChatColor.GREEN));
         } else {
             if (!(sender instanceof Player)) {
-                Player player = Bukkit.getPlayer(args[1]);
+                Player player = getPlayer(args[1]);
                 World world = player.getWorld();
                 Location TargetLocation = player.getLocation();
                 world.spawnEntity(TargetLocation, EntityType.valueOf(args[0].toUpperCase()));

@@ -1,6 +1,5 @@
 package bssentials.commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,7 +14,7 @@ public class Pm extends BCommand {
             message(sender, ChatColor.RED + "Usage /pm <player> <message>");
             return false;
         }
-        Player target = Bukkit.getPlayer(args[0]);
+        Player target = getPlayer(args[0]);
         if(target != null) {
             String message = ChatColor.translateAlternateColorCodes('&', join(args));
             String format = ChatColor.GOLD + "[%s" + ChatColor.GOLD + " -> %s" + ChatColor.GOLD + "]";

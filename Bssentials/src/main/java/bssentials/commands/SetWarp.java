@@ -13,10 +13,8 @@ public class SetWarp extends BCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
-        if (args.length < 1) {
-            message(sender, ChatColor.RED + "Usage: /setwarp <warp>");
-            return true;
-        }
+        if (args.length < 1)
+            return message(sender, ChatColor.RED + "Usage: /setwarp <warp>");
 
         Location loc = ((Player) sender).getLocation();
 

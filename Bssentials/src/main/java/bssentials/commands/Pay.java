@@ -2,7 +2,6 @@ package bssentials.commands;
 
 import java.math.BigDecimal;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -27,7 +26,7 @@ public class Pay extends BCommand {
         u2.setMoney(u2.getMoney().add(d));
 
         message(sender, ChatColor.GREEN + "$" + args[1] + " sent to " + args[0]);
-        message(Bukkit.getPlayer(args[0]), ChatColor.GREEN + args[0] + " has given you $" + args[1]);
+        message(getPlayer(args[0]), ChatColor.GREEN + args[0] + " has given you $" + args[1]);
 
         return true;
     }

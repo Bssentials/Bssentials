@@ -3,4 +3,4 @@ version: ${full.version}
 authors: [bit.ly/bssentialscontributors]
 main: bssentials.Bssentials
 description: Essentials remake with support for EssAPI
-website: http://dev.bukkit.org/bukkit-plugins/bssentials/
+website: http://dev.bukkit.org/projects/bssentials/

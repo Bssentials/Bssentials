@@ -14,9 +14,7 @@ public class Top extends BCommand {
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
         Player p = (Player) sender;
         Location l = p.getLocation();
-        int x = l.getBlockX();
-        int y = l.getBlockY();
-        int z = l.getBlockZ();
+        int x = l.getBlockX(), y = l.getBlockY(), z = l.getBlockZ();
         while (p.getWorld().getBlockAt(x, y, z).getType() != Material.AIR)
             y++;
 
