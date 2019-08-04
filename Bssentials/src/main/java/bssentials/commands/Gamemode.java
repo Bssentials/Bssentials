@@ -8,7 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CmdInfo(aliases = {"gm", "gmc", "gms", "gmsp"})
+@CmdInfo(aliases = {"gm", "gmc", "gms", "gmsp"}, onlyPlayer = true)
 public class Gamemode extends BCommand {
 
     @Override
