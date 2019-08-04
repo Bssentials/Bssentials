@@ -36,8 +36,8 @@ public class PlayerJoin implements Listener {
             }
             Bukkit.broadcastMessage(ChatColor.GRAY + " Please welcome " + plr.getName() + " to the server!");
         }
-
-        if (!user.nick.equalsIgnoreCase("_null_"))
+        
+        if (user.nick != null && !user.nick.equalsIgnoreCase("_null_"))
             plr.setDisplayName(user.nick);
     }
 
