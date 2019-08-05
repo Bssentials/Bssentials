@@ -21,3 +21,9 @@ hs_err_pid*
 LastPublicVer.txt
 /maven-status/
 /maven-archiver/
+
+# Intellij
+/.idea/*
+/bssentials-parent.iml
+/EssentialsBridge/EssentialsBridge.iml
+/Bssentials/Bssentials.iml
