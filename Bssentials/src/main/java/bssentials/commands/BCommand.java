@@ -62,8 +62,9 @@ public abstract class BCommand implements CommandExecutor {
         return onCommand(sender, cmd, args);
     }
 
+    @Deprecated
     public boolean hasPerm(CommandSender s, Command cmd) {
-        if (null != i.permission()) {
+        if (null != i.permission() && i.permission().length() > 3) {
             String ip = i.permission();
             if (ip.equalsIgnoreCase("RQUIRES_OP")) return s.isOp();
             if (ip.equalsIgnoreCase("NONE")) return true;
@@ -71,7 +72,7 @@ public abstract class BCommand implements CommandExecutor {
             return s.hasPermission(ip);
         }
 
-        String c = cmd.getName().toLowerCase(Locale.ENGLISH);
+        String c = cmd.getName().toLowerCase();
         return (s.isOp() || s.hasPermission("bssentials.command." + c) || s.hasPermission("essentials." + c)
                 || s.hasPermission("bssentials.command.*"));
     }
