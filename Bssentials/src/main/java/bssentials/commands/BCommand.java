@@ -32,19 +32,20 @@ public abstract class BCommand implements CommandExecutor {
             this.i = i;
             for (String s : i.aliases())
                 aliases.add(s);
-            
-            if (null != i.permission()) {
+
+            if (null != i.permission() && i.permission().length() > 3) {
                 String perm = i.permission();
                 if (!(perm.equalsIgnoreCase("REQUIRES_OP") || perm.equalsIgnoreCase("NONE"))) {
                     Permission p = new Permission(i.permission());
                     p.setDescription("Permission for a command");
+                    bss.getLogger().info("Registering permission \"" + i.permission() + "\" ...");
                     Bukkit.getPluginManager().addPermission(p);
                 }
             }
         }
 
-        String name = this.getClass().getName();
-        Bukkit.getPluginManager().addPermission(new Permission(i.permission()));
+        //String name = this.getClass().getName();
+        //Bukkit.getPluginManager().addPermission(new Permission(i.permission()));
     }
 
     @Override

@@ -13,9 +13,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.command.CommandMap;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import bssentials.commands.BCommand;
@@ -37,7 +35,6 @@ public class Bssentials extends JavaPlugin implements IBssentials {
 
     @Override
     public void onEnable() {
-        getLogger().info("Bssentials " + getDescription().getVersion());
         i = this;
 
         warpdir = new File((DATA_FOLDER = getDataFolder()), "warps");
@@ -138,14 +135,6 @@ public class Bssentials extends JavaPlugin implements IBssentials {
     @Deprecated
     public static Bssentials get() {
         return i;
-    }
-
-    /**
-     * Moved to {@link Warps}
-     */
-    @Deprecated
-    public boolean teleportPlayerToWarp0(Player sender, String warpname) {
-        return warpManager.teleportToWarp(sender, warpname);
     }
 
     @Override
