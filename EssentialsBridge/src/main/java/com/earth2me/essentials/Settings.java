@@ -549,8 +549,8 @@ public class Settings implements net.ess3.api.ISettings {
 			if (itemName.isEmpty()) continue;
 
 			try {
-				final ItemStack iStack = ess.getItemDb().get(itemName);
-				epItemSpwn.add(iStack.getTypeId());
+				//final ItemStack iStack = ess.getItemDb().get(itemName);
+				//epItemSpwn.add(iStack.getTypeId());
 			} catch (Exception ex) {
 				logger.log(Level.SEVERE, tl("unknownItemInList", itemName, "item-spawn-blacklist"));
 			}
@@ -643,8 +643,8 @@ public class Settings implements net.ess3.api.ISettings {
 
 			ItemStack itemStack;
 			try {
-				itemStack = ess.getItemDb().get(itemName);
-				list.add(itemStack.getTypeId());
+				//itemStack = ess.getItemDb().get(itemName);
+				//list.add(itemStack.getTypeId());
 			} catch (Exception ex) {
 				logger.log(Level.SEVERE, tl("unknownItemInList", itemName, configName));
 			}

@@ -147,16 +147,11 @@ public abstract class UserData extends PlayerExtension implements IConf {
     }
 
     public boolean hasUnlimited(ItemStack stack) {
-        return unlimited.contains(stack.getTypeId());
+        return false;
     }
 
     public void setUnlimited(ItemStack stack, boolean state) {
-        if (unlimited.contains(stack.getTypeId()))
-            unlimited.remove(Integer.valueOf(stack.getTypeId()));
-        if (state)
-            unlimited.add(stack.getTypeId());
-        config.setProperty("unlimited", unlimited);
-        config.save();
+        // todo
     }
 
     private Map<String, Object> powertools;
@@ -174,7 +169,8 @@ public abstract class UserData extends PlayerExtension implements IConf {
 
     @SuppressWarnings("unchecked")
     public List<String> getPowertool(ItemStack stack) {
-        return (List<String>) powertools.get("" + stack.getTypeId());
+        Essentials.fixme(this.getClass(), "getPowertool");
+        return null;
     }
 
     @SuppressWarnings("unchecked")
@@ -183,13 +179,7 @@ public abstract class UserData extends PlayerExtension implements IConf {
     }
 
     public void setPowertool(ItemStack stack, List<String> commandList) {
-        if (commandList == null || commandList.isEmpty())
-            powertools.remove("" + stack.getTypeId());
-        else
-            powertools.put("" + stack.getTypeId(), commandList);
-
-        config.setProperty("powertools", powertools);
-        config.save();
+        Essentials.fixme(this.getClass(), "setPowertool");
     }
 
     public boolean hasPowerTools() {

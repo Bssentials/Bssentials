@@ -6,6 +6,6 @@
 	<classpathentry kind="src" path="EssentialsBridge/src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="libs/Vault.jar"/>
-	<classpathentry kind="lib" path="C:/Users/isaia/Downloads/CraftBukkit-1.12.2-acbc348-20181110-0937.jar"/>
+	<classpathentry kind="lib" path="C:/Users/isaia/Downloads/craftbukkit-1.12.2-R0.1-SNAPSHOT-b1479.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

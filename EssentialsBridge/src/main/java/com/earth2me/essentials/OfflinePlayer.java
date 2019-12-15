@@ -6,6 +6,7 @@ import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
@@ -483,7 +484,7 @@ public class OfflinePlayer implements Player {
     public void sendBlockChange(Location lctn, Material mtrl, byte b) {
     }
 
-    @Override
+    //@Override
     public void sendBlockChange(Location lctn, int i, byte b) {
     }
 
@@ -1472,6 +1473,91 @@ public class OfflinePlayer implements Player {
 
     @Override 
     public void showPlayer(Plugin arg0, Player arg1) {
+    }
+
+    // 1.13/1.14 below
+
+    public boolean discoverRecipe(NamespacedKey arg0) {
+        return false;
+    }
+
+    public int discoverRecipes(Collection<NamespacedKey> arg0) {
+        return 0;
+    }
+
+    public Location getBedLocation() {
+        return null;
+    }
+
+    public boolean sleep(Location arg0, boolean arg1) {
+        return false;
+    }
+
+    public boolean undiscoverRecipe(NamespacedKey arg0) {
+        return false;
+    }
+
+    public int undiscoverRecipes(Collection<NamespacedKey> arg0) {
+        return 0;
+    }
+
+    public void wakeup(boolean arg0) {
+    }
+
+    public Block getTargetBlockExact(int arg0) {
+        return null;
+    }
+
+    public boolean isRiptiding() {
+        return false;
+    }
+
+    public boolean isSwimming() {
+        return false;
+    }
+
+    public void setSwimming(boolean arg0) {
+    }
+
+    public BlockFace getFacing() {
+        return null;
+    }
+
+    public boolean isPersistent() {
+        return false;
+    }
+
+    public void setPersistent(boolean arg0) {
+    }
+
+    public void setRotation(float arg0, float arg1) {
+    }
+
+    public int getClientViewDistance() {
+        return 8;
+    }
+
+    public String getPlayerListFooter() {
+        return null;
+    }
+
+    public String getPlayerListHeader() {
+        return null;
+    }
+
+    public void openBook(ItemStack arg0) {
+    }
+
+    public void setPlayerListFooter(String arg0) {
+    }
+
+    public void setPlayerListHeader(String arg0) {
+    }
+
+    public void setPlayerListHeaderFooter(String arg0, String arg1) {
+    }
+
+    public void updateCommands() {
     }
 
 }
