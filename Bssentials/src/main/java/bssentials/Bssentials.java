@@ -140,10 +140,12 @@ public class Bssentials extends JavaPlugin implements IBssentials {
         return i;
     }
 
-    @Override
-    public boolean teleportPlayerToWarp(Player sender, String warpname) {
-        Location l = warpManager.getWarp(warpname);
-        return sender.teleport(l == null ? sender.getLocation() : l);
+    /**
+     * Moved to {@link Warps}
+     */
+    @Deprecated
+    public boolean teleportPlayerToWarp0(Player sender, String warpname) {
+        return warpManager.teleportToWarp(sender, warpname);
     }
 
     @Override

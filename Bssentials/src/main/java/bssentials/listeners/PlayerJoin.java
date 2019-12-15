@@ -28,7 +28,7 @@ public class PlayerJoin implements Listener {
                 plr.sendMessage(ChatColor.RED + "Spawn has not been set!");
             } else {
                 try {
-                    bss.teleportPlayerToWarp(plr, "spawn");
+                    bss.getWarps().teleportToWarp(plr, "spawn");
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     plr.sendMessage(ChatColor.RED + "Unable to find spawn: " + ex.getMessage());

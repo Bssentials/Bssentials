@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-
+import org.bukkit.entity.Player;
 
 public class Warps {
 
@@ -62,13 +62,10 @@ public class Warps {
                     l.setWorld(Bukkit.getWorld(line.substring("world: ".length())));
 
                 if (line.startsWith("x:")) l.setX(Double.valueOf(line.substring(3)));
-
                 if (line.startsWith("y:")) l.setY(Double.valueOf(line.substring(3)));
-
                 if (line.startsWith("z:")) l.setZ(Double.valueOf(line.substring(3)));
 
                 if (line.startsWith("pitch")) l.setPitch(new Float(Double.valueOf(line.substring("pitch: ".length()))));
-
                 if (line.startsWith("yaw")) l.setYaw(new Float(Double.valueOf(line.substring("yaw: ".length()))));
             }
         } catch (NumberFormatException | IOException e) {
@@ -108,6 +105,11 @@ public class Warps {
 
     public int getCount() {
         return getWarpFiles().length;
+    }
+
+    public boolean teleportToWarp(Player plr, String warpName) {
+        Location l = getWarp(warpName);
+        return plr.teleport(l == null ? plr.getLocation() : l);
     }
 
 }
