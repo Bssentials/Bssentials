@@ -16,10 +16,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import bssentials.configuration.BssConfiguration.ConfigException;
+import bssentials.configuration.Configs;
 import bssentials.commands.BCommand;
 import bssentials.commands.BssentialsCmd;
 import bssentials.commands.CmdInfo;
 import bssentials.commands.Heal;
+import bssentials.configuration.BssConfiguration;
+import bssentials.listeners.PlayerChat;
 import bssentials.listeners.PlayerCommand;
 import bssentials.listeners.PlayerJoin;
 import bssentials.listeners.PlayerLeave;
@@ -30,7 +34,7 @@ public class Bssentials extends JavaPlugin implements IBssentials {
     public static File warpdir;
     private int registered = 0;
     private Warps warpManager;
-    
+
     public static File DATA_FOLDER;
 
     @Override
@@ -44,6 +48,14 @@ public class Bssentials extends JavaPlugin implements IBssentials {
         saveResource("info.txt", false);
         saveResource("motd.txt", false);
         saveResource("rules.txt", false);
+
+        getLogger().info("Loading configuration...");
+        try {
+            //config = new BssConfiguration(new File(DATA_FOLDER, "config.yml"));
+            Configs.initConfigs();
+        } catch (ConfigException e1) {
+            e1.printStackTrace();
+        }
 
         getLogger().info("Registering commands...");
 
@@ -61,6 +73,7 @@ public class Bssentials extends JavaPlugin implements IBssentials {
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerLeave(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerCommand(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerChat(), this);
 
         getLogger().info("Registered " + registered + " commands");
 
@@ -79,6 +92,11 @@ public class Bssentials extends JavaPlugin implements IBssentials {
                 }
             }
         });
+    }
+
+    @Override
+    public BssConfiguration getConfig() {
+        return Configs.MAIN;
     }
 
     public void register(String name, BCommand base) {

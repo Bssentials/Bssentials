@@ -14,11 +14,8 @@ public class DelWarp extends BCommand {
             return true;
         }
 
-        if (getPlugin().getWarps().removeWarp(args[0])) {
-            message(sender, ChatColor.GREEN + "Warp removed!");
-        } else {
-            message(sender, ChatColor.DARK_RED + "Unable to remove warp!");
-        }
+        message(sender, getPlugin().getWarps().removeWarp(args[0]) ? 
+                (ChatColor.GREEN + "Warp removed!") : (ChatColor.DARK_RED + "Unable to remove warp!"));
         return true;
     }
 

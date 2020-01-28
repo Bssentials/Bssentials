@@ -17,8 +17,8 @@ import com.google.common.io.Files;
 public class V2WarpConvert {
 
     public static File configf, warpsf, homesf, ranksf;
-    public static FileConfiguration warps = new YamlConfiguration();
-    public static FileConfiguration homes = new YamlConfiguration();
+    public static FileConfiguration warps;
+    public static FileConfiguration homes;
 
     public static void convert(File oldwarps, Warps newWarps) {
         File dataFolder = oldwarps.getParentFile();
@@ -48,10 +48,10 @@ public class V2WarpConvert {
                         warps.getDouble("warps." + warp + ".x"),
                         warps.getDouble("warps." + warp + ".y"),
                         warps.getDouble("warps." + warp + ".z"), yaw, pitch));
-                System.out.println("Converted old Bss2 warp '" + warp + "' to Bssentials 3 format.");
+                System.out.println("Converted old warp '" + warp + "' to new format.");
             } catch (IOException e) {
                 e.printStackTrace();
-                System.out.println("Unable to write to " + warp + ".yml");
+                System.out.println("Unable to convert new warp");
             }
         }
 
@@ -69,9 +69,7 @@ public class V2WarpConvert {
                 File userconfig = new File(new File(dataFolder, "userdata"), off.getUniqueId() + ".yml");
                 try {
                     user.load(userconfig);
-                } catch (IOException | InvalidConfigurationException e) {
-                    e.printStackTrace();
-                }
+                } catch (IOException | InvalidConfigurationException e) {e.printStackTrace();}
                 user.set("homes.home.world", w.getName());
                 user.set("homes.home.x", x);
                 user.set("homes.home.y", y);
@@ -81,15 +79,12 @@ public class V2WarpConvert {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else
-                System.out.println("Unable to convert home for: " + plr + ". Reason: Player has not played before.");
+            } else System.out.println("Unable to convert home for: " + plr + ". Reason: Player has not played before.");
         }
 
         try {
             Files.move(oldwarps, new File(oldwarps.getParentFile().getAbsolutePath(), "bss2warps.bkup"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException e) {e.printStackTrace();}
     }
 
 }

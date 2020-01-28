@@ -26,11 +26,8 @@
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
         <release.version>3.0</release.version>
-
         <build.version>${BUILD_NUMBER}</build.version>
-
         <full.version>${release.version}-b${build.version}</full.version>
 	</properties>
 
@@ -108,7 +105,7 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
-			<plugin>
+			<!--<plugin>
                 <groupId>pl.project13.maven</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>
                 <version>2.2.5</version>
@@ -131,7 +128,7 @@
                         <tags>true</tags>
                     </gitDescribe>
                 </configuration>
-			</plugin>
+			</plugin> -->
         </plugins>
     </build>
 </project>

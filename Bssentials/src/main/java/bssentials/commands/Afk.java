@@ -26,11 +26,10 @@ public class Afk extends BCommand {
     }
 
     /**
-     * Check if player is away from keybord.
+     * Check if player is away from keyboard.
      *
-     * @return true if player is afk, false if not.
-     * @param target
-     *            The player to check.
+     * @return if player is AFK or not.
+     * @param target The player to check.
      */
     public static boolean isAFK(Player target) {
         try {

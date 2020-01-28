@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -13,6 +15,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import bssentials.configuration.BssConfiguration;
+import bssentials.configuration.Configs;
 import bssentials.Bssentials;
 
 public class User {
@@ -118,7 +122,25 @@ public class User {
         save();
     }
 
-    public void setNick(String n) {
+    public void setNick(String n) throws Exception {
+        BssConfiguration config = Configs.MAIN;
+        int maxLength = config.getInt("max-nick-length");
+
+        String s = config.getBoolean("ignore-colors-in-max-nick-length", true) ? ChatColor.stripColor(n) : n;
+
+        if (maxLength > 0 && s.length() > maxLength)
+            throw new Exception("Nickname is too long");
+
+        if (config.contains("nickname-prefix"))
+            n = config.getString("nickname-prefix") + n;
+
+        List<String> blackList = config.getStringList("nick-blacklist");
+        for (String str : blackList) {
+            String strip = ChatColor.stripColor(n);
+            if ((strip.equalsIgnoreCase(str) || strip.contains(str)) && !isAuthorized("bssentials.nick.blacklist.bypass"))
+                throw new Exception("Nick blacklisted");
+        }
+
         user.set("nick", n);
         save();
     }
@@ -148,6 +170,15 @@ public class User {
         user.set("homes." + home + ".z", null);
         user.set("homes." + home, null);
         save();
+    }
+
+    public void sendMessage(String txt) {
+        base.sendMessage(ChatColor.translateAlternateColorCodes('&', txt));
+    }
+
+    // TODO
+    public void teleport() {
+        // teleport-safety
     }
 
 }

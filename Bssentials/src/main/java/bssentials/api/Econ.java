@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import bssentials.Bssentials;
 
 /**
- * Instead of using this api directly, we recommend to use Vault.
+ * Recommend to use Vault instead of this API
  */
 public class Econ {
 
@@ -18,9 +18,7 @@ public class Econ {
     /**
      * Returns the balance of a user
      *
-     * @param name
-     *            Name of the user
-     *
+     * @param name Name of the user
      * @return balance
      */
     @Deprecated
@@ -38,14 +36,10 @@ public class Econ {
     /**
      * Sets the balance of a user
      *
-     * @param name
-     *            Name of the user
-     * @param balance
-     *            The balance you want to set
+     * @param name    Name of the user
+     * @param balance The balance you want to set
      *
-     * @throws Exception
-     *             If a user by that name does not exists or If the user is not
-     *             allowed to have a negative balance
+     * @throws Exception If user by name does not exist or not allowed negative balance
      */
     @Deprecated
     public static void setMoney(String name, double balance) throws Exception {
@@ -62,8 +56,7 @@ public class Econ {
         if (user == null) throw new Exception(name);
         if (balance.compareTo(new BigDecimal(0)) < 0) throw new Exception();
 
-        if (balance.signum() < 0
-                && !(user.isAuthorized("essentials.eco.loan") || user.isAuthorized("bssentials.eco.loan")))
+        if (balance.signum() < 0 && !(user.isAuthorized("essentials.eco.loan") || user.isAuthorized("bssentials.eco.loan")))
             throw new Exception();
 
         try {
@@ -76,15 +69,11 @@ public class Econ {
     /**
      * Adds money to the balance of a user
      *
-     * @param name
-     *            Name of the user
-     * @param amount
-     *            The money you want to add
+     * @param name   Name of the user
+     * @param amount The money you want to add
      *
-     * @throws UserDoesNotExistException
-     *             If a user by that name does not exists
-     * @throws NoLoanPermittedException
-     *             If the user is not allowed to have a negative balance
+     * @throws UserDoesNotExistException If a user by that name does not exists
+     * @throws NoLoanPermittedException  If the user is not allowed to have a negative balance
      */
     @Deprecated
     public static void add(String name, double amount) throws Exception {
@@ -100,17 +89,13 @@ public class Econ {
     }
 
     /**
-     * Substracts money from the balance of a user
+     * Subtracts money from the balance of a user
      *
-     * @param name
-     *            Name of the user
-     * @param amount
-     *            The money you want to substract
+     * @param name   Name of the user
+     * @param amount The money you want to subtract
      *
-     * @throws UserDoesNotExistException
-     *             If a user by that name does not exists
-     * @throws NoLoanPermittedException
-     *             If the user is not allowed to have a negative balance
+     * @throws UserDoesNotExistException If a user by that name does not exists
+     * @throws NoLoanPermittedException  If the user is not allowed to have a negative balance
      */
     @Deprecated
     public static void subtract(String name, double amount) throws Exception {
@@ -129,15 +114,11 @@ public class Econ {
     /**
      * Divides the balance of a user by a value
      *
-     * @param name
-     *            Name of the user
-     * @param value
-     *            The balance is divided by this value
+     * @param name  Name of the user
+     * @param value The balance is divided by this value
      *
-     * @throws UserDoesNotExistException
-     *             If a user by that name does not exists
-     * @throws NoLoanPermittedException
-     *             If the user is not allowed to have a negative balance
+     * @throws UserDoesNotExistException If a user by that name does not exists
+     * @throws NoLoanPermittedException  If the user is not allowed to have a negative balance
      */
     @Deprecated
     public static void divide(String name, double amount) throws Exception {
@@ -155,10 +136,8 @@ public class Econ {
     /**
      * Multiplies the balance of a user by a value
      *
-     * @param name
-     *            Name of the user
-     * @param value
-     *            The balance is multiplied by this value
+     * @param name  Name of the user
+     * @param value The balance is multiplied by this value
      */
     @Deprecated
     public static void multiply(String name, double amount) throws Exception {
@@ -176,26 +155,19 @@ public class Econ {
     /**
      * Resets the balance of a user to the starting balance
      *
-     * @param name
-     *            Name of the user
-     *
-     * @throws UserDoesNotExistException
-     *             If a user by that name does not exists
-     * @throws NoLoanPermittedException
-     *             If the user is not allowed to have a negative balance
+     * @param name Name of the user
+     * @throws Exception If user by name does not exist or not allowed to have a negative balance
      */
     public static void resetBalance(String name) throws Exception {
         if (Bssentials.get() == null)
-            throw new RuntimeException("Bssentials Econ is called before Bssentials is loaded.");
+            throw new RuntimeException("Econ is called before Bssentials is loaded.");
 
         setMoney(name, 100); // TODO: configure
     }
 
     /**
-     * @param name
-     *            Name of the user
-     * @param amount
-     *            The amount of money the user should have
+     * @param name   Name of the user
+     * @param amount The amount of money the user should have
      *
      * @return true, if the user has more or an equal amount of money
      */
@@ -213,10 +185,8 @@ public class Econ {
     }
 
     /**
-     * @param name
-     *            Name of the user
-     * @param amount
-     *            The amount of money the user should have
+     * @param name   Name of the user
+     * @param amount The amount of money the user should have
      *
      * @return true, if the user has more money
      */
@@ -234,10 +204,8 @@ public class Econ {
     }
 
     /**
-     * @param name
-     *            Name of the user
-     * @param amount
-     *            The amount of money the user should not have
+     * @param name   Name of the user
+     * @param amount The amount of money the user should not have
      *
      * @return true, if the user has less money
      */
@@ -257,9 +225,7 @@ public class Econ {
     /**
      * Test if the user has a negative balance
      *
-     * @param name
-     *            Name of the user
-     *
+     * @param name Name of the user
      * @return true, if the user has a negative balance
      */
     public static boolean isNegative(String name) throws Exception {
@@ -283,9 +249,7 @@ public class Econ {
     /**
      * Test if a player exists
      *
-     * @param name
-     *            Name of the user
-     *
+     * @param name Name of the user
      * @return true, if the user exists
      */
     public static boolean playerExists(String name) {

@@ -15,7 +15,7 @@ public class PlayerCommand implements Listener {
     public void onPlayerCommand(PlayerCommandPreprocessEvent e) {
         if (null == bss)
             bss = Bssentials.get();
-        e.setCancelled( bss.getConfig().getList("commandBlackList").contains(e.getMessage().substring(1)) );
+        // TODO e.setCancelled( bss.getConfig().getList("commandBlackList").contains(e.getMessage().substring(1)) );
     }
 
 }

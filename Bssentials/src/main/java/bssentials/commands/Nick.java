@@ -5,7 +5,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import bssentials.Bssentials;
 import bssentials.api.User;
+import bssentials.configuration.Configs;
 
 @CmdInfo
 public class Nick extends BCommand {
@@ -19,9 +21,16 @@ public class Nick extends BCommand {
 
         User user = User.getByName(sender.getName());
         String nick = ChatColor.translateAlternateColorCodes('&', args[0].replaceAll("[SPACECHAR]", " "));
-        user.setNick(nick);
-        ((Player) sender).setDisplayName(nick);
-        message(sender, "Nickname set to: " + nick);
+        try {
+            user.setNick(nick);
+            Player plr = ((Player) sender);
+            plr.setDisplayName(nick);
+            if (Configs.MAIN.getBoolean("change-playerlist", true))
+                plr.setPlayerListName(plr.getDisplayName());
+            message(sender, "Nickname set to: " + nick);
+        } catch (Exception e) {
+            message(sender, ChatColor.RED + "Nickname is too long!");
+        }
         return true;
     }
 

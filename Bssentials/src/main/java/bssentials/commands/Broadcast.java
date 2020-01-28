@@ -15,10 +15,10 @@ public class Broadcast extends BCommand {
         if (args.length == 0) {
             message(sender, "Usage: /broadcast <message>");
             return true;
-        } else {
-            String message = StringUtils.join(args, " ");
-            Bukkit.broadcastMessage("&4[Broadcast] " + ChatColor.RESET + message);
         }
+
+        String message = StringUtils.join(args, " ");
+        Bukkit.broadcastMessage("&4[Broadcast] " + ChatColor.RESET + message);
         return true;
     }
 

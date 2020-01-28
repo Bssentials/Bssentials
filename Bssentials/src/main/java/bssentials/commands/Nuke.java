@@ -25,7 +25,7 @@ public class Nuke extends BCommand {
                 if(sender instanceof Player) {
                     nuke(((Player) sender).getLocation());
                     sender.sendMessage("TNT RAIN!");
-                } else message(sender, "Console Usage: /nuke <player>");
+                } else message(sender, "Usage: /nuke <player>");
             } else message(sender, "Usage: /nuke <player>");
 
             return true;
@@ -34,10 +34,8 @@ public class Nuke extends BCommand {
     }
 
     public void nuke(Location l) {
-        for (int i = 0; i < 5;) {
+        for (int i = 0; i < 5; i++)
             l.getWorld().spawnEntity(l, EntityType.PRIMED_TNT);
-            i++;
-        }
     }
 
 }

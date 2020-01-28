@@ -18,13 +18,13 @@ public class Uuid extends BCommand {
             Player p = (Player) sender;
             sender.sendMessage("Your UUID: " + p.getUniqueId().toString());
             return true;
-        } else if (args.length == 1) {
-            try {
-                String uuid = getPlayer(args[0]).getUniqueId().toString();
-                message(sender, ChatColor.GREEN + "UUID of " + args[0] + ": " + uuid);
-            } catch (NullPointerException e) {
-                message(sender, ChatColor.RED + "Player not online.");
-            }
+        }
+
+        try {
+            String uuid = getPlayer(args[0]).getUniqueId().toString();
+            message(sender, ChatColor.GREEN + "UUID of " + args[0] + ": " + uuid);
+        } catch (NullPointerException e) {
+            message(sender, ChatColor.RED + "Player not online.");
         }
         return true;
     }

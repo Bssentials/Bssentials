@@ -10,7 +10,7 @@ public class Exp extends BCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
-        if (sender instanceof Player && args.length == 1) {
+        if (args.length == 1) {
             Player p = (Player) sender;
             int oldvalue = p.getLevel();
             p.setLevel(p.getLevel() + Integer.valueOf(args[0]));

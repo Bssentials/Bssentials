@@ -12,11 +12,11 @@ public class Invsee extends BCommand {
     public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
         if (args.length != 1) {
             sender.sendMessage(ChatColor.RED + "Usage: /invsee <player>");
-        } else {
-            Player target = getPlayer(args[0]);
-            ((Player) sender).openInventory(target.getInventory());
-            sender.sendMessage("Opened Inventory.");
+            return false;
         }
+        Player target = getPlayer(args[0]);
+        ((Player) sender).openInventory(target.getInventory());
+        sender.sendMessage("Opened Inventory");
         return true;
     }
 

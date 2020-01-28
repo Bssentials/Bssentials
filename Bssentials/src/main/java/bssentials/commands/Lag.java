@@ -30,19 +30,17 @@ public class Lag extends BCommand {
         if (l < 1000)
             return l + " milliseconds";
 
-        long sec = l / 1000;
-        if (sec < 60)
-            return sec + " seconds";
+        long sec = l/1000;
+        long min = sec/60;
 
-        long min = sec / 60;
         if (min < 60)
             return min + " minutes";
 
-        long hours = min / 60;
+        long hours = min/60;
         if (hours < 24)
             return hours + "hours";
 
-        return (hours / 24) + " days";
+        return (hours/24) + " days";
     }
 
     private String formatSize(long v) {

@@ -21,21 +21,20 @@ public class SpawnMob extends BCommand {
 
         if (args.length == 0) {
             message(sender, ChatColor.GREEN + join(mobs, ChatColor.GRAY + ", " + ChatColor.GREEN));
+            return true;
+        }
+
+        if (!(sender instanceof Player)) {
+            Player player = getPlayer(args[1]);
+            World world = player.getWorld();
+            Location TargetLocation = player.getLocation();
+            world.spawnEntity(TargetLocation, EntityType.valueOf(args[0].toUpperCase()));
+            player.sendMessage(ChatColor.GREEN + "Spawned " + args[0]);
+            message(sender, "Spawned mob on " + player.getName());
         } else {
-            if (!(sender instanceof Player)) {
-                Player player = getPlayer(args[1]);
-                World world = player.getWorld();
-                Location TargetLocation = player.getLocation();
-                world.spawnEntity(TargetLocation, EntityType.valueOf(args[0].toUpperCase()));
-                player.sendMessage(ChatColor.GREEN + "Spawned " + args[0]);
-                message(sender, "Spawned mob on " + player.getName());
-            } else {
-                Player player = (Player) sender;
-                World world = player.getWorld();
-                Location TargetLocation = player.getLocation();
-                world.spawnEntity(TargetLocation, EntityType.valueOf(args[0].toUpperCase()));
-                player.sendMessage(ChatColor.GREEN + "Spawned " + args[0]);
-            }
+            Player player = (Player) sender;
+            player.getWorld().spawnEntity(player.getLocation(), EntityType.valueOf(args[0].toUpperCase()));
+            player.sendMessage(ChatColor.GREEN + "Spawned " + args[0]);
         }
         return true;
     }

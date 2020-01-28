@@ -133,7 +133,11 @@ public abstract class UserData extends PlayerExtension implements IConf {
     }
 
     public void setNickname(String nick) {
-        bss.setNick(nick);
+        try {
+            bss.setNick(nick);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private List<Integer> unlimited;

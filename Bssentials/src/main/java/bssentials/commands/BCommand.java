@@ -43,9 +43,6 @@ public abstract class BCommand implements CommandExecutor {
                 }
             }
         }
-
-        //String name = this.getClass().getName();
-        //Bukkit.getPluginManager().addPermission(new Permission(i.permission()));
     }
 
     @Override
