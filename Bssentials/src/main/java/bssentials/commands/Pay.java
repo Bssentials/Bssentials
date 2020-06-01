@@ -26,7 +26,7 @@ public class Pay extends BCommand {
         u2.setMoney(u2.getMoney().add(d));
 
         message(sender, ChatColor.GREEN + "$" + args[1] + " sent to " + args[0]);
-        message(getPlayer(args[0]), ChatColor.GREEN + args[0] + " has given you $" + args[1]);
+        message(getPlayer(args[0]), ChatColor.GREEN + sender.getName() + " has given you $" + args[1]);
 
         return true;
     }
