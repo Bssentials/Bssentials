@@ -21,6 +21,9 @@ public class Nick extends BCommand {
 
         User user = User.getByName(sender.getName());
         String nick = ChatColor.translateAlternateColorCodes('&', args[0].replaceAll("[SPACECHAR]", " "));
+        if (nick.equals("reset"))
+            nick = sender.getName();
+
         try {
             user.setNick(nick);
             Player plr = ((Player) sender);
