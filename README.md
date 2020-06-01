@@ -1,6 +1,6 @@
-# ![Bssentials](https://media-elerium.cursecdn.com/attachments/123/323/Bssentials2017.png) [![Build Status](https://ci.codemc.org/buildStatus/icon?job=Bssentials%2FBssentials)](https://ci.codemc.org/job/Bssentials/job/Bssentials/)
+# Bssentials [![Build Status](https://ci.codemc.org/buildStatus/icon?job=Fungus-Software%2FBssentials)](https://ci.codemc.org/job/Fungus-Software/job/Bssentials/)
 
-Bssentials version 3.x is a rewrite of Bssentials made to be more optimized & fix alot of bugs.
+Bssentials version 3.x is a rewrite of Essentials made to be more optimized & fix alot of bugs.
 
 ## What is Bssentials
 Bssentials is a total remake of Essentials from the ground up!
@@ -26,7 +26,7 @@ will work with Bssentials with out any modifications to them due to the [Essenti
 
 ## Licence
 
-Bssentials Copyright (C) 2016 - 2019 Bssentials Contributers
+Copyright © 2016-2020 Bssentials Contributers
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

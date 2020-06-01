@@ -17,9 +17,9 @@
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 		</repository>
         <repository>
-	        <id>vault-repo</id>
-	        <url>http://nexus.hc.to/content/repositories/pub_releases</url>
-        </repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+	    </repository>
     </repositories>
 
     <dependencies>
@@ -30,13 +30,13 @@
 			<scope>provided</scope>
 		</dependency>
         <dependency>
-            <groupId>net.milkbowl.vault</groupId>
+            <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
             <version>1.7</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>net.milkbowl.vault</groupId>
+            <groupId>com.github.MilkBowl</groupId>
             <artifactId>Vault</artifactId>
             <version>1.7.2</version>
             <scope>provided</scope>
