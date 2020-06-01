@@ -16,11 +16,13 @@ hs_err_pid*
 /bin/
 /classes/
 
-# Outher
+# Other
 .classpath
 LastPublicVer.txt
 /maven-status/
 /maven-archiver/
+/*/.project
+/*/.settings/
 
 # Intellij
 /.idea/*

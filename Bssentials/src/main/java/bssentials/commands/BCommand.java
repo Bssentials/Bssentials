@@ -18,7 +18,7 @@ import bssentials.Bssentials;
 public abstract class BCommand implements CommandExecutor {
 
     public boolean onlyPlayer;
-    public CmdInfo i;
+    public CmdInfo info;
     private Bssentials bss;
 
     public List<String> aliases = new ArrayList<String>();
@@ -29,7 +29,7 @@ public abstract class BCommand implements CommandExecutor {
         onlyPlayer = false;
         if (null != i) {
             onlyPlayer = i.onlyPlayer();
-            this.i = i;
+            this.info = i;
             for (String s : i.aliases())
                 aliases.add(s);
 
@@ -61,8 +61,8 @@ public abstract class BCommand implements CommandExecutor {
 
     @Deprecated
     public boolean hasPerm(CommandSender s, Command cmd) {
-        if (null != i.permission() && i.permission().length() > 3) {
-            String ip = i.permission();
+        if (null != info.permission() && info.permission().length() > 3) {
+            String ip = info.permission();
             if (ip.equalsIgnoreCase("RQUIRES_OP")) return s.isOp();
             if (ip.equalsIgnoreCase("NONE")) return true;
 

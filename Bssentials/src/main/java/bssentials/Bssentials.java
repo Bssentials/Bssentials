@@ -7,6 +7,7 @@ import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.jar.JarEntry;
@@ -14,15 +15,19 @@ import java.util.jar.JarFile;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
+import org.bukkit.permissions.Permission;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import bssentials.configuration.BssConfiguration.ConfigException;
-import bssentials.configuration.Configs;
+import com.earth2me.essentials.Essentials;
+
 import bssentials.commands.BCommand;
 import bssentials.commands.BssentialsCmd;
 import bssentials.commands.CmdInfo;
 import bssentials.commands.Heal;
 import bssentials.configuration.BssConfiguration;
+import bssentials.configuration.BssConfiguration.ConfigException;
+import bssentials.configuration.Configs;
 import bssentials.listeners.PlayerChat;
 import bssentials.listeners.PlayerCommand;
 import bssentials.listeners.PlayerJoin;
@@ -51,7 +56,6 @@ public class Bssentials extends JavaPlugin implements IBssentials {
 
         getLogger().info("Loading configuration...");
         try {
-            //config = new BssConfiguration(new File(DATA_FOLDER, "config.yml"));
             Configs.initConfigs();
         } catch (ConfigException e1) {
             e1.printStackTrace();
@@ -79,24 +83,18 @@ public class Bssentials extends JavaPlugin implements IBssentials {
 
         getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
             @Override public void run() {
-                getLogger().info(" __   __   __   ___      ___              __  ");
-                getLogger().info("|__) /__` /__` |__  |\\ |  |  |  /\\  |    /__` ");
-                getLogger().info("|__) .__/ .__/ |___ | \\|  |  | /~~\\ |___ .__/ ");
-                getLogger().info("                                                ");
-                getLogger().info("Version " + getDescription().getVersion());
+                getLogger().info("Bssentials Version " + getDescription().getVersion());
 
-                if (Bukkit.getPluginManager().getPlugin("Essentials") == null) {
-                    getLogger().warning("The EssentialsBridge plugin is not installed! "
-                            + "Plugins that requrire the EssAPI will not function with Bssentials without this bridge, (ex ChestShop, Vault, etc)");
-                    getLogger().info("https://dev.bukkit.org/projects/essentialsapibridge");
-                }
+                if (Bukkit.getPluginManager().getPlugin("Essentials") == null)
+                    getLogger().info("It is recomended to install (https://dev.bukkit.org/projects/essentialsapibridge) to allow ChestShop, Vault, etc to work.");
             }
         });
-    }
 
-    @Override
-    public BssConfiguration getConfig() {
-        return Configs.MAIN;
+        try {
+            fakeRegisterAsEssentials();
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        }
     }
 
     public void register(String name, BCommand base) {
@@ -115,8 +113,13 @@ public class Bssentials extends JavaPlugin implements IBssentials {
     }
 
     public void register(BCommand... bases) {
-        for (BCommand bcmd : bases)
+        for (BCommand bcmd : bases) {
             register(bcmd.getClass().getSimpleName().toLowerCase(Locale.ENGLISH), bcmd);
+            String permission = bcmd.info.permission();
+            if (permission.equalsIgnoreCase("REQUIRES_OP") || permission.equalsIgnoreCase("NONE"))
+                continue;
+            Bukkit.getPluginManager().addPermission(new Permission(permission));
+        }
     }
 
     public List<Class<? extends BCommand>> getCommandClasses() {
@@ -135,8 +138,7 @@ public class Bssentials extends JavaPlugin implements IBssentials {
                             continue;
                         try {
                             Class<?> clazz = Class.forName(entry);
-                            if (!clazz.getSimpleName().equals("BssentialsCmd") && clazz.isAnnotationPresent(CmdInfo.class) &&
-                                    BCommand.class.isAssignableFrom(clazz))
+                            if (!clazz.getSimpleName().equals("BssentialsCmd") && clazz.isAnnotationPresent(CmdInfo.class) && BCommand.class.isAssignableFrom(clazz))
                                 classList.add(clazz.asSubclass(BCommand.class));
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
@@ -148,6 +150,20 @@ public class Bssentials extends JavaPlugin implements IBssentials {
             e1.printStackTrace();
         }
         return classList;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void fakeRegisterAsEssentials() throws Exception {
+        Field privateMap = Bukkit.getPluginManager().getClass().getDeclaredField("lookupNames");
+        privateMap.setAccessible(true);
+
+        HashMap<String, Plugin> lookupNames = (HashMap<String, Plugin>) privateMap.get(Bukkit.getPluginManager());
+        lookupNames.put("Essentials", new Essentials(this));
+    }
+
+    @Override
+    public BssConfiguration getConfig() {
+        return Configs.MAIN;
     }
 
     @Deprecated

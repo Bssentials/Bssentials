@@ -5,6 +5,9 @@ import java.math.MathContext;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.earth2me.essentials.api.NoLoanPermittedException;
+import com.earth2me.essentials.api.UserDoesNotExistException;
+
 import bssentials.Bssentials;
 
 /**
@@ -22,13 +25,13 @@ public class Econ {
      * @return balance
      */
     @Deprecated
-    public static double getMoney(String name) throws Exception {
+    public static double getMoney(String name) throws UserDoesNotExistException {
         return getMoneyExact(name).doubleValue();
     }
 
-    public static BigDecimal getMoneyExact(String name) throws Exception {
+    public static BigDecimal getMoneyExact(String name) throws UserDoesNotExistException {
         User user = User.getByName(name);
-        if (user == null) throw new Exception("User does not exist: " + name);
+        if (user == null) throw new UserDoesNotExistException("User does not exist: " + name);
 
         return user.getMoney();
     }
@@ -42,7 +45,7 @@ public class Econ {
      * @throws Exception If user by name does not exist or not allowed negative balance
      */
     @Deprecated
-    public static void setMoney(String name, double balance) throws Exception {
+    public static void setMoney(String name, double balance) throws UserDoesNotExistException, NoLoanPermittedException {
         try {
             setMoney(name, BigDecimal.valueOf(balance));
         } catch (ArithmeticException e) {
@@ -50,14 +53,14 @@ public class Econ {
         }
     }
 
-    public static void setMoney(String name, BigDecimal balance) throws Exception {
+    public static void setMoney(String name, BigDecimal balance) throws UserDoesNotExistException, NoLoanPermittedException {
         User user = User.getByName(name);
 
-        if (user == null) throw new Exception(name);
-        if (balance.compareTo(new BigDecimal(0)) < 0) throw new Exception();
+        if (user == null) throw new UserDoesNotExistException(name);
+        if (balance.compareTo(new BigDecimal(0)) < 0) throw new NoLoanPermittedException();
 
         if (balance.signum() < 0 && !(user.isAuthorized("essentials.eco.loan") || user.isAuthorized("bssentials.eco.loan")))
-            throw new Exception();
+            throw new NoLoanPermittedException();
 
         try {
             user.setMoney(balance);
@@ -76,7 +79,7 @@ public class Econ {
      * @throws NoLoanPermittedException  If the user is not allowed to have a negative balance
      */
     @Deprecated
-    public static void add(String name, double amount) throws Exception {
+    public static void add(String name, double amount) throws UserDoesNotExistException, NoLoanPermittedException {
         try {
             add(name, BigDecimal.valueOf(amount));
         } catch (ArithmeticException e) {
@@ -84,7 +87,7 @@ public class Econ {
         }
     }
 
-    public static void add(String name, BigDecimal amount) throws Exception {
+    public static void add(String name, BigDecimal amount) throws UserDoesNotExistException, NoLoanPermittedException {
         setMoney(name, getMoneyExact(name).add(amount, MATH_CONTEXT));
     }
 
@@ -98,7 +101,7 @@ public class Econ {
      * @throws NoLoanPermittedException  If the user is not allowed to have a negative balance
      */
     @Deprecated
-    public static void subtract(String name, double amount) throws Exception {
+    public static void subtract(String name, double amount) throws UserDoesNotExistException, NoLoanPermittedException {
         try {
             substract(name, BigDecimal.valueOf(amount));
         } catch (ArithmeticException e) {
@@ -107,7 +110,7 @@ public class Econ {
         }
     }
 
-    public static void substract(String name, BigDecimal amount) throws Exception {
+    public static void substract(String name, BigDecimal amount) throws UserDoesNotExistException, NoLoanPermittedException {
         setMoney(name, getMoneyExact(name).subtract(amount, MATH_CONTEXT));
     }
 
@@ -121,7 +124,7 @@ public class Econ {
      * @throws NoLoanPermittedException  If the user is not allowed to have a negative balance
      */
     @Deprecated
-    public static void divide(String name, double amount) throws Exception {
+    public static void divide(String name, double amount) throws UserDoesNotExistException, NoLoanPermittedException {
         try {
             divide(name, BigDecimal.valueOf(amount));
         } catch (ArithmeticException e) {
@@ -129,7 +132,7 @@ public class Econ {
         }
     }
 
-    public static void divide(String name, BigDecimal amount) throws Exception {
+    public static void divide(String name, BigDecimal amount) throws UserDoesNotExistException, NoLoanPermittedException {
         setMoney(name, getMoneyExact(name).divide(amount, MATH_CONTEXT));
     }
 
@@ -140,7 +143,7 @@ public class Econ {
      * @param value The balance is multiplied by this value
      */
     @Deprecated
-    public static void multiply(String name, double amount) throws Exception {
+    public static void multiply(String name, double amount) throws UserDoesNotExistException, NoLoanPermittedException {
         try {
             multiply(name, BigDecimal.valueOf(amount));
         } catch (ArithmeticException e) {
@@ -148,7 +151,7 @@ public class Econ {
         }
     }
 
-    public static void multiply(String name, BigDecimal amount) throws Exception {
+    public static void multiply(String name, BigDecimal amount) throws UserDoesNotExistException, NoLoanPermittedException {
         setMoney(name, getMoneyExact(name).multiply(amount, MATH_CONTEXT));
     }
 
@@ -158,7 +161,7 @@ public class Econ {
      * @param name Name of the user
      * @throws Exception If user by name does not exist or not allowed to have a negative balance
      */
-    public static void resetBalance(String name) throws Exception {
+    public static void resetBalance(String name) throws UserDoesNotExistException, NoLoanPermittedException {
         if (Bssentials.get() == null)
             throw new RuntimeException("Econ is called before Bssentials is loaded.");
 
@@ -171,7 +174,7 @@ public class Econ {
      *
      * @return true, if the user has more or an equal amount of money
      */
-    public static boolean hasEnough(String name, double amount) throws Exception {
+    public static boolean hasEnough(String name, double amount) throws UserDoesNotExistException {
         try {
             return hasEnough(name, BigDecimal.valueOf(amount));
         } catch (ArithmeticException e) {
@@ -180,7 +183,7 @@ public class Econ {
         }
     }
 
-    public static boolean hasEnough(String name, BigDecimal amount) throws Exception {
+    public static boolean hasEnough(String name, BigDecimal amount) throws UserDoesNotExistException {
         return amount.compareTo(getMoneyExact(name)) <= 0;
     }
 
@@ -190,7 +193,7 @@ public class Econ {
      *
      * @return true, if the user has more money
      */
-    public static boolean hasMore(String name, double amount) throws Exception {
+    public static boolean hasMore(String name, double amount) throws UserDoesNotExistException {
         try {
             return hasMore(name, BigDecimal.valueOf(amount));
         } catch (ArithmeticException e) {
@@ -199,7 +202,7 @@ public class Econ {
         }
     }
 
-    public static boolean hasMore(String name, BigDecimal amount) throws Exception {
+    public static boolean hasMore(String name, BigDecimal amount) throws UserDoesNotExistException {
         return amount.compareTo(getMoneyExact(name)) < 0;
     }
 
@@ -209,7 +212,7 @@ public class Econ {
      *
      * @return true, if the user has less money
      */
-    public static boolean hasLess(String name, double amount) throws Exception {
+    public static boolean hasLess(String name, double amount) throws UserDoesNotExistException {
         try {
             return hasLess(name, BigDecimal.valueOf(amount));
         } catch (ArithmeticException e) {
@@ -218,7 +221,7 @@ public class Econ {
         }
     }
 
-    public static boolean hasLess(String name, BigDecimal amount) throws Exception {
+    public static boolean hasLess(String name, BigDecimal amount) throws UserDoesNotExistException {
         return amount.compareTo(getMoneyExact(name)) > 0;
     }
 
@@ -228,7 +231,7 @@ public class Econ {
      * @param name Name of the user
      * @return true, if the user has a negative balance
      */
-    public static boolean isNegative(String name) throws Exception {
+    public static boolean isNegative(String name) throws UserDoesNotExistException {
         return getMoneyExact(name).signum() < 0;
     }
 
@@ -243,7 +246,7 @@ public class Econ {
     }
 
     public static String format(BigDecimal amount) {
-        return "$" + amount;
+        return "$" + amount.floatValue();
     }
 
     /**
@@ -257,6 +260,14 @@ public class Econ {
     }
 
     public static boolean isNPC(String name) throws Exception {
+        return false;
+    }
+
+    public static boolean createNPC(String name) {
+        return false;
+    }
+
+    public static boolean removeNPC(String name) {
         return false;
     }
 
