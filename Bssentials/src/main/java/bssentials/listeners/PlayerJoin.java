@@ -28,7 +28,7 @@ public class PlayerJoin implements Listener {
         }
 
         // OPs name color
-        if (plr.isOp() && !opNameColor.equalsIgnoreCase("none"))
+        if (plr.isOp() && null != opNameColor && !opNameColor.equalsIgnoreCase("none"))
             plr.setDisplayName(ChatColor.translateAlternateColorCodes('&', opNameColor + plr.getDisplayName() + "&r"));
 
         if (!plr.hasPlayedBefore()) {
