@@ -118,7 +118,6 @@ public class Bssentials extends JavaPlugin implements IBssentials {
             String permission = bcmd.info.permission();
             if (permission.equalsIgnoreCase("REQUIRES_OP") || permission.equalsIgnoreCase("NONE"))
                 continue;
-            Bukkit.getPluginManager().addPermission(new Permission(permission));
         }
     }
 
