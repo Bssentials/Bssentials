@@ -15,7 +15,6 @@ import java.util.jar.JarFile;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
-import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -50,6 +49,7 @@ public class Bssentials extends JavaPlugin implements IBssentials {
         warpdir.mkdirs();
         warpManager = new Warps(this, warpdir);
 
+        saveResource("config.yml", false);
         saveResource("info.txt", false);
         saveResource("motd.txt", false);
         saveResource("rules.txt", false);

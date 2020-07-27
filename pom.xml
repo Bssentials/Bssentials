@@ -9,6 +9,7 @@
     <modules>
         <module>Bssentials</module>
         <module>EssentialsBridge</module>
+        <module>Bssentials-Fabric</module>
     </modules>
 
     <properties>
@@ -32,13 +33,5 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
-    <distributionManagement>
-        <repository>
-            <id>spigot-repo</id>
-            <name>md-5</name>
-            <url>http://ci.md-5.net</url><!--Hopfully this will work-->
-        </repository>
-    </distributionManagement>
 
 </project>
