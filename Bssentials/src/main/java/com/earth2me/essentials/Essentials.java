@@ -25,7 +25,6 @@ public class Essentials extends PluginBase {
 
     @Override
     public File getDataFolder() {
-
         return bss.getDataFolder();
     }
 

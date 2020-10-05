@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -99,8 +101,7 @@ public class User {
                 money = new BigDecimal((double) user.get("money"));
             } catch (Exception e) {
                 Object mon = user.get("money");
-                money = mon instanceof BigDecimal ?
-                        (BigDecimal) mon : BigDecimal.valueOf(Double.valueOf((int) mon));
+                money = mon instanceof BigDecimal ? (BigDecimal) mon : BigDecimal.valueOf(Double.valueOf((int) mon));
             }
             nick = user.getString("nick");
         } catch (IOException e) {
@@ -179,6 +180,11 @@ public class User {
     // TODO
     public void teleport() {
         // teleport-safety
+    }
+
+    public Set<String> getHomes() {
+        ConfigurationSection section = user.getConfigurationSection("homes");
+        return section.getValues(false).keySet();
     }
 
 }

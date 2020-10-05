@@ -36,8 +36,7 @@ public class PlayerJoin implements Listener {
             user.save();
             Bukkit.broadcastMessage(ChatColor.GRAY + " Please welcome " + plr.getName() + " to the server!");
 
-            if (!warps.isSpawnSet())
-                return;
+            if (!warps.isSpawnSet()) return;
 
             try {
                 warps.teleportToWarp(plr, "spawn");

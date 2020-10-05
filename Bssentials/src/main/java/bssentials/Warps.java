@@ -35,15 +35,6 @@ public class Warps {
             logger.info("To use your old warps move them from the /Essentials/warps/ folder into /Bssentials/warps/");
             logger.info("===========================");
         }
-
-        File oldwarps = new File(bss.getDataFolder(), "warps.yml");
-        if (oldwarps.exists()) {
-            logger.info("===========================");
-            logger.info("Old version 2.x warps found!");
-            logger.info("Converting to new format...");
-            V2WarpConvert.convert(oldwarps, this);
-            logger.info("===========================");
-        }
     }
 
     public boolean isEmpty() {

@@ -9,7 +9,7 @@
     <modules>
         <module>Bssentials</module>
         <module>EssentialsBridge</module>
-        <module>Bssentials-Fabric</module>
+        <!--<module>Bssentials-Fabric</module>-->
     </modules>
 
     <properties>

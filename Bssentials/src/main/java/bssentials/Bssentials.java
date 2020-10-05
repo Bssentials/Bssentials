@@ -27,8 +27,6 @@ import bssentials.commands.Heal;
 import bssentials.configuration.BssConfiguration;
 import bssentials.configuration.BssConfiguration.ConfigException;
 import bssentials.configuration.Configs;
-import bssentials.listeners.PlayerChat;
-import bssentials.listeners.PlayerCommand;
 import bssentials.listeners.PlayerJoin;
 import bssentials.listeners.PlayerLeave;
 
@@ -76,8 +74,6 @@ public class Bssentials extends JavaPlugin implements IBssentials {
 
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerLeave(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerCommand(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerChat(), this);
 
         getLogger().info("Registered " + registered + " commands");
 
@@ -86,7 +82,7 @@ public class Bssentials extends JavaPlugin implements IBssentials {
                 getLogger().info("Bssentials Version " + getDescription().getVersion());
 
                 if (Bukkit.getPluginManager().getPlugin("Essentials") == null)
-                    getLogger().info("It is recomended to install (https://dev.bukkit.org/projects/essentialsapibridge) to allow ChestShop, Vault, etc to work.");
+                    getLogger().info("It is recomended to install \"https://dev.bukkit.org/projects/essentialsapibridge\" to allow ChestShop, Vault, etc to work.");
             }
         });
 
