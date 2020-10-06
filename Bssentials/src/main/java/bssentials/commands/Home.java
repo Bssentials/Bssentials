@@ -2,9 +2,6 @@ package bssentials.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import bssentials.api.User;
 
@@ -12,15 +9,15 @@ import bssentials.api.User;
 public class Home extends BCommand {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
+    public boolean onCommand(User user, String label, String[] args) {
         String home = "home";
         if (args.length > 0) home = args[0];
 
-        Location l = User.getByName(sender.getName()).getHome(home);
+        Location l = user.getHome(home);
         if (null != l) {
-            ((Player) sender).teleport(l);
+            user.teleport(l);
         } else {
-            message(sender, ChatColor.RED + "Home not set!");
+            message(user, ChatColor.RED + "Home not set!");
         }
 
         return false;

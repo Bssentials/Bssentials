@@ -1,24 +1,21 @@
 package bssentials.commands;
 
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import bssentials.api.User;
 
 @CmdInfo(onlyPlayer = true, aliases = {"tpyes", "tpayes"})
 public class TpAccept extends BCommand {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
-        Player p = (Player) sender;
-        if (Tpa.tpaMap.containsKey(p.getName())) {
-            Player from = getPlayer( Tpa.tpaMap.get(p.getName()) );
-            message(p, ChatColor.GREEN + "Teleport Request accepted.");
-            message(from, ChatColor.GREEN + "Teleport Request accepted.");
-            from.teleport(p);
-            Tpa.tpaMap.remove(p.getName());
+    public boolean onCommand(User user, String label, String[] args) {
+        if (Tpa.tpaMap.containsKey(user.getName(false))) {
+            User from = getUserByName( Tpa.tpaMap.get(user.getName(false)) );
+            user.sendMessage(ChatColor.GREEN + "Teleport Request accepted.");
+            from.sendMessage(ChatColor.GREEN + "Teleport Request accepted.");
+            from.teleport(user.getLocation());
+            Tpa.tpaMap.remove(user.getName(false));
         }
-        return message(p, ChatColor.RED + "You have no teleport requests to accept");
+        return message(user, ChatColor.RED + "You have no teleport requests to accept");
     }
 
 }

@@ -2,18 +2,16 @@ package bssentials.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import bssentials.api.User;
 
 @CmdInfo
 public class Ping extends BCommand {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
-        message(sender, sender instanceof Player ?
-                ChatColor.GREEN + "Your Ping: " + getPing((Player) sender) + " ms" : "Your Ping: 0ms");
-
+    public boolean onCommand(User user, String label, String[] args) {
+        user.sendMessage(user.isPlayer() ? ChatColor.GREEN + "Your Ping: " + getPing(((Player)user.getBase())) + " ms" : "Your Ping: 0ms");
         return true;
     }
 

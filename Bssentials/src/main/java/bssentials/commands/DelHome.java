@@ -1,23 +1,17 @@
 package bssentials.commands;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import bssentials.api.User;
 
 @CmdInfo(onlyPlayer = true)
 public class DelHome extends BCommand {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
+    public boolean onCommand(User user, String label, String[] args) {
         if (args.length < 1) {
-            sender.sendMessage("Usage: /delhome <name>");
+            user.sendMessage("Usage: /delhome <name>");
             return false;
         }
-        String home = args[0];
-        Player p = (Player) sender;
-        User.getByName(p.getName()).delHome(home);
+        user.delHome(args[0]);
         return false;
     }
 

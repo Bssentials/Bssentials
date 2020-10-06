@@ -1,11 +1,13 @@
-package bssentials;
+package bssentials.api;
 
 import bssentials.configuration.BssConfiguration;
 
 public interface IBssentials {
 
-    public Warps getWarps();
+    public IWarps getWarps();
 
     public BssConfiguration getConfig();
+
+    public User getUser(Object base);
 
 }

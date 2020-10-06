@@ -3,8 +3,6 @@ package bssentials.commands;
 import java.math.BigDecimal;
 
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 
 import bssentials.api.User;
 
@@ -12,21 +10,20 @@ import bssentials.api.User;
 public class Pay extends BCommand {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
+    public boolean onCommand(User user, String label, String[] args) {
         if (args.length < 2) {
-            message(sender, ChatColor.DARK_RED + "Usage: /pay <player> <amount>");
+            user.sendMessage(ChatColor.DARK_RED + "Usage: /pay <player> <amount>");
             return true;
         }
 
-        User u1 = User.getByName(sender.getName());
-        User u2 = User.getByName(args[0]);
+        User target = getUserByName(args[0]);
 
         BigDecimal d = new BigDecimal(args[1]);
-        u1.setMoney(u1.getMoney().subtract(d));
-        u2.setMoney(u2.getMoney().add(d));
+        user.setMoney(user.getMoney().subtract(d));
+        target.setMoney(target.getMoney().add(d));
 
-        message(sender, ChatColor.GREEN + "$" + args[1] + " sent to " + args[0]);
-        message(getPlayer(args[0]), ChatColor.GREEN + sender.getName() + " has given you $" + args[1]);
+        user.sendMessage(ChatColor.GREEN + "$" + args[1] + " sent to " + args[0]);
+        target.sendMessage(ChatColor.GREEN + user.getName(true) + " has given you $" + args[1]);
 
         return true;
     }

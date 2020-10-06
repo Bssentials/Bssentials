@@ -1,30 +1,28 @@
 package bssentials.commands;
 
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+
+import bssentials.api.User;
 
 @CmdInfo
 public class Uuid extends BCommand {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
+    public boolean onCommand(User user, String label, String[] args) {
         if (args.length == 0) {
-            if (!(sender instanceof Player)) {
-                message(sender, "Console Usage: /uuid <player>");
+            if (!user.isPlayer()) {
+                user.sendMessage("Console Usage: /uuid <player>");
                 return false;
             }
-            Player p = (Player) sender;
-            sender.sendMessage("Your UUID: " + p.getUniqueId().toString());
+            user.sendMessage("Your UUID: " + user.getUniqueId().toString());
             return true;
         }
 
         try {
-            String uuid = getPlayer(args[0]).getUniqueId().toString();
-            message(sender, ChatColor.GREEN + "UUID of " + args[0] + ": " + uuid);
+            String uuid = getUserByName(args[0]).getUniqueId().toString();
+            user.sendMessage(ChatColor.GREEN + "UUID of " + args[0] + ": " + uuid);
         } catch (NullPointerException e) {
-            message(sender, ChatColor.RED + "Player not online.");
+            user.sendMessage(ChatColor.RED + "Player not online.");
         }
         return true;
     }

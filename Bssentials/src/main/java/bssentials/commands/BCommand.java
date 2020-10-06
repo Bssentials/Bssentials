@@ -2,18 +2,16 @@ package bssentials.commands;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permission;
 
 import bssentials.Bssentials;
+import bssentials.api.User;
 
 public abstract class BCommand implements CommandExecutor {
 
@@ -24,7 +22,7 @@ public abstract class BCommand implements CommandExecutor {
     public List<String> aliases = new ArrayList<String>();
 
     public BCommand() {
-        this.bss = Bssentials.get();
+        this.bss = Bssentials.getInstance();
         CmdInfo i = this.getClass().getAnnotation(CmdInfo.class);
         onlyPlayer = false;
         if (null != i) {
@@ -46,7 +44,7 @@ public abstract class BCommand implements CommandExecutor {
             return false;
         }
 
-        return onCommand(sender, cmd, args);
+        return onCommand(bss.getUser(sender.getName()), string, args);
     }
 
     @Deprecated
@@ -64,11 +62,46 @@ public abstract class BCommand implements CommandExecutor {
                 || s.hasPermission("bssentials.command.*"));
     }
 
+    @Deprecated
+    public boolean hasPerm(User s, Command cmd) {
+        if (null != info.permission() && info.permission().length() > 3) {
+            String ip = info.permission();
+            if (ip.equalsIgnoreCase("RQUIRES_OP")) return s.isOp();
+            if (ip.equalsIgnoreCase("NONE")) return true;
+
+            return s.isAuthorized(ip);
+        }
+
+        String c = cmd.getName().toLowerCase();
+        return (s.isOp() || s.isAuthorized("bssentials.command." + c) || s.isAuthorized("essentials." + c) || s.isAuthorized("bssentials.command.*"));
+    }
+
+    public boolean hasPerm(User s, String cmd) {
+        if (null != info.permission() && info.permission().length() > 3) {
+            String ip = info.permission();
+            if (ip.equalsIgnoreCase("RQUIRES_OP")) return s.isOp();
+            if (ip.equalsIgnoreCase("NONE")) return true;
+
+            return s.isAuthorized(ip);
+        }
+        String c = cmd.toLowerCase();
+        return (s.isOp() || s.isAuthorized("bssentials.command." + c) || s.isAuthorized("essentials." + c) || s.isAuthorized("bssentials.command.*"));
+    }
+
+    @Deprecated
     public boolean message(CommandSender cs, String message) {
         message = ChatColor.translateAlternateColorCodes('&', message);
 
         boolean isPlr = cs instanceof Player;
         cs.sendMessage(isPlr ? message : ChatColor.stripColor(message));
+        return isPlr;
+    }
+
+    public boolean message(User user, String message) {
+        message = ChatColor.translateAlternateColorCodes('&', message);
+
+        boolean isPlr = user.isPlayer();
+        user.sendMessage(message);
         return isPlr;
     }
 
@@ -80,10 +113,10 @@ public abstract class BCommand implements CommandExecutor {
         return bss;
     }
 
-    public Player getPlayer(String name) {
-        return Bukkit.getPlayer(name);
+    public User getUserByName(String name) {
+        return bss.getUser(name);
     }
 
-    public abstract boolean onCommand(CommandSender sender, Command cmd, String[] args);
+    public abstract boolean onCommand(User sender, String label, String[] args);
 
 }

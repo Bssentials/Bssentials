@@ -24,7 +24,7 @@ public class BssConfiguration extends YamlConfiguration {
             this.load(f);
         } catch (IOException | InvalidConfigurationException e) {
             if (!f.exists()) {
-                Bssentials.get().getLogger().info("Configuration file \"" + f.getName() + "\" does not exist. Creating new configuration...");
+                Bssentials.getInstance().getLogger().info("Configuration file \"" + f.getName() + "\" does not exist. Creating new configuration...");
                 try {
                     saveDefaultConfig();
                 } catch (URISyntaxException | IOException e1) {

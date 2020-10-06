@@ -1,29 +1,24 @@
 package bssentials.commands;
 
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.PlayerInventory;
+import bssentials.api.User;
 
 @CmdInfo(aliases = {"clear"})
 public class ClearInventory extends BCommand {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
+    public boolean onCommand(User user, String label, String[] args) {
         if (args.length > 2) {
-            sender.sendMessage("Usage: /clear [material]");
+            message(user, "Usage: /clear [material]");
             return false;
         }
-        Player p = (Player) sender;
-        PlayerInventory i = p.getInventory();
+
         if (args.length > 0) {
-            p.sendMessage("Removing " + args[0] + " from inventory");
-            i.remove(Material.valueOf(args[0]));
+            message(user, "Removing " + args[0] + " from inventory");
+            user.clearInventory(args[0]);
             return true;
         }
-        p.sendMessage("Clearing inventory");
-        i.clear();
+        message(user, "Clearing inventory");
+        user.clearInventory(null);
         
         return false;
     }

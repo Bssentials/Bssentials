@@ -15,7 +15,7 @@ import bssentials.Bssentials;
  */
 public class Econ {
 
-    private static final Logger logger = Bssentials.get().getLogger();
+    private static final Logger logger = Bssentials.getInstance().getLogger();
     public static final MathContext MATH_CONTEXT = MathContext.DECIMAL128;
 
     /**
@@ -30,7 +30,7 @@ public class Econ {
     }
 
     public static BigDecimal getMoneyExact(String name) throws UserDoesNotExistException {
-        User user = User.getByName(name);
+        User user = Bssentials.getInstance().getUser(name);
         if (user == null) throw new UserDoesNotExistException("User does not exist: " + name);
 
         return user.getMoney();
@@ -54,7 +54,7 @@ public class Econ {
     }
 
     public static void setMoney(String name, BigDecimal balance) throws UserDoesNotExistException, NoLoanPermittedException {
-        User user = User.getByName(name);
+        User user = Bssentials.getInstance().getUser(name);
 
         if (user == null) throw new UserDoesNotExistException(name);
         if (balance.compareTo(new BigDecimal(0)) < 0) throw new NoLoanPermittedException();
@@ -162,7 +162,7 @@ public class Econ {
      * @throws Exception If user by name does not exist or not allowed to have a negative balance
      */
     public static void resetBalance(String name) throws UserDoesNotExistException, NoLoanPermittedException {
-        if (Bssentials.get() == null)
+        if (Bssentials.getInstance() == null)
             throw new RuntimeException("Econ is called before Bssentials is loaded.");
 
         setMoney(name, 100); // TODO: configure
@@ -256,7 +256,7 @@ public class Econ {
      * @return true, if the user exists
      */
     public static boolean playerExists(String name) {
-        return User.getByName(name) != null;
+        return Bssentials.getInstance().getUser(name) != null;
     }
 
     public static boolean isNPC(String name) throws Exception {

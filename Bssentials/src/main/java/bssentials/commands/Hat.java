@@ -1,30 +1,20 @@
 package bssentials.commands;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
+
+import bssentials.api.User;
 
 @CmdInfo(onlyPlayer = true)
 public class Hat extends BCommand {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
-        Player player = (Player) sender;
-        if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
-            ItemStack itemHand = player.getInventory().getItemInMainHand();
-            PlayerInventory inventory = player.getInventory();
-            ItemStack itemHead = inventory.getHelmet();
-            inventory.removeItem(new ItemStack[] { itemHand });
-            inventory.setHelmet(itemHand);
-            inventory.setItemInMainHand(itemHead);
-            player.sendMessage(ChatColor.YELLOW + "Item successfuly put on your head.");
+    public boolean onCommand(User user, String label, String[] args) {
+        if (user.getItemInMainHand() != 0) {
+            user.setHelmentToMainHandItem();
+            user.sendMessage(ChatColor.YELLOW + "Item successfuly put on your head.");
             return true;
         }
-        player.sendMessage(ChatColor.YELLOW + "You must have something to put on your head!");
+        user.sendMessage(ChatColor.YELLOW + "You must have something to put on your head!");
         return true;
     }
 

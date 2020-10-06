@@ -1,6 +1,6 @@
 name: Bssentials
 version: ${full.version}
-authors: [Isaiah, ramidzkh, krisp, Machine-Maker, FunWithJava, bit.ly/bssentialscontributers]
+authors: [Isaiah, ramidzkh, krisp, Machine-Maker]
 main: bssentials.Bssentials
 description: Essentials features for Bukkit/Spigot. Remake of EssentialsX
 softdepend: [Vault]

@@ -1,27 +1,25 @@
 package bssentials.commands;
 
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+
+import bssentials.api.User;
 
 @CmdInfo(onlyPlayer = true, aliases = {"echest", "ender"})
 public class Enderchest extends BCommand {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
-        Player p = (Player) sender;
+    public boolean onCommand(User user, String label, String[] args) {
         if (args.length == 0) {
-            p.openInventory(p.getEnderChest());
+            user.openEnderchest(user);
             return true;
         } else if (args.length == 1) {
-            Player target = getPlayer(args[0]);
+            User target = getUserByName(args[0]);
             if (target == null || !target.isOnline()) {
-                p.sendMessage(ChatColor.RED + "Player not found");
+                user.sendMessage(ChatColor.RED + "Player not found");
                 return true;
             }
-            p.sendMessage("Opening " + target.getName() + "'s enderchest.");
-            p.openInventory(target.getEnderChest());
+            user.sendMessage("Opening " + target.getName(false) + "'s enderchest.");
+            user.openEnderchest(target);
             return true;
         }
         return true;

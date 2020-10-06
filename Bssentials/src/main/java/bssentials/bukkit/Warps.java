@@ -1,4 +1,4 @@
-package bssentials;
+package bssentials.bukkit;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,9 +7,12 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
-public class Warps {
+import bssentials.Bssentials;
+import bssentials.api.IWarps;
+import bssentials.api.User;
+
+public class Warps implements IWarps {
 
     private final File folder;
     private final Logger logger;
@@ -37,14 +40,17 @@ public class Warps {
         }
     }
 
+    @Override
     public boolean isEmpty() {
         return folder.listFiles() == null || folder.listFiles().length <= 0;
     }
 
+    @Override
     public File[] getWarpFiles() {
         return folder.listFiles();
     }
 
+    @Override
     public Location getWarp(String name) {
         Location l = new Location(null, 0, 0, 0);
         try {
@@ -66,6 +72,7 @@ public class Warps {
         return l;
     }
 
+    @Override
     public void setWarp(String name, Location loc) throws IOException {
         File file = getWarpFile(name);
 
@@ -76,16 +83,19 @@ public class Warps {
         com.google.common.io.Files.write(content.getBytes(), file);
     }
 
+    @Override
     public boolean removeWarp(String name) {
         return getWarpFile(name).delete();
     }
 
+    @Override
     public File getWarpFile(String name) {
         if (name.equalsIgnoreCase("spawn")) return spawn;
 
         return new File(folder, name + ".yml");
     }
 
+    @Override
     public boolean isSpawnSet() {
         try {
             return Files.readAllLines(spawn.toPath()).size() < 2;
@@ -94,13 +104,15 @@ public class Warps {
         }
     }
 
+    @Override
     public int getCount() {
         return getWarpFiles().length;
     }
 
-    public boolean teleportToWarp(Player plr, String warpName) {
+    @Override
+    public boolean teleportToWarp(User user, String warpName) {
         Location l = getWarp(warpName);
-        return plr.teleport(l == null ? plr.getLocation() : l);
+        return user.teleport(l == null ? user.getLocation() : l);
     }
 
 }

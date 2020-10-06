@@ -1,23 +1,18 @@
 package bssentials.commands;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import bssentials.api.User;
 
 @CmdInfo(onlyPlayer = true)
 public class SetHome extends BCommand {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
+    public boolean onCommand(User user, String label, String[] args) {
         if (args.length < 1) {
-            sender.sendMessage("Usage: /sethome <name>");
+            user.sendMessage("Usage: /sethome <name>");
             return false;
         }
         String home = args[0];
-        Player p = (Player) sender;
-        User.getByName(p.getName()).setHome(home, p.getLocation());
+        user.setHome(home, user.getLocation());
         return false;
     }
 

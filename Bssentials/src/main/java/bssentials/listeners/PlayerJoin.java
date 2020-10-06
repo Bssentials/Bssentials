@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import bssentials.Bssentials;
-import bssentials.Warps;
+import bssentials.bukkit.Warps;
 import bssentials.api.User;
 import bssentials.configuration.Configs;
 
@@ -17,12 +17,12 @@ public class PlayerJoin implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player plr = e.getPlayer();
-        Warps warps = Bssentials.get().getWarps();
-        User user = User.getByName(plr.getName());
+        Warps warps = Bssentials.getInstance().getWarps();
+        User user = Bssentials.getInstance().getUser(plr.getName());
         String opNameColor = Configs.MAIN.getString("ops-name-color");
 
-        if (user.nick != null && !user.nick.equalsIgnoreCase("_null_") && Configs.MAIN.getBoolean("change-displayname", false)) {
-            plr.setDisplayName(user.nick);
+        if (user.getNick() != null && !user.getNick().equalsIgnoreCase("_null_") && Configs.MAIN.getBoolean("change-displayname", false)) {
+            plr.setDisplayName(user.getNick());
             if (Configs.MAIN.getBoolean("change-playerlist", true))
                 plr.setPlayerListName(plr.getDisplayName());
         }
@@ -39,7 +39,7 @@ public class PlayerJoin implements Listener {
             if (!warps.isSpawnSet()) return;
 
             try {
-                warps.teleportToWarp(plr, "spawn");
+                warps.teleportToWarp(user, "spawn");
             } catch (Exception ex) {
                 ex.printStackTrace();
                 user.sendMessage("&4Unable to find spawn: " + ex.getMessage());

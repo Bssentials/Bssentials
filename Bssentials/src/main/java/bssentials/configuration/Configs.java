@@ -10,7 +10,7 @@ public class Configs {
     public static BssConfiguration MAIN;
 
     public static void initConfigs() throws ConfigException {
-        MAIN = new BssConfiguration(new File(Bssentials.get().getDataFolder(), "config.yml"));
+        MAIN = new BssConfiguration(new File(Bssentials.getInstance().getDataFolder(), "config.yml"));
     }
 
 }

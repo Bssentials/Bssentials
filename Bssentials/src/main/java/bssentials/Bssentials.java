@@ -10,16 +10,23 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.earth2me.essentials.Essentials;
 
+import bssentials.api.IBssentials;
+import bssentials.api.User;
+import bssentials.bukkit.BukkitUser;
+import bssentials.bukkit.ConsoleUser;
+import bssentials.bukkit.Warps;
 import bssentials.commands.BCommand;
 import bssentials.commands.BssentialsCmd;
 import bssentials.commands.CmdInfo;
@@ -38,6 +45,9 @@ public class Bssentials extends JavaPlugin implements IBssentials {
     private Warps warpManager;
 
     public static File DATA_FOLDER;
+    public User CONSOLE_USER;
+
+    public HashMap<UUID, User> users;
 
     @Override
     public void onEnable() {
@@ -46,6 +56,8 @@ public class Bssentials extends JavaPlugin implements IBssentials {
         warpdir = new File((DATA_FOLDER = getDataFolder()), "warps");
         warpdir.mkdirs();
         warpManager = new Warps(this, warpdir);
+        CONSOLE_USER = new ConsoleUser(Bukkit.getConsoleSender());
+        users = new HashMap<>();
 
         saveResource("config.yml", false);
         saveResource("info.txt", false);
@@ -161,14 +173,35 @@ public class Bssentials extends JavaPlugin implements IBssentials {
         return Configs.MAIN;
     }
 
-    @Deprecated
-    public static Bssentials get() {
+    public static Bssentials getInstance() {
         return i;
     }
 
     @Override
     public Warps getWarps() {
         return warpManager;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public User getUser(Object base) {
+        if (base instanceof Player) {
+            Player p = (Player) base;
+            if (users.containsKey(p.getUniqueId()))
+                return users.get(p.getUniqueId());
+            User user = new BukkitUser(p);
+            users.put(p.getUniqueId(), user);
+            return user;
+        }
+        if (base instanceof String) {
+            Player p = Bukkit.getPlayerExact((String)base);
+            if (users.containsKey(p.getUniqueId()))
+                return users.get(p.getUniqueId());
+            User user = new BukkitUser(p);
+            users.put(p.getUniqueId(), user);
+            return user;
+        }
+        return CONSOLE_USER;
     }
 
 }

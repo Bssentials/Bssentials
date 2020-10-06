@@ -1,32 +1,31 @@
 package bssentials.commands;
 
 import org.bukkit.Location;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
+
+import bssentials.api.User;
 
 @CmdInfo
 public class Nuke extends BCommand {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("nuke")) {
+    public boolean onCommand(User user, String label, String[] args) {
+        if (label.equalsIgnoreCase("nuke")) {
             if(args.length == 1) {
                 try {
-                    Player target = getPlayer(args[0]);
+                    User target = getUserByName(args[0]);
                     nuke(target.getLocation());
-                    message(sender, "Tnt rain!");
-                    message(target, "Tnt rain!");
+                    user.sendMessage("Tnt rain!");
+                    target.sendMessage("Tnt rain!");
                 } catch (NullPointerException e) {
-                    message(sender, "Target player is offline!");
+                    user.sendMessage("Target player is offline!");
                 }
             } else if(args.length == 0) {
-                if(sender instanceof Player) {
-                    nuke(((Player) sender).getLocation());
-                    sender.sendMessage("TNT RAIN!");
-                } else message(sender, "Usage: /nuke <player>");
-            } else message(sender, "Usage: /nuke <player>");
+                if(user.isPlayer()) {
+                    nuke(user.getLocation());
+                    user.sendMessage("TNT RAIN!");
+                } else user.sendMessage("Usage: /nuke <player>");
+            } else user.sendMessage("Usage: /nuke <player>");
 
             return true;
         }

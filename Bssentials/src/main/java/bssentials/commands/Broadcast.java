@@ -2,16 +2,14 @@ package bssentials.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-
+import bssentials.api.User;
 import bssentials.utils.StringUtils;
 
 @CmdInfo
 public class Broadcast extends BCommand {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
+    public boolean onCommand(User sender, String label, String[] args) {
         if (args.length == 0) {
             message(sender, "Usage: /broadcast <message>");
             return true;

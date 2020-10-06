@@ -4,37 +4,34 @@ import java.util.ArrayList;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+
+import bssentials.api.User;
 
 @CmdInfo(aliases = {"mob"})
 public class SpawnMob extends BCommand {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
+    public boolean onCommand(User user, String label, String[] args) {
         ArrayList<String> mobs = new ArrayList<>();
         for (EntityType e : EntityType.values())
             if (e.isSpawnable()) mobs.add(String.valueOf(e).toLowerCase());
 
         if (args.length == 0) {
-            message(sender, ChatColor.GREEN + join(mobs, ChatColor.GRAY + ", " + ChatColor.GREEN));
+            user.sendMessage(ChatColor.GREEN + join(mobs, ChatColor.GRAY + ", " + ChatColor.GREEN));
             return true;
         }
 
-        if (!(sender instanceof Player)) {
-            Player player = getPlayer(args[1]);
-            World world = player.getWorld();
-            Location TargetLocation = player.getLocation();
-            world.spawnEntity(TargetLocation, EntityType.valueOf(args[0].toUpperCase()));
-            player.sendMessage(ChatColor.GREEN + "Spawned " + args[0]);
-            message(sender, "Spawned mob on " + player.getName());
+        if (!(user.isPlayer())) {
+            User target = getUserByName(args[1]);
+            Location targetLocation = target.getLocation();
+            targetLocation.getWorld().spawnEntity(targetLocation, EntityType.valueOf(args[0].toUpperCase()));
+            target.sendMessage(ChatColor.GREEN + "Spawned " + args[0]);
+            user.sendMessage("Spawned mob on " + target.getName(true));
         } else {
-            Player player = (Player) sender;
-            player.getWorld().spawnEntity(player.getLocation(), EntityType.valueOf(args[0].toUpperCase()));
-            player.sendMessage(ChatColor.GREEN + "Spawned " + args[0]);
+            ((Player)user.getBase()).getWorld().spawnEntity(user.getLocation(), EntityType.valueOf(args[0].toUpperCase()));
+            user.sendMessage(ChatColor.GREEN + "Spawned " + args[0]);
         }
         return true;
     }

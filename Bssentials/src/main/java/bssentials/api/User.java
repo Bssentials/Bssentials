@@ -1,190 +1,88 @@
 package bssentials.api;
 
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 
-import bssentials.configuration.BssConfiguration;
-import bssentials.configuration.Configs;
-import bssentials.Bssentials;
+import bssentials.bukkit.BukkitUser;
 
-public class User {
+public interface User {
 
-    private Player base;
-    private static File folder;
-    private File file;
+    public boolean isPlayer();
 
-    public boolean npc = false;
-    public String lastAccountName;
-    public BigDecimal money = new BigDecimal(100);
-    public String nick = "_null_";
+    public FileConfiguration getConfig();
 
-    public ArrayList<String> homes = new ArrayList<>();
+    public Location getHome(String home);
 
-    public FileConfiguration user = new YamlConfiguration();
+    public void save();
 
-    public User(Player base) {
-        this.base = base;
-        if (null == folder)
-            folder = new File(Bssentials.get().getDataFolder(), "userdata");
+    public BigDecimal getMoney();
 
-        this.file = new File(folder, base.getUniqueId().toString() + ".yml");
-        this.lastAccountName = base.getName();
-        this.user = new YamlConfiguration();
-        folder.mkdir();
+    public boolean isAuthorized(String string);
 
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("Unable to create file: " + folder.getAbsolutePath());
-            }
-            user.set("npc", false);
-            user.set("lastAccountName", base.getName());
-            user.set("money", 100.0); // Default
-            save();
-        }
+    public void setMoney(BigDecimal balance);
 
-        try {
-            user.load(file);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+    public void setNick(String n) throws Exception;
 
-        if (file.exists()) {
-            npc = user.getBoolean("npc", false);
-            lastAccountName = user.getString("lastAccountName");
-            try {
-                money = new BigDecimal((double) user.get("money"));
-            } catch (Exception e) {
-                money = BigDecimal.valueOf(Double.valueOf((int) user.get("money")));
-            }
-            nick = user.getString("nick");
-        }
-    }
+    public boolean isNPC();
 
-    public FileConfiguration getConfig() {
-        return user;
-    }
+    public void setHome(String home, Location l);
 
-    public Location getHome(String home) {
-        if (user.getConfigurationSection("homes." + home) == null)
-            return null;
+    public void delHome(String home);
 
-        World w = Bukkit.getServer().getWorld(user.getString("homes." + home + ".world"));
-        double x = user.getDouble("homes." + home + ".x");
-        double y = user.getDouble("homes." + home + ".y");
-        double z = user.getDouble("homes." + home + ".z");
-        return new Location(w, x, y, z);
-    }
+    public void sendMessage(String txt);
 
-    public void save() {
-        try {
-            user.save(file);
-            npc = user.getBoolean("npc", false);
-            lastAccountName = user.getString("lastAccountName");
-            try {
-                money = new BigDecimal((double) user.get("money"));
-            } catch (Exception e) {
-                Object mon = user.get("money");
-                money = mon instanceof BigDecimal ? (BigDecimal) mon : BigDecimal.valueOf(Double.valueOf((int) mon));
-            }
-            nick = user.getString("nick");
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Unable to write to file: " + folder.getAbsolutePath());
-        }
-    }
+    public Set<String> getHomes();
 
-    public BigDecimal getMoney() {
-        return money;
-    }
+    public UUID getUniqueId();
 
-    public boolean isAuthorized(String string) {
-        return base.hasPermission(string);
-    }
+    public String getName(boolean custom);
 
-    public void setMoney(BigDecimal balance) {
-        user.set("money", balance.doubleValue());
-        save();
-    }
+    public Location getLocation();
 
-    public void setNick(String n) throws Exception {
-        BssConfiguration config = Configs.MAIN;
-        int maxLength = config.getInt("max-nick-length");
+    public Block getTargetBlock(Set<Material> transparent, int maxDistance);
 
-        String s = config.getBoolean("ignore-colors-in-max-nick-length", true) ? ChatColor.stripColor(n) : n;
+    public void clearInventory(String item);
 
-        if (maxLength > 0 && s.length() > maxLength)
-            throw new Exception("Nickname is too long");
+    public boolean isOnline();
 
-        if (config.contains("nickname-prefix"))
-            n = config.getString("nickname-prefix") + n;
+    public void openEnderchest(User target);
 
-        List<String> blackList = config.getStringList("nick-blacklist");
-        for (String str : blackList) {
-            String strip = ChatColor.stripColor(n);
-            if ((strip.equalsIgnoreCase(str) || strip.contains(str)) && !isAuthorized("bssentials.nick.blacklist.bypass"))
-                throw new Exception("Nick blacklisted");
-        }
+    public int getExpLevel();
 
-        user.set("nick", n);
-        save();
-    }
+    public void setExpLevel(int i);
 
-    public boolean isNPC() {
-        return false; // TODO: should Bssentials have NPC support?
-    }
+    public void setAllowFly(boolean allow);
 
+    public boolean isAllowedToFly();
+
+    public void setGameMode(GameMode mode);
+
+    public int getItemInMainHand();
+
+    public void setHelmentToMainHandItem();
+
+    public void setHealthAndFoodLevel(int h, int f);
+
+    public boolean isOp();
+
+    public boolean teleport(Location l);
+
+    public void openOtherUserInventory(User target);
+
+    public Object getBase();
+
+    @Deprecated
     public static User getByName(String name) {
-        if (name == null) 
-            throw new RuntimeException("Economy username cannot be null");
-        return new User(Bukkit.getPlayerExact(name));
+        return BukkitUser.getByName(name);
     }
 
-    public void setHome(String home, Location l) {
-        user.set("homes." + home + ".world", l.getWorld().getName());
-        user.set("homes." + home + ".x", l.getX());
-        user.set("homes." + home + ".y", l.getY());
-        user.set("homes." + home + ".z", l.getZ());
-        save();
-    }
-
-    public void delHome(String home) {
-        user.set("homes." + home + ".world", null);
-        user.set("homes." + home + ".x", null);
-        user.set("homes." + home + ".y", null);
-        user.set("homes." + home + ".z", null);
-        user.set("homes." + home, null);
-        save();
-    }
-
-    public void sendMessage(String txt) {
-        base.sendMessage(ChatColor.translateAlternateColorCodes('&', txt));
-    }
-
-    // TODO
-    public void teleport() {
-        // teleport-safety
-    }
-
-    public Set<String> getHomes() {
-        ConfigurationSection section = user.getConfigurationSection("homes");
-        return section.getValues(false).keySet();
-    }
+    public String getNick();
 
 }

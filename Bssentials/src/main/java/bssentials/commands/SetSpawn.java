@@ -4,26 +4,25 @@ import java.io.IOException;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+
+import bssentials.api.User;
 
 @CmdInfo(onlyPlayer = true)
 public class SetSpawn extends BCommand {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
+    public boolean onCommand(User user, String label, String[] args) {
         if (args.length > 1)
-            return message(sender, ChatColor.RED + "Usage: /setspawn");
+            return message(user, ChatColor.RED + "Usage: /setspawn");
 
-        Location loc = ((Player) sender).getLocation();
+        Location loc = user.getLocation();
 
         try {
             getPlugin().getWarps().setWarp("spawn", loc);
-            message(sender, ChatColor.GREEN + "Spawn set!");
+            user.sendMessage(ChatColor.GREEN + "Spawn set!");
         } catch (IOException e) {
             e.printStackTrace();
-            message(sender, ChatColor.RED + "Unable to write to spawn.yml");
+            user.sendMessage(ChatColor.RED + "Unable to write to spawn.yml");
         }
         return true;
     }

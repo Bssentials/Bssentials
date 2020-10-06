@@ -1,70 +1,65 @@
 package bssentials.commands;
 
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+
+import bssentials.api.User;
 
 @CmdInfo(onlyPlayer = true)
 public class Heal extends BCommand {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String[] args) {
-        Player player = (Player) sender;
-
-        if (cmd.getName().equalsIgnoreCase("heal")) {
+    public boolean onCommand(User user, String label, String[] args) {
+        if (label.equalsIgnoreCase("heal")) {
             if (args.length == 0) {
-                if (hasPerm(player, cmd)) {
-                    player.setHealth(20);
-                    player.setFoodLevel(20);
-                    player.sendMessage(ChatColor.GREEN + "You have been healed!");
+                if (hasPerm(user, label)) {
+                    user.setHealthAndFoodLevel(20, 20);
+                    user.sendMessage(ChatColor.GREEN + "You have been healed!");
                     return true;
                 } else {
-                    sender.sendMessage("No Permission");
+                    user.sendMessage("No Permission");
                     return false;
                 }
             } else {
-                if (sender.hasPermission("bssentials.commands.heal.other")) {
-                    Player target = getPlayer(args[0]);
+                if (user.isAuthorized("bssentials.commands.heal.other")) {
+                    User target = getUserByName(args[0]);
                     if (target == null) {
-                        player.sendMessage(ChatColor.RED + "Could not find player!");
+                        user.sendMessage(ChatColor.RED + "Could not find player!");
                         return false;
                     } else {
-                        target.setHealth(20);
-                        target.setFoodLevel(20);
+                        target.setHealthAndFoodLevel(20, 20);
                         target.sendMessage(ChatColor.GREEN + "You have been healed!");
-                        player.sendMessage(ChatColor.GREEN + target.getName() + " has been healed!");
+                        user.sendMessage(ChatColor.GREEN + target.getName(true) + " has been healed!");
                         return true;
                     }
                 } else {
-                    sender.sendMessage("No Permission");
+                    user.sendMessage("No Permission");
                     return false;
                 }
             }
         }
 
-        if (cmd.getName().equalsIgnoreCase("feed")) {
+        if (label.equalsIgnoreCase("feed")) {
             if (args.length == 0) {
-                if (hasPerm(player, cmd)) {
-                    player.setFoodLevel(20);
-                    player.sendMessage(ChatColor.GREEN + "You have been fed!");
-                } else sender.sendMessage("No Permission");
+                if (hasPerm(user, label)) {
+                    user.setHealthAndFoodLevel(-1, 20);
+                    user.sendMessage(ChatColor.GREEN + "You have been fed!");
+                } else user.sendMessage("&4No Permission");
 
                 return true;
             } else {
-                if (sender.hasPermission("bssentials.commands.feed.other")) {
-                    Player target = getPlayer(args[0]);
+                if (user.isAuthorized("bssentials.commands.feed.other")) {
+                    User target = getUserByName(args[0]);
                     if (target == null) {
-                        player.sendMessage(ChatColor.RED + "Could not find player!");
+                        user.sendMessage(ChatColor.RED + "Could not find player!");
                         return false;
                     } else {
-                        target.setFoodLevel(20);
+                        target.setHealthAndFoodLevel(-1, 20);
                         target.sendMessage(ChatColor.GREEN + "You have been fed!");
-                        player.sendMessage(ChatColor.GREEN + target.getName() + " has been fed!");
+                        user.sendMessage(ChatColor.GREEN + target.getName(true) + " has been fed!");
                         return true;
                     }
                 } else {
-                    sender.sendMessage("No Permission");
+                    user.sendMessage("&4No Permission");
                     return false;
                 }
             }
