@@ -42,7 +42,7 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-        	<artifactId>Bssentials</artifactId>
+        	<artifactId>Bssentials-Bukkit</artifactId>
 	        <groupId>bssentials</groupId>
 	        <version>3.x</version>
         </dependency>

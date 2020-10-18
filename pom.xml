@@ -7,9 +7,11 @@
     <packaging>pom</packaging>
     <version>3.x</version>
     <modules>
-        <module>Bssentials</module>
+        <module>Bssentials-Common</module>
+        <module>Bssentials-Bukkit</module>
+        <module>fabric-mcserver</module>
+        <module>Bssentials-Fabric</module>
         <module>EssentialsBridge</module>
-        <!--<module>Bssentials-Fabric</module>-->
     </modules>
 
     <properties>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>bssentials-parent</artifactId>
+        <groupId>bssentials</groupId>
+        <version>3.x</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>fabric-mcserver</artifactId>
+    <groupId>com.javazilla</groupId>
+    <version>1.16.3-SNAPSHOT</version>
+
+    <packaging>jar</packaging>
+
+    <pluginRepositories>
+        <pluginRepository>
+          <id>md5-public</id>
+          <url>https://hub.spigotmc.org/nexus/content/repositories/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <repositories>
+        <repository>
+          <id>md5-public</id>
+          <url>https://hub.spigotmc.org/nexus/content/repositories/public/</url>
+        </repository>
+    </repositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.googlecode.maven-download-plugin</groupId>
+                <artifactId>download-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <id>download-minecraft-server</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
+                        <configuration>
+                            <url>
+                                <!-- 1.16.3 -->
+                                https://launcher.mojang.com/v1/objects/f02f4473dbf152c23d7d484952121db0b36698cb/server.jar
+                            </url>
+                            <unpack>false</unpack>
+                            <outputDirectory>
+                                ${project.build.directory}
+                            </outputDirectory>
+                            <md5>51f363d9fdf9caf953c1fec932e50593</md5>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>net.md-5</groupId>
+                <artifactId>specialsource-maven-plugin</artifactId>
+                <version>1.3-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>install-remapped-file</goal>
+                        </goals>
+                        <configuration>
+                            <srgIn>${project.parent.basedir}/fabric-mcserver/mappings/obf2yarn.srg</srgIn>
+                            <createChecksum>true</createChecksum>
+                            <groupId>net.fabricmc.mcmapped</groupId>
+                            <artifactId>minecraft-server</artifactId>
+                            <version>1.16.3-SNAPSHOT</version>
+                            <packaging>jar</packaging>
+                            <inJars>
+                                <inJar>
+                                    ${project.build.directory}/server.jar
+                                </inJar>
+                            </inJars>
+                            <outputDirectory>${project.build.directory}
+                            </outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.1</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

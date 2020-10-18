@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "bssentials",
+  "version": "${version}",
+
+  "name": "Bssentials",
+  "description": "The Essential Mod for Fabric servers",
+  "authors": [
+    "Isaiah"
+  ],
+
+  "license": "GPLv3",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "bssentials.fabric.BssentialsMod"
+    ]
+  },
+
+  "depends": {
+    "fabricloader": ">=0.8.1",
+    "minecraft": "1.16.x"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+
+}
