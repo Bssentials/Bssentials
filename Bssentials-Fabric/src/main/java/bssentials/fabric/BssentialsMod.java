@@ -70,6 +70,7 @@ public class BssentialsMod implements ModInitializer, IBssentials {
         warpdir.mkdirs();
         warpManager = new Warps(this, warpdir);
         users = new HashMap<>();
+        worlds = new HashMap<>();
 
         saveResource("config.yml", false);
         saveResource("info.txt", false);

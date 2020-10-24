@@ -61,7 +61,7 @@ public class FabricUser implements User {
                 System.out.println("Unable to create file: " + folder.getAbsolutePath());
             }
             user.set("npc", false);
-            user.set("lastAccountName", base.getName());
+            user.set("lastAccountName", base.getName().asString());
             user.set("money", 100.0); // Default
             save();
         }
