@@ -19,7 +19,7 @@
                 </property>
             </activation>
             <build>
-                <finalName>Bssentials3-BUKKIT</finalName>
+                <finalName>Bssentials-BUKKIT</finalName>
             </build>
         </profile>
     </profiles>
@@ -77,7 +77,7 @@
    </dependencies>
 
     <build>
-        <finalName>Bssentials3</finalName>
+        <finalName>Bssentials-Bukkit</finalName>
         <resources>
             <resource>
                 <directory>${basedir}/src/main/resources</directory>

@@ -19,7 +19,7 @@
                 </property>
             </activation>
             <build>
-                <finalName>Bssentials3-FABRIC</finalName>
+                <finalName>Bssentials-FABRIC</finalName>
             </build>
         </profile>
     </profiles>
@@ -80,7 +80,7 @@
    </dependencies>
 
     <build>
-        <finalName>BssentialsFabric</finalName>
+        <finalName>Bssentials-Fabric</finalName>
         <resources>
             <resource>
                 <directory>${basedir}/src/main/resources</directory>
