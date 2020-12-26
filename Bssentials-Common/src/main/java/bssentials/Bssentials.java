@@ -1,7 +1,8 @@
 package bssentials;
 
 import java.io.File;
-import bssentials.api.*;
+
+import bssentials.api.IBssentials;
 
 public class Bssentials {
 

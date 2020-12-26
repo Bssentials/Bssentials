@@ -244,9 +244,8 @@ public class BssentialsMod implements ModInitializer, IBssentials {
 
     @Override
     public void broadcastMessage(String string) {
-        for (ServerPlayerEntity plr : server.getPlayerManager().getPlayerList()) {
+        for (ServerPlayerEntity plr : server.getPlayerManager().getPlayerList())
             plr.sendMessage(new LiteralText(string), false);
-        }
     }
 
     @Override

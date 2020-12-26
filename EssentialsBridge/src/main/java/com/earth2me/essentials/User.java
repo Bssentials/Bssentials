@@ -9,6 +9,7 @@ import com.earth2me.essentials.utils.DateUtil;
 import com.earth2me.essentials.utils.FormatUtil;
 import com.earth2me.essentials.utils.NumberUtil;
 
+import bssentials.bukkit.BssentialsPlugin;
 import bssentials.commands.Afk;
 import net.ess3.api.IEssentials;
 import net.ess3.api.MaxMoneyException;
@@ -70,7 +71,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
 
     public User(final Player base, final IEssentials ess) {
         super(base, ess);
-        this.bss = new bssentials.api.User(base);
+        this.bss = BssentialsPlugin.getInstance().getUser(base);
         teleport = new Teleport(this, ess);
         if (isAfk())
             afkPosition = base.getLocation();
@@ -261,7 +262,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
     }
 
     public String getNick(final boolean longnick, final boolean withPrefix, final boolean withSuffix) {
-        return bss.nick;
+        return bss.getNick();
     }
 
     public void setDisplayNick() {
@@ -326,7 +327,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
 
     @Override
     public void setAfk(final boolean set) {
-        Afk.setAFK(this.base, set); // BSSENTIALS
+        Afk.setAFK(bss, set); // BSSENTIALS
     }
 
     private void updateAfkListName() {

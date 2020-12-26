@@ -1,6 +1,8 @@
 package com.earth2me.essentials;
 
 import com.google.common.collect.ImmutableMap;
+
+import bssentials.bukkit.BssentialsPlugin;
 import net.ess3.api.IEssentials;
 import net.ess3.api.InvalidWorldException;
 import net.ess3.api.MaxMoneyException;
@@ -29,7 +31,7 @@ public abstract class UserData extends PlayerExtension implements IConf {
         this.ess = ess;
         folder = new File(Bukkit.getPluginManager().getPlugin("Bssentials").getDataFolder(), "userdata");
         folder.mkdirs();
-        this.bss = bssentials.api.User.getByName(base.getName());
+        this.bss =  BssentialsPlugin.getInstance().getUser(base);
 
         String filename;
         try {
@@ -94,7 +96,9 @@ public abstract class UserData extends PlayerExtension implements IConf {
     }
 
     public Location getHome(String name) throws Exception {
-        return bss.getHome(name);
+        bssentials.api.Location bloc = bss.getHome(name);
+        Location loc = new Location(Bukkit.getWorld(bloc.world), bloc.x, bloc.y, bloc.z);
+        return loc;
     }
 
     public Location getHome(final Location world) {
@@ -105,19 +109,19 @@ public abstract class UserData extends PlayerExtension implements IConf {
                 loc = config.getLocation("homes." + home, this.getBase().getServer());
                 if (world.getWorld() == loc.getWorld()) { return loc; }
             }
-            loc = config.getLocation("homes." + getHomes().get(0), this.getBase().getServer());
+            loc = config.getLocation("homes." + getHomes().toArray(new String[0])[0], this.getBase().getServer());
             return loc;
         } catch (InvalidWorldException ex) {
             return null;
         }
     }
 
-    public List<String> getHomes() {
-        return bss.homes;
+    public Set<String> getHomes() {
+        return bss.getHomes();
     }
 
     public void setHome(String name, Location loc) {
-        bss.setHome(name, loc);
+        bss.setHome(name, BssentialsPlugin.copy(loc));
     }
 
     public void delHome(String name) throws Exception {
@@ -125,11 +129,11 @@ public abstract class UserData extends PlayerExtension implements IConf {
     }
 
     public boolean hasHome() {
-        return bss.homes.size() > 0;
+        return bss.getHomes().size() > 0;
     }
 
     public String getNickname() {
-        return bss.nick;
+        return bss.getNick();
     }
 
     public void setNickname(String nick) {

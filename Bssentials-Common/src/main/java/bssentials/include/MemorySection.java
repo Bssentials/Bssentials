@@ -1,6 +1,5 @@
 package bssentials.include;
 
-import static org.bukkit.util.NumberConversions.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -244,6 +243,14 @@ public class MemorySection implements ConfigurationSection {
         return (val instanceof Number) ? toInt(val) : def;
     }
 
+    public static int toInt(Object object) {
+        if (object instanceof Number) return ((Number) object).intValue();
+        try {
+            return Integer.parseInt(object.toString());
+        } catch (NumberFormatException | NullPointerException e) {}
+        return 0;
+    }
+
     @Override
     public boolean isInt(String path) {
         Object val = get(path);
@@ -296,6 +303,24 @@ public class MemorySection implements ConfigurationSection {
     public long getLong(String path, long def) {
         Object val = get(path, def);
         return (val instanceof Number) ? toLong(val) : def;
+    }
+
+    public static double toDouble(Object object) {
+        if (object instanceof Number) return ((Number) object).doubleValue();
+
+        try {
+            return Double.parseDouble(object.toString());
+        } catch (NumberFormatException | NullPointerException e) {}
+        return 0;
+    }
+
+    public static long toLong(Object object) {
+        if (object instanceof Number) return ((Number) object).longValue();
+
+        try {
+            return Long.parseLong(object.toString());
+        } catch (NumberFormatException | NullPointerException e) {}
+        return 0;
     }
 
     @Override

@@ -110,7 +110,7 @@ public interface IUser {
 
     Location getHome(Location loc) throws Exception;
 
-    List<String> getHomes();
+    Set<String> getHomes();
 
     void setHome(String name, Location loc);
 
