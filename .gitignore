@@ -29,3 +29,7 @@ LastPublicVer.txt
 /bssentials-parent.iml
 /EssentialsBridge/EssentialsBridge.iml
 /Bssentials/Bssentials.iml
+
+# Gradle
+.gradle
+**/build/

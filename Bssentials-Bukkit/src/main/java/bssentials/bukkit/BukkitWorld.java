@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.TreeType;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
+import org.bukkit.block.Block;
 
 import bssentials.api.IWorld;
 
@@ -38,7 +39,10 @@ public class BukkitWorld implements IWorld {
     @SuppressWarnings("deprecation")
     @Override
     public int getBlockAt(int x, int y, int z) {
-        return world.getBlockAt(x, y, z).getTypeId();
+        Block b = world.getBlockAt(x, y, z);
+        if (b.isEmpty())
+            return 0;
+        return b.getType().ordinal();// TODO: b.getType();
     }
 
     @Override

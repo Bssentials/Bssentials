@@ -27,7 +27,7 @@ public class FabricWorld implements IWorld {
     @Override
     public void generateTree(double x, double y, double z) {
         BlockPos pos = new BlockPos(x,y,z);
-        ConfiguredFeatures.field_26044.feature.generate(world, world.getChunkManager().getChunkGenerator(), rand, pos, ConfiguredFeatures.field_26044.config);
+        ConfiguredFeatures.FANCY_OAK.feature.generate(world, world.getChunkManager().getChunkGenerator(), rand, pos, ConfiguredFeatures.FANCY_OAK.config);
     }
 
     @Override

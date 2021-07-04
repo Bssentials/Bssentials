@@ -282,7 +282,8 @@ public class FabricUser implements User {
     }
 
     public void openOtherUserInventory(User target) {
-        base.openHandledScreen(((ServerPlayerEntity)target.getBase()).playerScreenHandler);
+       // TODO: Check this
+       // base.openHandledScreen(((ServerPlayerEntity)target.getBase()).playerScreenHandler);
     }
 
     @Override

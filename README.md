@@ -1,4 +1,4 @@
-# Bssentials [![Build Status](https://ci.codemc.org/buildStatus/icon?job=Fungus-Software%2FBssentials)](https://ci.codemc.org/job/Fungus-Software/job/Bssentials/)
+# Bssentials [![Build Status](https://ci.codemc.org/buildStatus/icon?job=IsaiahPatton%2FBssentials)](https://ci.codemc.org/job/IsaiahPatton/job/Bssentials/)
 
 Bssentials version 3.x is a rewrite of Essentials made to be more optimized & fix alot of bugs.
 
@@ -26,7 +26,7 @@ will work with Bssentials with out any modifications to them due to the [Essenti
 
 ## Licence
 
-Copyright © 2016-2020 Bssentials Contributers
+Copyright © 2016-2021 Bssentials Contributers
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -41,5 +41,3 @@ Copyright © 2016-2020 Bssentials Contributers
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-Backup CI
-[![Build status](https://ci.appveyor.com/api/projects/status/1mpai28weyinpceu?svg=true)](https://ci.appveyor.com/project/IsaiahPatton/bssentials)
