@@ -1,11 +1,9 @@
 package bssentials.fabric;
 
-import java.lang.reflect.Field;
 import java.util.Random;
 
 import bssentials.api.IWorld;
 import bssentials.api.Location;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -27,7 +25,8 @@ public class FabricWorld implements IWorld {
     @Override
     public void generateTree(double x, double y, double z) {
         BlockPos pos = new BlockPos(x,y,z);
-        ConfiguredFeatures.FANCY_OAK.feature.generate(world, world.getChunkManager().getChunkGenerator(), rand, pos, ConfiguredFeatures.FANCY_OAK.config);
+        // TODO: Update to 1.17:
+        // ConfiguredFeatures.FANCY_OAK.feature.generate(world, world.getChunkManager().getChunkGenerator(), rand, pos, ConfiguredFeatures.FANCY_OAK.config);
     }
 
     @Override
@@ -43,6 +42,14 @@ public class FabricWorld implements IWorld {
     @SuppressWarnings("unchecked")
     @Override
     public int getEntityCount() {
+        int count = 0;
+        // TODO: 1.17: Don't use iterateEntities
+        for (Object entity : world.iterateEntities()) {
+            count++;
+        }
+        return count;
+
+        /*
         try {
             Field f = world.getClass().getDeclaredField("entitiesById");
             f.setAccessible(true);
@@ -51,7 +58,7 @@ public class FabricWorld implements IWorld {
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
             e.printStackTrace();
             return -999;
-        }
+        }*/
     }
 
     @Override

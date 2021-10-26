@@ -221,8 +221,8 @@ public class FabricUser implements User {
 
     public void clearInventory(String item) {
         if (null == item) {
-            base.inventory.clear();
-        }// TODO else base.inventory.remove(Material.valueOf(item));
+            base.getInventory().clear();
+        }// TODO else base.getInventory().remove(Material.valueOf(item));
     }
 
     public boolean isOnline() {
@@ -242,25 +242,24 @@ public class FabricUser implements User {
     }
 
     public void setAllowFly(boolean allow) {
-        base.abilities.allowFlying = allow;
-        base.abilities.flying = allow;
+        base.getAbilities().allowFlying = allow;
+        base.getAbilities().flying = allow;
         base.sendAbilitiesUpdate();
     }
 
     public boolean isAllowedToFly() {
-        return base.canFly();
+        return base.getAbilities().allowFlying;
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public void setGameMode(int i) {
-        GameMode mode = GameMode.byId(i);
-        base.setGameMode(mode);
+        base.changeGameMode(GameMode.byId(i));
     }
 
     @SuppressWarnings("deprecation")
     public int getItemInMainHand() {
-        return Item.getRawId(base.inventory.getMainHandStack().getItem());
+        return Item.getRawId(base.getInventory().getMainHandStack().getItem());
     }
 
     public void setHelmentToMainHandItem() {

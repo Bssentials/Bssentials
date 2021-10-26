@@ -13,7 +13,7 @@ repositories {
 val extraLibs by configurations.creating
 
 plugins {
-    id ("fabric-loom") version "0.7-SNAPSHOT"
+    id ("fabric-loom") version "0.8-SNAPSHOT"
     id ("maven-publish")
 	id ("java-library")
     id ("com.github.johnrengelman.shadow") version "7.0.0"
@@ -40,13 +40,16 @@ sourceSets {
 }
 
 dependencies {
-    minecraft ("com.mojang:minecraft:1.16.5")
-    mappings ("net.fabricmc:yarn:1.16.5+build.9:v2")
-    modImplementation ("net.fabricmc:fabric-loader:0.11.3")
+    minecraft("com.mojang:minecraft:1.17.1")
+    mappings("net.fabricmc:yarn:1.17.1+build.63:v2")
+    modImplementation("net.fabricmc:fabric-loader:0.12.3")
+
+    //Fabric api
+    modImplementation("net.fabricmc.fabric-api:fabric-api:0.41.0+1.17")
 
     modImplementation("org.yaml:snakeyaml:1.26")
     modImplementation("com.javazilla.mods:permissions:1.2")
-    extraLibs("org.yaml:snakeyaml:1.26")
+   // modInclude(modImplementation("org.yaml:snakeyaml:1.26"))
 }
 
 tasks.withType<ShadowJar> {
@@ -55,9 +58,16 @@ tasks.withType<ShadowJar> {
   }
   classifier = null
   exclude("mappings/mappings.tiny")
+  archiveFileName.set("Bssentials-Fabric-dev.jar")
 }
 
 
 tasks.getByName("build") {
+   dependsOn("shadowJar")
+}
+
+tasks.getByName("remapJar") {
     dependsOn("shadowJar")
+    mustRunAfter("shadowJar")
+    //jar = tasks.getByName("shadowJar.archivePath
 }
