@@ -1,8 +1,10 @@
 package bssentials.fabric;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
@@ -19,8 +21,10 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 
+import bssentials.Bssentials;
 import bssentials.api.User;
 import bssentials.commands.BCommand;
+import bssentials.commands.SpawnMob;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
@@ -37,6 +41,10 @@ public class CommandWrapper implements com.mojang.brigadier.Command<ServerComman
         this.ex = command;
     }
 
+    public String name() {
+        return ex.getClass().getSimpleName().toLowerCase(Locale.ENGLISH);
+    }
+
     public LiteralCommandNode<ServerCommandSource> register(CommandDispatcher<ServerCommandSource> dispatcher, String label) {
         return dispatcher.register(
                 LiteralArgumentBuilder.<ServerCommandSource>literal(label).requires(this).executes(this)
@@ -46,7 +54,7 @@ public class CommandWrapper implements com.mojang.brigadier.Command<ServerComman
 
     @Override
     public boolean test(ServerCommandSource wrapper) {
-        return wrapper.hasPermissionLevel(1);
+        return true;
     }
 
     @Override
@@ -81,6 +89,18 @@ public class CommandWrapper implements com.mojang.brigadier.Command<ServerComman
 
         for (String s : results)
             builder.suggest(s);
+        
+        if (name().equalsIgnoreCase("spawnmob")) {
+            for (String s : SpawnMob.mobs.keySet()) {
+                builder.suggest(s);
+            }
+        }
+        
+        if (name().equalsIgnoreCase("warp")) {
+            for (File s : Bssentials.getInstance().getWarps().getWarpFiles()) {
+                builder.suggest(s.getName().replace(".yml", ""));
+            }
+        }
 
         return builder.buildFuture();
     }

@@ -36,9 +36,11 @@ import bssentials.commands.SpawnMob;
 import bssentials.configuration.BssConfiguration;
 import bssentials.configuration.BssConfiguration.ConfigException;
 import bssentials.configuration.Configs;
+import bssentials.fabric.commands.ModsCommand;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.entity.EntityType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -92,9 +94,9 @@ public class BssentialsMod implements ModInitializer, IBssentials {
 
             Registry.ENTITY_TYPE.forEach((type) -> {
                 if (type.isSummonable())
-                    SpawnMob.mobs.put(type.toString(), type);
+                    SpawnMob.mobs.put(EntityType.getId(type).toString(), type);
             });
-
+ 
             register("bssentials", new BssentialsCmd());
 
             for (Class<? extends BCommand> clazz : getCommandClasses()) {
@@ -105,8 +107,10 @@ public class BssentialsMod implements ModInitializer, IBssentials {
                 }
             }
             register("feed", new Heal());
+            register("modlist", new ModsCommand());
             LOGGER.info("Registered " + registered + " commands");
         });
+        
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             LOGGER.info("Bssentials version " + getVersion());
         });
@@ -151,25 +155,33 @@ public class BssentialsMod implements ModInitializer, IBssentials {
                 out.close();
                 in.close();
             } else {
-                LOGGER.warn("Could not save " + outFile.getName() + " to " + outFile + " because " + outFile.getName() + " already exists.");
+                //LOGGER.warn("Could not save " + outFile.getName() + " to " + outFile + " because " + outFile.getName() + " already exists.");
             }
         } catch (IOException ex) {
             LOGGER.error("Could not save " + outFile.getName() + " to " + outFile, ex);
         }
     }
 
-    public void register(String name, BCommand base) {
+    public CommandWrapper register(String name, BCommand base) {
         try {
             CommandWrapper wrap = new CommandWrapper(name, base);
-            if (wrap.register(server.getCommandManager().getDispatcher(), name) != null);
+            if (wrap.register(server.getCommandManager().getDispatcher(), name) != null) {
                 registered++;
-         } catch(Exception e) { e.printStackTrace(); }
+            }
+            for (String aka : base.info.aliases()) {
+                if (aka.length() > 1) {
+                    wrap.register(server.getCommandManager().getDispatcher(), aka);
+                }
+            }     
+            return wrap;
+         } catch(Exception e) { e.printStackTrace(); return null; }
     }
 
     public void register(BCommand... bases) {
         for (BCommand bcmd : bases) {
             register(bcmd.getClass().getSimpleName().toLowerCase(Locale.ENGLISH), bcmd);
             String permission = bcmd.info.permission();
+
             if (permission.equalsIgnoreCase("REQUIRES_OP") || permission.equalsIgnoreCase("NONE"))
                 continue;
         }
@@ -276,9 +288,10 @@ public class BssentialsMod implements ModInitializer, IBssentials {
     public static Location copy(ServerPlayerEntity e, BlockPos pos) {
         Location l = new Location();
         l.x = pos.getX();
-        l.y = pos.getY();
+        l.y = pos.getY(); 
         l.z = pos.getZ();
-        l.world = ((ServerWorldProperties)e.getServerWorld().getLevelProperties()).getLevelName();
+        l.world = ((ServerWorldProperties)e.getWorld().getLevelProperties()).getLevelName();
+       
         return l;
     }
 }

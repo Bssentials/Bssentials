@@ -17,6 +17,9 @@
       "bssentials.fabric.BssentialsMod"
     ]
   },
+  "mixins": [
+    "bss.mixins.json"
+  ],
 
   "depends": {
     "fabricloader": ">=0.8.1",

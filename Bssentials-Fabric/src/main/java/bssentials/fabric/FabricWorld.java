@@ -1,7 +1,5 @@
 package bssentials.fabric;
 
-import java.util.Random;
-
 import bssentials.api.IWorld;
 import bssentials.api.Location;
 import net.minecraft.block.Block;
@@ -9,7 +7,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.gen.feature.ConfiguredFeatures;
 import net.minecraft.world.level.ServerWorldProperties;
 
 public class FabricWorld implements IWorld {
@@ -20,18 +17,20 @@ public class FabricWorld implements IWorld {
         this.world = w;
     }
 
-    private static final Random rand = new Random();
-
     @Override
     public void generateTree(double x, double y, double z) {
-        BlockPos pos = new BlockPos(x,y,z);
-        // TODO: Update to 1.17:
-        // ConfiguredFeatures.FANCY_OAK.feature.generate(world, world.getChunkManager().getChunkGenerator(), rand, pos, ConfiguredFeatures.FANCY_OAK.config);
+        String ver = world.getServer().getVersion();
+        if (ver.contains("1.17")) {
+            System.out.println("WARN: generateTree only supported on 1.18+");
+            return;
+        }
+        TreeGenerate_1_18.generateTree(x, y, z, world);
     }
 
     @Override
     public String getName() {
-        return ((ServerWorldProperties)world.getLevelProperties()).getLevelName();
+        return world.getRegistryKey().getValue().toString();
+        //return ((ServerWorldProperties)world.getLevelProperties()).getLevelName();
     }
 
     @Override
@@ -39,7 +38,6 @@ public class FabricWorld implements IWorld {
         return world.getChunkManager().getLoadedChunkCount();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public int getEntityCount() {
         int count = 0;
@@ -48,17 +46,6 @@ public class FabricWorld implements IWorld {
             count++;
         }
         return count;
-
-        /*
-        try {
-            Field f = world.getClass().getDeclaredField("entitiesById");
-            f.setAccessible(true);
-            Int2ObjectMap<Entity> map = (Int2ObjectMap<Entity>) f.get(world);
-            return map.values().size();
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-            e.printStackTrace();
-            return -999;
-        }*/
     }
 
     @Override
@@ -75,6 +62,8 @@ public class FabricWorld implements IWorld {
     public void spawnEntity(Location location, String mobName, Object implobject) {
         EntityType<?> type = EntityType.get(mobName).get();
         Entity e = type.create(world);
+        
+        world.spawnEntity(e);
         e.teleport(location.x, location.y, location.z);
     }
 

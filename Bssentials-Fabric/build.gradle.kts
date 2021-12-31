@@ -13,7 +13,7 @@ repositories {
 val extraLibs by configurations.creating
 
 plugins {
-    id ("fabric-loom") version "0.8-SNAPSHOT"
+    id ("fabric-loom") version "0.10-SNAPSHOT"
     id ("maven-publish")
 	id ("java-library")
     id ("com.github.johnrengelman.shadow") version "7.0.0"
@@ -40,22 +40,31 @@ sourceSets {
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:1.17.1")
-    mappings("net.fabricmc:yarn:1.17.1+build.63:v2")
-    modImplementation("net.fabricmc:fabric-loader:0.12.3")
+    //minecraft("com.mojang:minecraft:1.17.1")
+    //mappings("net.fabricmc:yarn:1.17.1+build.63:v2")
+    //modImplementation("net.fabricmc:fabric-loader:0.12.3")
+    
+    minecraft("com.mojang:minecraft:1.18.1") 
+    mappings("net.fabricmc:yarn:1.18.1+build.12:v2")
+    modImplementation("net.fabricmc:fabric-loader:0.12.12")
 
     //Fabric api
-    modImplementation("net.fabricmc.fabric-api:fabric-api:0.41.0+1.17")
+    modImplementation("net.fabricmc.fabric-api:fabric-api:0.45.0+1.18")
 
     modImplementation("org.yaml:snakeyaml:1.26")
     modImplementation("com.javazilla.mods:permissions:1.2")
    // modInclude(modImplementation("org.yaml:snakeyaml:1.26"))
+   
+   //include(modImplementation("cloud.commandframework", "cloud-fabric", "1.6.0"))
+   //include(modImplementation("cloud.commandframework", "cloud-annotations", "1.6.0"))
 }
 
 tasks.withType<ShadowJar> {
   dependencies {
     include(dependency("org.yaml:snakeyaml:1.26"))
   }
+  relocate("org.yaml", "bssentials.include")
+  //relocate("cloud", "bssentials.include")
   classifier = null
   exclude("mappings/mappings.tiny")
   archiveFileName.set("Bssentials-Fabric-dev.jar")

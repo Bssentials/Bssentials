@@ -10,5 +10,5 @@ pluginManagement {
 
 rootProject.name = 'Bssentials'
 include 'Bssentials-Common'
-include 'Bssentials-Bukkit'
+//include 'Bssentials-Bukkit'
 include 'Bssentials-Fabric'

@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "bssentials.fabric.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "MixinPlayerManager"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+
+}

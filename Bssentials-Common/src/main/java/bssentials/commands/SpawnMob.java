@@ -16,6 +16,7 @@ public class SpawnMob extends BCommand {
             user.sendMessage("&4" + join(mobs.keySet(), "&7,&a"));
             return true;
         }
+       
 
         if (!(user.isPlayer())) {
             User target = getUserByName(args[1]);

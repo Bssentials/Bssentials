@@ -297,7 +297,7 @@ public class FabricUser implements User {
 
     @Override
     public IWorld getWorld() {
-        return Bssentials.getInstance().getWorld(((ServerWorldProperties)base.getServerWorld().getLevelProperties()).getLevelName());
+        return Bssentials.getInstance().getWorld(((ServerWorldProperties)base.getWorld().getLevelProperties()).getLevelName());
     }
 
     @Override
